@@ -1,0 +1,8 @@
+# macOS
+
+.DS_Store
+
+# Craft
+craft/app/
+craft/storage/
+craft/config/db.php
