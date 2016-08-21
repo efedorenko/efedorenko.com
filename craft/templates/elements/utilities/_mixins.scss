@@ -1,0 +1,42 @@
+/* Grid
+------------------------------------------------- */
+
+@function grid-width($columns) {
+  @return ($grid-column * $columns) + ($grid-gutter * ($columns - 1));
+}
+
+
+/* Retina
+------------------------------------------------- */
+
+@mixin retina {
+  @media (min-resolution: 144dpi),
+         (min-resolution: 1.5dppx) {
+    @content;
+  }
+}
+
+
+/* Responsiveness
+------------------------------------------------- */
+
+// Mobile to portrait table
+@mixin small {
+  @media only screen and (min-width: 480px) {
+    @content;
+  }
+}
+
+// Landscape tablet to small screen
+@mixin medium {
+  @media only screen and (min-width: 750px) {
+    @content;
+  }
+}
+
+// Small screen to big screen
+@mixin large {
+  @media only screen and (min-width: 1020px) {
+    @content;
+  }
+}

@@ -1,0 +1,11 @@
+.u-title-section {
+  margin: 1em 0 .5em;
+  color: $c-orange;
+  font-weight: 500;
+  font-size: 2rem;
+
+  &_link {
+    color: inherit;
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,14 @@
+{% set entries = craft.entries.section('writing') %}
+{% set yearPrev = '' %}
+
+{% for entry in entries.limit(limit) %}
+  {% set isExternalPost = (entry.type == "externalPost") %}
+  {% set entryURL = isExternalPost ? entry.postURL : entry.url %}
+  {% set entryModifier = isExternalPost ? 'external' : 'local'  %}
+
+  {% set entryYear = entry.postDate.format('Y') %}
+  {% set yearUnique = (yearPrev == '' or yearPrev != entryYear) ? entryYear : '' %}
+  {% set yearPrev = entryYear %}
+
+  {% include 'elements/components/writing/_list-' ~ type %}
+{% endfor %}

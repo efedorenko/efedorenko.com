@@ -1,0 +1,205 @@
+/* Layout
+------------------------------------------------- */
+
+.u-container {
+  max-width: grid-width(6);
+  margin: 0 auto;
+  padding: 0 ($grid-gutter / 4);
+
+  @include medium {
+    padding: 0 ($grid-gutter / 2);
+  }
+}
+.u-container--narrow {
+  max-width: grid-width(4);
+}
+.u-container--detached {
+  margin-top: ($grid-gutter / 2);
+  margin-bottom: ($grid-gutter / 2);
+}
+
+
+/* Grid
+ * Based on https://philipwalton.github.io/solved-by-flexbox/demos/grids/
+------------------------------------------------------------------------- */
+
+.u-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+  .u-grid-cell {
+    flex: 1;
+
+    box-sizing: border-box;
+  }
+
+// With gutters
+
+.u-grid--gutters-s {
+  margin: #{-$grid-gutter / 4} 0 0 #{-$grid-gutter / 4};
+
+  > .u-grid-cell {
+    padding: ($grid-gutter / 4) 0 0 ($grid-gutter / 4);
+  }
+}
+.u-grid--gutters-m {
+  margin: #{-$grid-gutter / 2} 0 0 #{-$grid-gutter / 2};
+
+  > .u-grid-cell {
+    padding: ($grid-gutter / 2) 0 0 ($grid-gutter / 2);
+  }
+}
+.u-grid--gutters-l {
+  margin: #{-$grid-gutter} 0 0 #{-$grid-gutter};
+
+  > .u-grid-cell {
+    padding: $grid-gutter 0 0 $grid-gutter;
+  }
+}
+
+// Alignment per row
+
+.u-grid--top {
+  align-items: flex-start;
+}
+.u-grid--bottom {
+  align-items: flex-end;
+}
+.u-grid--center {
+  align-items: center;
+}
+
+// Alignment per cell
+
+.u-grid-cell--top {
+  align-self: flex-start;
+}
+.u-grid-cell--bottom {
+  align-self: flex-end;
+}
+.u-grid-cell--center {
+  align-self: center;
+}
+
+// Sizing per cell
+
+.u-grid-cell--fit {
+  flex: 1;
+}
+.u-grid-cell--full {
+  flex: 0 0 100%;
+}
+.u-grid-cell--1of2 {
+  flex: 0 0 50%;
+}
+.u-grid-cell--1of3 {
+  flex: 0 0 33.3333%;
+}
+.u-grid-cell--2of3 {
+  flex: 0 0 66.6667%;
+}
+.u-grid-cell--1of4 {
+  flex: 0 0 25%;
+}
+.u-grid-cell--2of4 {
+  flex: 0 0 50%;
+}
+.u-grid-cell--3of4 {
+  flex: 0 0 75%;
+}
+
+
+// Responsive Modifiers
+
+.u-grid--fit > .u-grid-cell {
+  flex: 1;
+}
+.u-grid--full > .u-grid-cell {
+  flex: 0 0 100%;
+}
+.u-grid--1of2 > .u-grid-cell {
+  flex: 0 0 50%;
+}
+.u-grid--1of3 > .u-grid-cell {
+  flex: 0 0 33.3333%;
+}
+.u-grid--1of4 > .u-grid-cell {
+  flex: 0 0 25%;
+}
+
+@include small {
+  .u-grid--fit-at-small > .u-grid-cell {
+    flex: 1;
+  }
+  .u-grid--full-at-small > .u-grid-cell {
+    flex: 0 0 100%;
+  }
+  .u-grid--1of2-at-small > .u-grid-cell {
+    flex: 0 0 50%;
+  }
+  .u-grid--1of3-at-small > .u-grid-cell {
+    flex: 0 0 33.3333%;
+  }
+  .u-grid--1of4-at-small > .u-grid-cell {
+    flex: 0 0 25%;
+  }
+}
+
+@include medium {
+  .u-grid--fit-at-medium > .u-grid-cell {
+    flex: 1;
+  }
+  .u-grid--full-at-medium > .u-grid-cell {
+    flex: 0 0 100%;
+  }
+  .u-grid--1of2-at-medium > .u-grid-cell {
+    flex: 0 0 50%;
+  }
+  .u-grid--1of3-at-medium > .u-grid-cell {
+    flex: 0 0 33.3333%;
+  }
+  .u-grid--1of4-at-medium > .u-grid-cell {
+    flex: 0 0 25%;
+  }
+}
+
+@include large {
+  .u-grid--fit-at-large > .u-grid-cell {
+    flex: 1;
+  }
+  .u-grid--full-at-large > .u-grid-cell {
+    flex: 0 0 100%;
+  }
+  .u-grid--1of2-at-large > .u-grid-cell {
+    flex: 0 0 50%;
+  }
+  .u-grid--1of3-at-large > .u-grid-cell {
+    flex: 0 0 33.3333%;
+  }
+  .u-grid--1of4-at-large > .u-grid-cell {
+    flex: 0 0 25%;
+  }
+}
+
+
+/* Centered block
+------------------------------------------------- */
+
+.u-centered-block {
+  margin: 0 auto;
+}
+.u-centered-block--5 {
+  max-width: grid-width(5);
+}
+.u-centered-block--4 {
+  max-width: grid-width(4);
+}
+.u-centered-block--3 {
+  max-width: grid-width(3);
+}
+.u-centered-block--2 {
+  max-width: grid-width(2);
+}
+.u-centered-block--1 {
+  max-width: grid-width(1);
+}

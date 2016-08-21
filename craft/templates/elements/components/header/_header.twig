@@ -1,0 +1,13 @@
+{% set isDesigning = (craft.request.firstSegment == 'designing') %}
+{% set isWriting = (craft.request.firstSegment == 'writing') %}
+{% set isReading = (craft.request.firstSegment == 'reading') %}
+
+<header class="u-centered-block u-centered-block--4">
+  <p class="c-header">
+    <a href="/" class="c-header_link">Eugene Fedorenko</a>
+    is
+    <a href="/designing" class="c-header_link {% if isDesigning %}is-current{% endif %}">Designing</a>,
+    <a href="/writing"   class="c-header_link {% if isWriting %}is-current{% endif %}">Writing</a>, and
+    <a href="/reading"   class="c-header_link {% if isReading %}is-current{% endif %}">Reading</a>
+  </p>
+</header>

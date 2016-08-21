@@ -1,0 +1,31 @@
+{% extends "_layout-normal" %}
+
+{% set title = 'Writing by Eugene Fedorenko' %}
+{% set metaDesc = 'TODO: description' %}
+
+{% block headMeta %}
+  {#
+  <link rel="alternate" href="{{ url('blog') }}/feed.atom" type="application/atom+xml" title="DeployBot Blog">
+
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ metaDesc }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ url('blog') }}">
+  <link rel="canonical" href="{{ url('blog') }}">
+  #}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="u-container u-container--narrow">
+
+  <div class="c-page-head">
+    <h1 class="o-page-title c-page-head_title">Writing <em class="o-page-title_note">(sometimes)</em></h1>
+    {# elements/components/filter/_filter.html #}
+  </div>
+
+  {% include 'elements/components/writing/_list' with {'limit': 20, 'type': 'excerpts'} %}
+</div>
+
+{% endblock %}

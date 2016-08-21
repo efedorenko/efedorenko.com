@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<title>
+  {% if title is defined %}
+    {{ title }}
+  {% else %}
+    Eugene Fedorenko — Product Designer
+  {% endif %}
+</title>
+<meta name="description" content="{% if metaDesc is defined %}{{ metaDesc }}{% endif %}">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cloud.typography.com/7779312/7634552/css/fonts.css">
+<link rel="stylesheet" href="/stylesheets/ef.css">
+
+{#
+<link rel="shortcut icon" href="{{ assets.favicon }}">
+<link rel="apple-touch-icon-precomposed" href="{{ assets.appleTouchIcon }}">
+<link rel="home" href="{{ siteUrl }}">
+
+<meta property="og:site_name" content="Wildbit">
+<meta property="og:image" content="{{ assets.appleTouchIcon }}">
+<meta property="og:title" content="Wildbit">
+<meta property="og:description" content="{{ globals.siteDescription }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ siteUrl }}">
+<link rel="canonical" href="{{ siteUrl }}">
+#}

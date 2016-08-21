@@ -1,0 +1,40 @@
+{
+  "name": "efedorenko.com",
+  "version": "1.0.0",
+  "homepage": "http://efedorenko.com",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/efedorenko/efedorenko.com"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "cssnano": "^3.5.2",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.2.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-include": "^2.2.1",
+    "gulp-md5-assets": "^0.1.9",
+    "gulp-postcss": "^6.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.0",
+    "gulp-uglify": "^1.5.3",
+    "pre-commit": "^1.1.2",
+    "stylelint": "^6.4.2",
+    "stylelint-config-wildbit": "github:wildbit/stylelint-config-wildbit"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-wildbit"
+  },
+  "scripts": {
+    "start": "gulp watch",
+    "build": "gulp",
+    "build:production": "gulp production",
+    "cleanup": "gulp cleanup",
+    "stylelint": "stylelint --syntax scss 'html/src/stylesheets/**/*.scss'",
+    "stylelint-hook": "stylelint --quiet --syntax scss 'html/src/stylesheets/**/*.scss'"
+  },
+  "pre-commit": [
+    "stylelint-hook"
+  ]
+}

@@ -1,0 +1,25 @@
+.c-posts-list {
+  margin: 0 0 1.5em;
+  padding-left: 0;
+
+  &_item {
+    position: relative;
+    margin-bottom: 1em;
+    list-style: none;
+  }
+    &_time {
+      position: absolute;
+      left: -4.25em;
+      width: 3em;
+      margin-top: -1em;
+      text-align: right;
+      white-space: nowrap;
+
+      &:not(:empty)::after {
+        content: ' —';
+      }
+    }
+    &_title {
+      font-size: 1em;
+    }
+}

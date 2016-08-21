@@ -1,0 +1,24 @@
+.c-post-lead {
+  position: relative;
+  margin: $grid-gutter 0;
+
+  .c-post-lead_time {
+    position: absolute;
+    right: -7.5em;
+    width: 7em;
+    margin-top: .9em;
+  }
+  .c-post-lead_title {
+    margin: .75em 0 .5em;
+    font-size: 1.25em;
+  }
+  .c-post-lead_favicon {
+    float: left;
+    margin-top: .25em;
+    margin-left: -24px;
+  }
+  .c-post-lead_source {
+    color: #BBB;
+    font: .85em $f-sansserif;
+  }
+}

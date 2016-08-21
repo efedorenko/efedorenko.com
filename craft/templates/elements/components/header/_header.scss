@@ -1,0 +1,14 @@
+.c-header {
+  margin: ($grid-gutter / 2) 0 $grid-gutter;
+  color: #444;
+  text-align: center;
+  font-size: 1.25em;
+
+  &_link {
+    color: $c-blue;
+
+    &.is-current {
+      color: $c-orange;
+    }
+  }
+}

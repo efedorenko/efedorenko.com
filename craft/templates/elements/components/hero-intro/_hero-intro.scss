@@ -1,0 +1,39 @@
+.c-hero-intro {
+  align-items: center;
+
+  margin-top: $grid-gutter / 2;
+  margin-bottom: $grid-gutter / 2;
+
+  &_photo {
+    text-align: right;
+  }
+    &_img {
+      width: 180px;
+      height: 180px;
+      background-color: #EEE;
+      vertical-align: middle;
+    }
+
+  &_text {
+    margin: .66em 0;
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -.0075em;
+  }
+    &_link {
+      color: #3DC2D7;
+      text-decoration: underline;
+    }
+    &_link--wb {
+      color: #5DA563;
+    }
+    &_link--bs {
+      color: #5CAD69;
+    }
+    &_link--db {
+      color: #7A708D;
+    }
+    &_link--pm {
+      color: #F8B42D;
+    }
+}

@@ -1,0 +1,23 @@
+.c-filter {
+  display: inline-block;
+  padding: 0;
+  color: #AAA;
+  font: normal .875rem $f-sansserif;
+
+  &_item {
+    display: inline;
+    margin-right: .5em;
+    list-style: none;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &.is-current {
+      font-style: italic;
+    }
+  }
+    &_link {
+      color: $c-blue;
+    }
+}

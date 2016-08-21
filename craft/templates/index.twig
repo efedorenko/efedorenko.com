@@ -1,0 +1,91 @@
+<!doctype html>
+
+<html lang="en">
+
+{% set metaDesc = 'TODO: description' %}
+
+<head>
+  {% include 'elements/components/head-meta/_head-meta' %}
+</head>
+
+<body class="c-body">
+
+{% include 'elements/components/hero-intro/_hero-intro' %}
+
+<div class="u-container">
+  <div class="u-grid u-grid--gutters-l u-grid--1of2">
+    <div class="u-grid-cell">
+
+      <h2 class="u-title-section"><a href="/writing/" class="u-title-section_link">Writing</a></h2>
+
+      <ul class="c-posts-list">
+        {% include 'elements/components/writing/_list' with {'limit': 7, 'type': 'titles'} %}
+      </ul>
+
+      <a href="/writing/" class="u-see-more">Read older posts</a>
+
+    </div>
+    <div class="u-grid-cell">
+
+      <h2 class="u-title-section"><a href="#" class="u-title-section_link">Reading</a></h2>
+      <p class="c-current-book">Current book: <a href="#"><img src="" alt=""></a></p>
+
+      <article class="c-post">
+        <h1 class="c-post_title"><a href="#">Constrained</a></h1>
+        <time class="c-post_time">Nov 17</time>
+        <div class="c-post_excerpt">
+          <blockquote>
+            <p>“For years I’ve chatted with smart, ambitious people and friends who want to start new projects or businesses. Often their visions are big. So they dream up equally big things their startups need: money, connections, resources. And that’s where they get stuck. They don’t have any of them.”</p>
+          </blockquote>
+        </div>
+      </article>
+
+      <article class="c-post">
+        <h1 class="c-post_title"><a href="#">The state of front end tooling</a></h1>
+        <time class="c-post_time">Nov 17</time>
+        <div class="c-post_excerpt">
+          <blockquote>
+            <p>“There's been a lot of posts written recently on the web about the state of tooling in front-end development and the opinion that many share that the environment has become overwhelming both for the beginner developer and the more experienced developer.”</p>
+          </blockquote>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="c-work-wrapper">
+
+  <div class="u-container">
+    <div class="u-grid u-grid--gutters-l">
+      <div class="u-grid-cell u-grid-cell--1of3">
+      </div>
+
+      <div class="u-grid-cell u-grid-cell--2of3">
+
+        <h2 class="u-title-section"><a href="#" class="u-title-section_link">Designing</a></h2>
+        <p>See what exactly I am doing at Wildbit, or peek at Dribbble:</p>
+
+        <ul class="c-dribbble">
+          <li class="c-dribbble_item"><img src="" alt="" class="c-dribbble_shot"></li>
+          <li class="c-dribbble_item"><img src="" alt="" class="c-dribbble_shot"></li>
+          <li class="c-dribbble_item"><img src="" alt="" class="c-dribbble_shot"></li>
+        </ul>
+
+
+        <h2 class="u-title-section"><a href="#" class="u-title-section_link">Coding</a></h2>
+        <p>I made small contributions to a few open-source projects, and maintain wildbit-craft-framework — a set of templates for Craft that we use on public sites of our products.</p>
+
+
+        <h2 class="u-title-section"><a href="#" class="u-title-section_link">Photographing</a></h2>
+        <p>Travel and landscape. Fuji. 500px.</p>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

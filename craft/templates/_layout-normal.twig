@@ -1,0 +1,24 @@
+{#
+ # Standard layout
+ # ---------------
+ #}
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  {% include 'elements/components/head-meta/_head-meta' %}
+  {% block headMeta %}{% endblock %}
+</head>
+
+<body class="c-body">
+
+{% include 'elements/components/header/_header' %}
+
+{% block content %}{% endblock %}
+
+{# include 'elements/components/footer/_footer' #}
+
+</body>
+</html>
