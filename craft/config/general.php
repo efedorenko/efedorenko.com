@@ -8,5 +8,27 @@
  */
 
 return array(
+	'*' => array(
+		'omitScriptNameInUrls' => true,
+		'appId' => 'efedorenko',
+		'defaultImageQuality' => 85
+	),
 
+	/* Local environment */
+	'efedorenko.craft' => array(
+		'devMode' => true,
+		'siteUrl' => 'http://efedorenko.craft:8888/',
+		'environmentVariables' => array(
+			'baseUrl'  => 'http://efedorenko.craft:8888/',
+		),
+		'testToEmailAddress' => 'fedorenko@gmail.com',
+	),
+
+	/* Live environment */
+	'efedorenko.com' => array(
+		'siteUrl' => 'http://efedorenko.com/',
+		'environmentVariables' => array(
+			'baseUrl'  => 'http://efedorenko.com/',
+		)
+	)
 );

@@ -1,5 +1,24 @@
+Options -Indexes
+
+ErrorDocument 404 http://efedorenko.com/404
+
 <IfModule mod_rewrite.c>
+	Options +FollowSymlinks
+
 	RewriteEngine On
+	RewriteBase /
+
+	# Remove "www." from beginning of URLs
+	# http://stackoverflow.com/questions/234723/generic-htaccess-redirect-www-to-non-www
+	RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+	RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+	# Remove trailing slashes from the end of the URL
+	# This rule must come before removal of index.php from the URL
+	RewriteCond %{REQUEST_METHOD} !=POST
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)/$ /$1 [R=301,L]
 
 	# Send would-be 404 requests to Craft
 	RewriteCond %{REQUEST_FILENAME} !-f
