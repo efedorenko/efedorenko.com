@@ -10,5 +10,5 @@
   {% set yearUnique = (yearPrev == '' or yearPrev != entryYear) ? entryYear : '' %}
   {% set yearPrev = entryYear %}
 
-  {% include 'elements/components/writing/_list-' ~ type %}
+  {% include 'elements/components/posts/_posts-' ~ type %}
 {% endfor %}

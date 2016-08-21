@@ -1,22 +1,22 @@
 .c-post-lead {
   margin: $grid-gutter 0;
 
-  .c-post-lead_time {
+  &_time {
     float: right;
     width: 7em;
     margin-top: .9em;
     margin-right: -7.5em;
   }
-  .c-post-lead_title {
+  &_title {
     margin: .75em 0 .5em;
     font-size: 1.25em;
   }
-  .c-post-lead_favicon {
+  &_favicon {
     float: left;
     margin-top: .25em;
     margin-left: -24px;
   }
-  .c-post-lead_source {
+  &_source {
     color: #BBB;
     font: .85em $f-sansserif;
   }
