@@ -1,7 +1,9 @@
 .c-page-head {
+  margin: $grid-gutter 0;
 
   &_title {
     display: inline-block;
+    margin: 0;
   }
 
   &_filter {

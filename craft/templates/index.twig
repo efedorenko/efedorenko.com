@@ -19,36 +19,23 @@
       <h2 class="u-title-section"><a href="/writing/" class="u-title-section_link">Writing</a></h2>
 
       <ul class="c-posts-list">
-        {% include 'elements/components/posts/_posts' with {'limit': 7, 'type': 'titles'} %}
+        {% include 'elements/components/posts/_posts' with {'channel': 'writing', 'limit': 7, 'type': 'titles'} %}
       </ul>
 
-      <a href="/writing/" class="u-see-more">Read older posts</a>
+      <a href="/writing" class="u-see-more">Read older posts</a>
 
     </div>
     <div class="u-grid-cell">
 
       <h2 class="u-title-section"><a href="#" class="u-title-section_link">Reading</a></h2>
-      <p class="c-current-book">Current book: <a href="#"><img src="" alt=""></a></p>
 
-      <article class="c-post">
-        <h1 class="c-post_title"><a href="#">Constrained</a></h1>
-        <time class="c-post_time">Nov 17</time>
-        <div class="c-post_excerpt">
-          <blockquote>
-            <p>“For years I’ve chatted with smart, ambitious people and friends who want to start new projects or businesses. Often their visions are big. So they dream up equally big things their startups need: money, connections, resources. And that’s where they get stuck. They don’t have any of them.”</p>
-          </blockquote>
-        </div>
-      </article>
+      {# TODO: show current books (even multiple), not the latest one #}
+      {% set latestBook = craft.entries.section('reading').first() %}
+      <p class="c-current-book">Current book: <a href="#"><img src="" alt="{{ latestBook.title }}"></a></p>
 
-      <article class="c-post">
-        <h1 class="c-post_title"><a href="#">The state of front end tooling</a></h1>
-        <time class="c-post_time">Nov 17</time>
-        <div class="c-post_excerpt">
-          <blockquote>
-            <p>“There's been a lot of posts written recently on the web about the state of tooling in front-end development and the opinion that many share that the environment has become overwhelming both for the beginner developer and the more experienced developer.”</p>
-          </blockquote>
-        </div>
-      </article>
+      {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'entriesType': 'link', 'limit': 3, 'type': 'excerpts', 'modifier': 'compact'} %}
+
+      <a href="/reading" class="u-see-more">See more recommendations</a>
 
     </div>
   </div>

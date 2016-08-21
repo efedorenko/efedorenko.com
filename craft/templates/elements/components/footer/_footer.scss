@@ -1,0 +1,22 @@
+.c-footer {
+  margin-top: ($grid-gutter * 1.5);
+  border: 0;
+  border-style: solid;
+  border-width: 6px 0 0;
+  border-color: #CCC;
+  border-image: url('/images/waves-pattern.svg') 6 0 0 repeat;
+  padding: $grid-gutter 0;
+  color: #444;
+
+  &_who {
+    margin: .25em 0;
+    font-size: 1em;
+  }
+  &_where {
+    margin: .25em 0;
+    font-size: .85em;
+  }
+  &_link {
+    color: $c-blue;
+  }
+}

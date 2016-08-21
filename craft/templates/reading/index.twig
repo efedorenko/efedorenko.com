@@ -1,6 +1,6 @@
 {% extends "_layout-normal" %}
 
-{% set title = 'Writing by Eugene Fedorenko' %}
+{% set title = 'What Eugene Fedorenko is reading' %}
 {% set metaDesc = 'TODO: description' %}
 
 {% block headMeta %}
@@ -20,11 +20,11 @@
   <div class="u-container u-container--narrow">
 
     <div class="c-page-head">
-      <h1 class="o-page-title c-page-head_title">Writing <em class="o-page-title_note">(sometimes)</em></h1>
+      <h1 class="o-page-title c-page-head_title">Reading <em class="o-page-title_note">(never enough)</em></h1>
       {# elements/components/filter/_filter.html #}
     </div>
 
-    {% include 'elements/components/posts/_posts' with {'channel': 'writing', 'limit': 20, 'type': 'excerpts'} %}
+    {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 20, 'type': 'excerpts'} %}
   </div>
 
 {% endblock %}

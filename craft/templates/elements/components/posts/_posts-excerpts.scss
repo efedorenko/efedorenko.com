@@ -20,4 +20,18 @@
     color: #BBB;
     font: .85em $f-sansserif;
   }
+
+}
+
+.c-post-lead--compact {
+  margin-top: ($grid-gutter / 2);
+  margin-bottom: ($grid-gutter / 2);
+
+  .c-post-lead_title {
+    margin-bottom: .25em;
+    font-size: 1em;
+  }
+  .c-post-lead_excerpt {
+    font-size: .9375em;
+  }
 }

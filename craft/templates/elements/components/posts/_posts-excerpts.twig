@@ -1,9 +1,10 @@
-<article class="o-post o-post--{{ entryModifier }} c-post-lead">
+<article class="o-post o-post--{{ entryModifier }} c-post-lead {% if modifier is defined %}c-post-lead--{{ modifier }}{% endif %}">
 
   <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
 
   <h1 class="o-post_title c-post-lead_title">
     {% if isExternalPost %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
+    {% if isLink %}<a href="{{ entry.url }}" class="o-post_local-link">#</a>{% endif %}
     <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
   </h1>
 
@@ -11,7 +12,7 @@
     <p class="c-post-lead_source">Published at {{ entry.postSource.label }}</p>
   {% endif %}
 
-  <div class="o-post_excerpt">
+  <div class="o-post_excerpt c-post-lead_excerpt">
     {{ entry.excerpt}}
   </div>
 
