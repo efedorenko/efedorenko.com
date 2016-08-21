@@ -1,13 +1,18 @@
-<article class="o-writing o-writing--{{ entryModifier }} c-post-lead">
-  <time datetime="{{ entry.postDate.iso8601() }}" class="o-writing_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
-  <h1 class="o-writing_title c-post-lead_title">
-    {% if isExternalPost %}<span class="o-writing_favicon o-writing_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
-    <a href="{{ entryURL }}" class="o-writing_link">{{ entry.title }}</a>
+<article class="o-post o-post--{{ entryModifier }} c-post-lead">
+
+  <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
+
+  <h1 class="o-post_title c-post-lead_title">
+    {% if isExternalPost %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
+    <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
   </h1>
+
   {% if isExternalPost %}
     <p class="c-post-lead_source">Published at {{ entry.postSource.label }}</p>
   {% endif %}
-  <div class="o-writing_excerpt">
+
+  <div class="o-post_excerpt">
     {{ entry.excerpt}}
   </div>
+
 </article>

@@ -1,5 +1,9 @@
-<li class="o-writing o-writing--{{ entryModifier }} c-posts-list_item">
-  <time datetime="{{ entry.postDate.iso8601() }}" class="o-writing_time c-posts-list_time">{{ yearUnique }}</time>
-  {% if isExternalPost %}<span class="o-writing_favicon o-writing_favicon--{{ entry.postSource }}"></span>{% endif %}
-  <a href="{{ entryURL }}" class="o-writing_title o-writing_link c-posts-list_title">{{ entry.title }}</a>
+<li class="o-post o-post--{{ entryModifier }} c-posts-list_item">
+
+  <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-posts-list_time">{{ yearUnique }}</time>
+
+  {% if isExternalPost %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }}"></span>{% endif %}
+
+  <a href="{{ entryURL }}" class="o-post_title o-post_link c-posts-list_title">{{ entry.title }}</a>
+
 </li>

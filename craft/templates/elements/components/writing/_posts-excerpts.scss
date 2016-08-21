@@ -1,12 +1,11 @@
 .c-post-lead {
-  position: relative;
   margin: $grid-gutter 0;
 
   .c-post-lead_time {
-    position: absolute;
-    right: -7.5em;
+    float: right;
     width: 7em;
     margin-top: .9em;
+    margin-right: -7.5em;
   }
   .c-post-lead_title {
     margin: .75em 0 .5em;

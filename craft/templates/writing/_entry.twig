@@ -1,0 +1,36 @@
+{% extends "_layout-normal" %}
+
+{% set title = entry.title ~ ' | Eugene Fedorenko' %}
+{# set metaDesc = entry.metaDescription #}
+
+{% block headMeta %}
+{#
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ metaDesc }}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ entry.url }}">
+  <meta property="article:published_time" content="{{ entry.postDate.iso8601() }}">
+  <meta name="author" content="{{ entry.author.fullname }}">
+  <link rel="canonical" href="{{ entry.url }}">
+#}
+{% endblock %}
+
+{% block content %}
+
+  <div class="u-container u-container--narrow">
+    <article class="o-post o-post--local c-post-lead">
+
+      <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
+
+      <h1 class="o-post_title o-page-title">
+        {{ entry.title }}
+      </h1>
+
+      <div class="o-post_body">
+        {{ entry.body}}
+      </div>
+
+    </article>
+  </div>
+
+{% endblock %}

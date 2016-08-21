@@ -1,4 +1,4 @@
-.o-writing {
+.o-post {
 
   // Time
 
@@ -8,7 +8,19 @@
   }
 
 
-  // Favicon
+  // Title
+
+  &_title {
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  &_link {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+
+  // Favicon for external writing
 
   &_favicon {
     display: inline-block;
@@ -32,23 +44,19 @@
   }
 
 
-  // Title
-
-  &_title {
-    line-height: 1.3;
-    font-weight: 500;
-  }
-  &_link {
-    color: inherit;
-    text-decoration: underline;
-  }
-
-
   // Excerpt
 
   &_excerpt {
     line-height: 1.6;
   }
+
+
+  // Body
+
+  &_body {
+    margin-top: $grid-gutter;
+  }
+
 
   // Modifiers
   // ---------

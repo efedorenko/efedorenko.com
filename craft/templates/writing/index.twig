@@ -15,17 +15,16 @@
   #}
 {% endblock %}
 
-
 {% block content %}
 
-<div class="u-container u-container--narrow">
+  <div class="u-container u-container--narrow">
 
-  <div class="c-page-head">
-    <h1 class="o-page-title c-page-head_title">Writing <em class="o-page-title_note">(sometimes)</em></h1>
-    {# elements/components/filter/_filter.html #}
+    <div class="c-page-head">
+      <h1 class="o-page-title c-page-head_title">Writing <em class="o-page-title_note">(sometimes)</em></h1>
+      {# elements/components/filter/_filter.html #}
+    </div>
+
+    {% include 'elements/components/writing/_list' with {'limit': 20, 'type': 'excerpts'} %}
   </div>
-
-  {% include 'elements/components/writing/_list' with {'limit': 20, 'type': 'excerpts'} %}
-</div>
 
 {% endblock %}
