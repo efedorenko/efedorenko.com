@@ -8,15 +8,29 @@
   padding: $grid-gutter 0;
   color: #444;
 
-  &_who {
-    margin: .25em 0;
-    font-size: 1em;
+  &_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
-  &_where {
-    margin: .25em 0;
-    font-size: .85em;
-  }
-  &_link {
-    color: $c-blue;
-  }
+    &_photo {
+      flex: 0 0 auto;
+      width: 60px;
+      height: 60px;
+      margin-right: 20px;
+      margin-left: -80px;
+    }
+    &_text {
+    }
+      &_who {
+        margin: .25em 0;
+        font-size: 1em;
+      }
+      &_where {
+        margin: .25em 0;
+        font-size: .85em;
+      }
+      &_link {
+        color: $c-blue;
+      }
 }
