@@ -3,6 +3,7 @@
   padding: 0;
   color: #AAA;
   font: normal .875rem $f-sansserif;
+  vertical-align: .15em;
 
   &_item {
     display: inline;
@@ -18,6 +19,6 @@
     }
   }
     &_link {
-      color: $c-blue;
+      color: inherit;
     }
 }
