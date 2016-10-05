@@ -27,8 +27,12 @@
         &rarr;
       </h1>
 
-      <div class="o-post_body">
-        {{ entry.excerpt }}
+      {% if entry.readingAuthor %}
+        <p class="o-post_author">By {{ entry.readingAuthor }}</p>
+      {% endif %}
+
+      <div class="o-post_body s-text">
+        {{ entry.body }}
       </div>
 
     </article>
