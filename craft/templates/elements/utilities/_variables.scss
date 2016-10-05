@@ -1,8 +1,8 @@
 /* Typography
 ------------------------------------------------- */
 
-$f-sentinel:            'Sentinel SSm A', 'Sentinel SSm B';
-$f-serif:               $f-sentinel, Georgia, serif;
+$f-serif-fb:            Georgia, serif;
+$f-serif:               'Sentinel SSm A', 'Sentinel SSm B', $f-serif-fb;
 $f-sansserif:           'Helvetica Neue', Arial, Helvetica, sans-serif;
 $f-monospace:           'Bitstream Vera Sans Mono', Consolas, Monaco, 'Lucida Console', 'Courier New', Courier, monospace, serif;
 
@@ -20,3 +20,9 @@ $grid-gutter:           60px;
 $c-orange:              #E28063;
 
 $c-blue:                #3DC2D7;
+
+
+$c-link:                $c-blue;
+$c-visited:             purple;
+$c-hover:               $c-orange;
+$c-active:              #000;
