@@ -11,9 +11,16 @@
   {% if isExternalPost %}
     <p class="c-post-lead_source">Published at {{ entry.postSource.label }}</p>
   {% endif %}
+  {% if isLink and entry.readingAuthor != '' %}
+    <p class="c-post-lead_source">By {{ entry.readingAuthor }}</p>
+  {% endif %}
 
   <div class="o-post_excerpt c-post-lead_excerpt">
-    {{ entry.excerpt}}
+    {% if isLink %}
+      {{ entry.body }}
+    {% else %}
+      {{ entry.excerpt}}
+    {% endif %}
   </div>
 
 </article>
