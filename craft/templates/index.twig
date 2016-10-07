@@ -16,7 +16,7 @@
   <div class="u-grid u-grid--gutters-l u-grid--1of2">
     <div class="u-grid-cell">
 
-      <h2 class="u-title-section"><a href="/writing/" class="u-title-section_link">Writing</a></h2>
+      <h2 class="u-title-section"><a href="{{ url('writing') }}" class="u-title-section_link">Writing</a></h2>
 
       <ul class="c-posts-list">
         {% include 'elements/components/posts/_posts' with {'channel': 'writing', 'limit': 7, 'type': 'titles', 'isPaginationVisible': false} %}
@@ -27,13 +27,28 @@
     </div>
     <div class="u-grid-cell">
 
-      <h2 class="u-title-section"><a href="#" class="u-title-section_link">Reading</a></h2>
+      <h2 class="u-title-section"><a href="{{ url('reading') }}" class="u-title-section_link">Reading</a></h2>
 
-      {# TODO: show current books (even multiple), not the latest one #}
-      {% set latestBook = craft.entries.section('reading').first() %}
-      <p class="c-current-book">Current book: <a href="#"><img src="" alt="{{ latestBook.title }}"></a></p>
+      {# TODO: move current books module to a separate file #}
+      {% set books = craft.entries.section('reading').type('book') %}
+      {% set currentBooks = [] %}
+      {% for book in books if not book.bookFinished|length %}
+        {% set currentBooks = currentBooks|merge([book]) %}
+      {% endfor %}
 
-      {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'entriesType': 'link', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
+      {% if currentBooks|length %}
+        <p class="c-current-book">
+          Current {% if currentBooks|length > 1 %}books{% else %}book{% endif %}:
+          {% for book in currentBooks %}
+            {% set cover = book.bookCover[0] %}
+            {# TODO: add a link to Amazon? #}
+            <img src="{{ cover.url }}" alt="{{ book.title }}" width="30">
+          {% endfor %}
+        </p>
+      {% endif %}
+
+      {# TODO: replace year with month; add authors #}
+      {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
 
       <a href="/reading" class="u-see-more">See more recommendations</a>
 

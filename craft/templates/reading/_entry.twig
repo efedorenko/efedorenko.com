@@ -20,18 +20,43 @@
   <div class="u-container u-container--narrow">
     <article class="o-post o-post--local c-post-lead">
 
+      {# TODO: this template is really complicated. Let's break it down into multiple templates. #}
+
       <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
 
       <h1 class="o-post_title u-title-section">
-        <a href="{{ entry.postURL }}" class="o-post_link">{{ entry.title }}</a>
-        &rarr;
+        {% if entry.type == 'book' %}
+          {{ entry.title }}
+        {% else %}
+          <a href="{{ entry.postURL }}" class="o-post_link">{{ entry.title }}</a> &rarr;
+        {% endif %}
       </h1>
 
       {% if entry.readingAuthor %}
         <p class="o-post_author">By {{ entry.readingAuthor }}</p>
       {% endif %}
 
+      {# TODO: this should be a component #}
+      {% if entry.type == 'book' and entry.bookCover.total() %}
+        {% set cover = entry.bookCover[0] %}
+        <img src="{{ cover.url }}" alt="{{ entry.title }}" style="width: 100px; height: auto;">
+      {% endif %}
+
+      {# TODO: add a link to Amazon #}
+
       <div class="o-post_body s-text">
+        {% if entry.type == 'book' %}
+          <small>
+            {% if entry.bookStarted %}{{ entry.bookStarted }}{% endif %}
+            —
+            {% if entry.bookFinished %}
+              {{ entry.bookFinished }}
+            {% else %}
+              &hellip;
+            {% endif %}
+          </small>
+        {% endif %}
+
         {{ entry.body }}
       </div>
 
