@@ -26,11 +26,13 @@
         <p class="o-post_author">By {{ entry.readingAuthor }}</p>
       {% endif %}
 
-      {# TODO: add a link to Amazon #}
-
       <div class="o-post_body s-text">
         {% if entry.type == 'book' %}
           <small>
+            {% if entry.amazonLink %}<a href="{{ entry.amazonLink }}">Amazon</a>{% endif %}
+
+            &nbsp;&bull;&nbsp;
+
             {% if entry.bookStarted %}{{ entry.bookStarted }}{% endif %}
             —
             {% if entry.bookFinished %}
