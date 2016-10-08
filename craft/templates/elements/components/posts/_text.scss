@@ -63,23 +63,21 @@
   }
   blockquote {
     margin: .4em 0 1.2em;
-    border-right: 2px solid #F2F2F2;
-    border-left: 2px solid #F2F2F2;
-    padding: .4em 1.6em;
-    color: #666;
+    border-left: 1px solid #EEE;
+    padding: .4em 0 .4em 1.6em;
     font-style: italic;
   }
   img {
     max-width: 100% !important;
     height: auto;
-    border: 2px solid #F2F2F2;
+    border: 2px solid #EEE;
     padding: 8px;
   }
   hr {
     margin: 2em 0;
     border-width: 2px 0 0;
     border-style: solid;
-    border-color: #F2F2F2;
+    border-color: #EEE;
     padding: 0;
   }
   table {
@@ -88,7 +86,7 @@
   }
     th,
     td {
-      border-bottom: 1px solid #F2F2F2;
+      border-bottom: 1px solid #EEE;
       padding: .4em .6em;
       text-align: left;
 

@@ -1,0 +1,19 @@
+{# Fill an array of current books #}
+{% set currentBooks = [] %}
+{% for book in books if not book.bookFinished|length %}
+  {% set currentBooks = currentBooks|merge([book]) %}
+{% endfor %}
+
+{% if currentBooks|length %}
+  <p class="c-current-books {{ extraClass }}">
+    <span class="c-current-books_label">
+      Current {% if currentBooks|length > 1 %}books{% else %}book{% endif %}:
+    </span>
+    {% for book in currentBooks %}
+      {% set cover = book.bookCover[0] %}
+      {% if book.amazonLink|length %}<a href="{{ book.amazonLink }}" target="_blank" rel="noopener noreferrer">{% endif %}
+        <img src="{{ cover.url }}" alt="{{ book.title }}" class="c-current-books_cover">
+      {% if book.amazonLink|length %}</a>{% endif %}
+    {% endfor %}
+  </p>
+{% endif %}

@@ -67,6 +67,17 @@
   }
 
 
+  // Book cover
+
+  &_cover {
+    float: left;
+    margin-top: .33em;
+    margin-left: -150px;
+    width: 120px;
+    height: auto;
+  }
+
+
   // Excerpt
 
   &_excerpt {

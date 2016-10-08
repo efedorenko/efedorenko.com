@@ -3,18 +3,6 @@
 {% set title = entry.title ~ ' | Eugene Fedorenko' %}
 {# set metaDesc = entry.metaDescription #}
 
-{% block headMeta %}
-{#
-  <meta property="og:title" content="{{ title }}">
-  <meta property="og:description" content="{{ metaDesc }}">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="{{ entry.url }}">
-  <meta property="article:published_time" content="{{ entry.postDate.iso8601() }}">
-  <meta name="author" content="{{ entry.author.fullname }}">
-  <link rel="canonical" href="{{ entry.url }}">
-#}
-{% endblock %}
-
 {% block content %}
 
   <div class="u-container u-container--narrow">
@@ -23,6 +11,8 @@
       {# TODO: this template is really complicated. Let's break it down into multiple templates. #}
 
       <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
+
+      {% include 'elements/components/books/_cover' with {'entry': entry, 'class': 'o-post_cover'} %}
 
       <h1 class="o-post_title u-title-section">
         {% if entry.type == 'book' %}
@@ -34,12 +24,6 @@
 
       {% if entry.readingAuthor %}
         <p class="o-post_author">By {{ entry.readingAuthor }}</p>
-      {% endif %}
-
-      {# TODO: this should be a component #}
-      {% if entry.type == 'book' and entry.bookCover.total() %}
-        {% set cover = entry.bookCover[0] %}
-        <img src="{{ cover.url }}" alt="{{ entry.title }}" style="width: 100px; height: auto;">
       {% endif %}
 
       {# TODO: add a link to Amazon #}

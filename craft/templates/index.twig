@@ -27,27 +27,14 @@
     </div>
     <div class="u-grid-cell">
 
-      <h2 class="u-title-section"><a href="{{ url('reading') }}" class="u-title-section_link">Reading</a></h2>
+      <div class="u-grid u-grid--baseline">
+        <h2 class="u-grid-cell u-title-section"><a href="{{ url('reading') }}" class="u-title-section_link">Reading</a></h2>
+        {% include 'elements/components/books/_current-books' with {
+          'books': craft.entries.section('reading').type('book'),
+          'extraClass': 'u-grid-cell u-align-right'
+        } %}
+      </div>
 
-      {# TODO: move current books module to a separate file #}
-      {% set books = craft.entries.section('reading').type('book') %}
-      {% set currentBooks = [] %}
-      {% for book in books if not book.bookFinished|length %}
-        {% set currentBooks = currentBooks|merge([book]) %}
-      {% endfor %}
-
-      {% if currentBooks|length %}
-        <p class="c-current-book">
-          Current {% if currentBooks|length > 1 %}books{% else %}book{% endif %}:
-          {% for book in currentBooks %}
-            {% set cover = book.bookCover[0] %}
-            {# TODO: add a link to Amazon? #}
-            <img src="{{ cover.url }}" alt="{{ book.title }}" width="30">
-          {% endfor %}
-        </p>
-      {% endif %}
-
-      {# TODO: replace year with month; add authors #}
       {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
 
       <a href="/reading" class="u-see-more">See more recommendations</a>

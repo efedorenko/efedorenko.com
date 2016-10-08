@@ -68,6 +68,9 @@
 .u-grid--center {
   align-items: center;
 }
+.u-grid--baseline {
+  align-items: baseline;
+}
 
 // Alignment per cell
 
@@ -179,6 +182,20 @@
   .u-grid--1of4-at-large > .u-grid-cell {
     flex: 0 0 25%;
   }
+}
+
+
+/* Text align
+------------------------------------------------- */
+
+.u-align-right {
+  text-align: right;
+}
+.u-align-left {
+  text-align: left;
+}
+.u-align-center {
+  text-align: center;
 }
 
 

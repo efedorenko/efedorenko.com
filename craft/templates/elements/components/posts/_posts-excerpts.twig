@@ -2,10 +2,7 @@
 
   <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
 
-  {% if entry.type == 'book' and entry.bookCover.total() %}
-    {% set cover = entry.bookCover[0] %}
-    <a href="{{ entryURL }}"><img src="{{ cover.url }}" alt="{{ entry.title }}" class="c-post-lead_cover"></a>
-  {% endif %}
+  {% include 'elements/components/books/_cover' with {'entry': entry, 'url': entryURL, 'class': 'c-post-lead_cover'} %}
 
   <h1 class="o-post_title c-post-lead_title">
     {% if isExternalPost %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}

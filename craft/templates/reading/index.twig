@@ -21,7 +21,10 @@
 
     <div class="c-page-head">
       <h1 class="o-page-title c-page-head_title">Reading <em class="o-page-title_note">(never enough)</em></h1>
-      {# elements/components/filter/_filter.html #}
+      {% include 'elements/components/books/_current-books' with {
+        'books': craft.entries.section('reading').type('book'),
+        'extraClass': 'c-current-books--page-title'
+      } %}
     </div>
 
     {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 20, 'type': 'excerpts'} %}
