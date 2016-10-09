@@ -1,0 +1,27 @@
+.c-dribbble {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 $grid-gutter;
+  padding: 0;
+
+  &_item {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: pink;
+
+    a {
+
+    }
+      img {
+        width: 200px;
+        height: auto;
+        vertical-align: middle;
+        box-shadow: 0 1px 1px rgba(#808080, .4);
+      }
+
+    p {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.c-work-wrapper {
+  margin-top: ($grid-gutter * 1.5);
+
+  border-style: solid;
+  border-width: 6px 0 0;
+  border-color: #CCC;
+  border-image: url('/images/waves-pattern-white-top.svg') 6 0 0 repeat;
+
+  padding-top: ($grid-gutter / 2);
+  padding-bottom: $grid-gutter;
+  background-color: #f8f8f8;
+  font-size: 1.2em;
+}

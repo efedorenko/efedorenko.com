@@ -1,0 +1,10 @@
+{% set feedUrl = "https://dribbble.com/efedorenko/shots.rss" %}
+{% set dribbbles = craft.feeds.getFeedItems(feedUrl, limit) %} {# Defaults to once per day #}
+
+<ul class="c-dribbble">
+  {% for shot in dribbbles %}
+    <li class="c-dribbble_item">
+      {{ shot.summary }}
+    </li>
+  {% endfor %}
+</ul>

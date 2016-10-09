@@ -53,22 +53,17 @@
 
       <div class="u-grid-cell u-grid-cell--2of3">
 
-        <h2 class="u-title-section"><a href="#" class="u-title-section_link">Designing</a></h2>
-        <p>See what exactly I am doing at Wildbit, or peek at Dribbble:</p>
+        <h2 class="u-title-section"><a href="{{ url('designing') }}" class="u-title-section_link">Designing</a></h2>
+        <div class="s-text">
+          <p>See <a href="{{ url('designing') }}">what exactly I am doing</a> at Wildbit, or peek at <a href="https://dribbble.com/efedorenko">Dribbble</a>:</p>
+        </div>
 
-        <ul class="c-dribbble">
-          <li class="c-dribbble_item"><img src="" alt="" class="c-dribbble_shot"></li>
-          <li class="c-dribbble_item"><img src="" alt="" class="c-dribbble_shot"></li>
-          <li class="c-dribbble_item"><img src="" alt="" class="c-dribbble_shot"></li>
-        </ul>
+        {% include 'elements/components/work/_dribbble' with {'limit': 3} %}
 
-
-        <h2 class="u-title-section"><a href="#" class="u-title-section_link">Coding</a></h2>
-        <p>I made small contributions to a few open-source projects, and maintain wildbit-craft-framework — a set of templates for Craft that we use on public sites of our products.</p>
-
-
-        <h2 class="u-title-section"><a href="#" class="u-title-section_link">Photographing</a></h2>
-        <p>Travel and landscape. Fuji. 500px.</p>
+        <h2 class="u-title-section">Coding</h2>
+        <div class="s-text">
+          <p>I made small contributions to <a href="https://github.com/efedorenko">a few open-source projects</a>, and maintain Wildbit-specific configs for <a href="https://github.com/wildbit/stylelint-config-wildbit">Stylelint</a> and <a href="https://github.com/wildbit/postcss-sorting-config-wildbit">postcss-sorting</a>. Currently I am working on an open-source set of templates for <a href="https://craftcms.com">Craft</a> that we use on public sites of our products.</p>
+        </div>
 
       </div>
     </div>
