@@ -26,14 +26,14 @@
 @import '../../../craft/templates/elements/components/posts/posts';
 @import '../../../craft/templates/elements/components/posts/posts-titles';
 @import '../../../craft/templates/elements/components/posts/posts-excerpts';
-@import '../../../craft/templates/elements/components/posts/pagination';
 @import '../../../craft/templates/elements/components/posts/text';
 
 @import '../../../craft/templates/elements/components/page-title/page-title';
 @import '../../../craft/templates/elements/components/page-title/page-head';
-// @import '../../../craft/templates/elements/components/filter/filter';
 
-@import '../../../craft/templates/elements/components/books/_current-books';
+@import '../../../craft/templates/elements/components/pagination/pagination';
 
-@import '../../../craft/templates/elements/components/work/_work';
-@import '../../../craft/templates/elements/components/work/_dribbble';
+@import '../../../craft/templates/elements/components/books/current-books';
+
+@import '../../../craft/templates/elements/components/work/work';
+@import '../../../craft/templates/elements/components/work/dribbble';

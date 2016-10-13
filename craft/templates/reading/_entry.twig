@@ -46,6 +46,16 @@
         {{ entry.body }}
       </div>
 
+      {% set prev = entry.getNext( craft.entries.section('reading') ) %}
+      {% set next = entry.getPrev( craft.entries.section('reading') ) %}
+
+      {% include 'elements/components/pagination/_pagination' with {
+        'prevUrl': prev.url,
+        'prevTitle': prev.title,
+        'nextUrl': next.url,
+        'nextTitle': next.title
+      } only %}
+
     </article>
   </div>
 

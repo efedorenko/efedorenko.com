@@ -1,21 +1,20 @@
 .c-pagination {
   margin-top: $grid-gutter;
+  font-family: $f-sansserif;
+  font-size: 1rem;
 
   &_list {
-    margin: 0;
     padding: 0;
   }
     &_item {
       list-style: none;
     }
       &_link {
-        text-decoration: none;
-
         &:link {
           color: $c-link;
         }
         &:visited {
-          color: #999;
+          color: #AAA;
         }
         &:hover {
           color: $c-hover;
@@ -26,11 +25,21 @@
       }
 
     &_item--prev {
-      margin-left: -1.2em;
       text-align: left;
+
+      .c-pagination_link::before {
+        content: '\2190';
+        float: left;
+        margin-left: -1.2em;
+      }
     }
     &_item--next {
-      margin-right: -1.2em;
       text-align: right;
+
+      .c-pagination_link::before {
+        content: '\2192';
+        float: right;
+        margin-right: -1.2em;
+      }
     }
 }

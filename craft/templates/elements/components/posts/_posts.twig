@@ -24,18 +24,12 @@
 
 {% set isPaginationVisible = isPaginationVisible is defined ? isPaginationVisible : true %}
 {% if isPaginationVisible %}
-  <nav class="c-pagination">
-    <ul class="c-pagination_list u-grid">
-      {% if pageInfo.prevUrl %}
-        <li class="u-grid-cell c-pagination_item c-pagination_item--prev">
-          <a href="{{ pageInfo.prevUrl }}" class="c-pagination_link">&larr; <u>Newer posts</u></a>
-        </li>
-      {% endif %}
-      {% if pageInfo.nextUrl %}
-        <li class="u-grid-cell c-pagination_item c-pagination_item--next">
-          <a href="{{ pageInfo.nextUrl }}" class="c-pagination_link"><u>Older posts</u> &rarr;</a>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
+
+  {% include 'elements/components/pagination/_pagination' with {
+    'prevUrl': pageInfo.nextUrl,
+    'prevTitle': 'Older posts',
+    'nextUrl': pageInfo.prevUrl,
+    'nextTitle': 'Newer posts'
+  } only %}
+
 {% endif %}
