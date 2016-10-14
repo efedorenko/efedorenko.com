@@ -35,7 +35,9 @@
         } %}
       </div>
 
-      {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
+      <ul class="c-posts-list">
+        {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
+      </ul>
 
       <a href="/reading" class="u-see-more">See more recommendations</a>
 
