@@ -12,7 +12,7 @@
   {% block headMeta %}{% endblock %}
 </head>
 
-<body class="c-body">
+<body class="c-body {{ bodyMods | default('') }}">
 
 {% include 'elements/components/header/_header' %}
 

@@ -1,7 +1,7 @@
 .c-dribbble {
   display: flex;
   justify-content: space-between;
-  margin: 0 0 $grid-gutter;
+  margin: ($grid-gutter / 2) 0 $grid-gutter;
   padding: 0;
 
   &_item {
@@ -14,7 +14,7 @@
 
     }
       img {
-        width: 200px;
+        width: (grid-width(4) - 30px * 2) / 3;
         height: auto;
         vertical-align: middle;
         box-shadow: 0 1px 1px rgba(#808080, .4);
@@ -23,5 +23,10 @@
     p {
       display: none;
     }
+  }
+}
+.c-dribbble--wide {
+  img {
+    width: (grid-width(6) - 40px * 3) / 4;
   }
 }

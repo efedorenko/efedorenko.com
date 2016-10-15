@@ -1,0 +1,33 @@
+.c-project {
+  margin-bottom: $grid-gutter;
+
+  &_link {
+    display: block;
+    height: $grid-column;
+    margin-bottom: 1em;
+    border-radius: 4px;
+    text-indent: -999em;
+    overflow: hidden;
+  }
+  &_link--bs {
+    background: #5FAC6C url('../images/beanstalk-logo.svg') no-repeat 50% 33% / 170px auto;
+  }
+  &_link--pm {
+    background: #FFDE01 url('../images/postmark-logo.svg') no-repeat 50% 50% / 170px auto;
+  }
+  &_link--db {
+    background: #665B7A url('../images/deploybot-logo.svg') no-repeat 50% 50% / auto 90px;
+  }
+
+  &_favs {
+    margin-bottom: 0;
+    font-size: .75rem;
+    color: #AAA;
+  }
+    &_subtitle {
+      font-size: 1em;
+      font-weight: normal;
+      font-style: italic;
+      text-align: right;
+    }
+}
