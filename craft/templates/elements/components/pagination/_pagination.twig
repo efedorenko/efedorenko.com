@@ -1,14 +1,16 @@
-<nav class="c-pagination">
-  <ul class="c-pagination_list u-grid u-grid--gutters-xl">
-    {% if prevUrl != '' and prevTitle != '' %}
-      <li class="u-grid-cell c-pagination_item c-pagination_item--prev">
-        <a href="{{ prevUrl }}" class="c-pagination_link">{{ prevTitle }}</a>
-      </li>
-    {% endif %}
-    {% if nextUrl != '' and nextTitle != '' %}
-      <li class="u-grid-cell c-pagination_item c-pagination_item--next">
-        <a href="{{ nextUrl }}" class="c-pagination_link">{{ nextTitle }}</a>
-      </li>
-    {% endif %}
-  </ul>
-</nav>
+{% if prevUrl != '' or nextUrl != '' %}
+  <nav class="c-pagination">
+    <ul class="c-pagination_list u-grid u-grid--gutters-xl">
+      {% if prevUrl != '' and prevTitle != '' %}
+        <li class="u-grid-cell c-pagination_item c-pagination_item--prev">
+          <a href="{{ prevUrl }}" class="c-pagination_link">{{ prevTitle }}</a>
+        </li>
+      {% endif %}
+      {% if nextUrl != '' and nextTitle != '' %}
+        <li class="u-grid-cell c-pagination_item c-pagination_item--next">
+          <a href="{{ nextUrl }}" class="c-pagination_link">{{ nextTitle }}</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
