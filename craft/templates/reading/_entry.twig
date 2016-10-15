@@ -50,10 +50,10 @@
       {% set next = entry.getPrev( craft.entries.section('reading') ) %}
 
       {% include 'elements/components/pagination/_pagination' with {
-        'prevUrl': prev.url,
-        'prevTitle': prev.title,
-        'nextUrl': next.url,
-        'nextTitle': next.title
+        'prevUrl': prev.url | default(''),
+        'prevTitle': prev.title | default(''),
+        'nextUrl': next.url | default(''),
+        'nextTitle': next.title | default('')
       } only %}
 
     </article>
