@@ -2,8 +2,7 @@
 
   <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-posts-list_time">{{ markerUnique }}</time>
 
-  {% if isExternalPost %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }}"></span>{% endif %}
+  {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }}"></span>{% endif %}
 
   <a href="{{ entryURL }}" class="o-post_title o-post_link c-posts-list_title">{{ entry.title }}</a>
-
 </li>

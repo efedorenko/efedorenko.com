@@ -18,22 +18,9 @@
     color: inherit;
     text-decoration: underline;
   }
-  &_local-link {
-    display: inline-block;
-    width: .5em;
-    margin-left: -1em;
-    margin-right: .5em;
-    color: #CCC;
-    text-decoration: none;
-    font-weight: 300;
-
-    &:hover,
-    &:focus,
-    &:active {
-      color: #222;
-    }
+  &_arr {
+    color: $c-orange;
   }
-
 
   // Favicon for external writing
 

@@ -4,10 +4,10 @@
 {% paginate entries.limit(limit) as pageInfo, pageEntries %}
 
 {% for entry in pageEntries %}
-  {% set isExternalPost = (entry.type == 'externalPost') %}
+  {% set isExternalWriting = (entry.type == 'externalPost') %}
   {% set isLink = (entry.type == 'article' or entry.type == 'website') %}
-  {% set entryURL = isExternalPost or isLink ? entry.postURL : entry.url %}
-  {% set entryModifier = isExternalPost or isLink ? 'external' : 'local'  %}
+  {% set entryURL = isExternalWriting ? entry.postURL : entry.url %}
+  {% set entryModifier = isExternalWriting or isLink ? 'external' : 'local'  %}
 
   {# Show only unique months in _posts-titles #}
   {% set marker = entry.postDate.format('M') %}

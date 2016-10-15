@@ -2,6 +2,7 @@
 
 {% set title = entry.title ~ ' | Eugene Fedorenko' %}
 {# set metaDesc = entry.metaDescription #}
+{% set isExternalWriting = (entry.type == 'externalPost') %}
 
 {% block headMeta %}
 {#
@@ -22,12 +23,27 @@
 
       <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
 
-      <h1 class="o-post_title o-page-title">
-        {{ entry.title }}
+      <h1 class="o-post_title u-title-section">
+        {% if isExternalWriting %}
+          <a href="{{ entry.postURL }}" class="o-post_link">{{ entry.title }}</a>
+          <span class="o-post_arr">&rarr;</span>
+        {% else %}
+          {{ entry.title }}
+        {% endif %}
       </h1>
 
+      {% if isExternalWriting %}
+        <p class="c-post-lead_source">
+          Published at {{ entry.postSource.label }}
+        </p>
+      {% endif %}
+
       <div class="o-post_body s-text">
-        {{ entry.body}}
+        {% if isExternalWriting %}
+          {{ entry.excerpt}}
+        {% else %}
+          {{ entry.body}}
+        {% endif %}
       </div>
 
     </article>

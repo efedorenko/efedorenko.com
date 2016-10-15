@@ -3,9 +3,10 @@
 
   &_time {
     float: right;
-    width: 7em;
+    width: 8em;
     margin-top: .9em;
-    margin-right: -8.5em;
+    margin-right: -9.5em;
+    white-space: nowrap;
   }
   &_cover {
     float: left;
@@ -27,7 +28,20 @@
     color: #BBB;
     font: .85em $f-sansserif;
   }
+  &_permalink {
+    margin-right: .25em;
+    font-size: 1.25em;
+    text-decoration: none;
 
+    &:link,
+    &:visited {
+      color: #CCC;
+    }
+    &:hover,
+    &:active {
+      color: $c-orange;
+    }
+  }
 }
 
 .c-post-lead--compact {

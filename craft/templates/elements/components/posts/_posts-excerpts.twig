@@ -1,20 +1,28 @@
 <article class="o-post o-post--{{ entryModifier }} c-post-lead {% if modifier is defined %}c-post-lead--{{ modifier }}{% endif %}">
 
-  <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
+  <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">
+    <a href="{{ entry.url }}" class="c-post-lead_permalink">&infin;</a>
+    {{ entry.postDate.format('M j, Y') }}
+  </time>
 
   {% include 'elements/components/books/_cover' with {'entry': entry, 'url': entryURL, 'class': 'c-post-lead_cover'} %}
 
   <h1 class="o-post_title c-post-lead_title">
-    {% if isExternalPost %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
-    {% if isLink %}<a href="{{ entry.url }}" class="o-post_local-link">#</a>{% endif %}
+    {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
     <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
+    {% if isExternalWriting or isLink %}<span class="o-post_arr">&rarr;</span>{% endif %}
   </h1>
 
-  {% if isExternalPost %}
-    <p class="c-post-lead_source">Published at {{ entry.postSource.label }}</p>
+  {% if isExternalWriting %}
+    <p class="c-post-lead_source">
+      Published at {{ entry.postSource.label }}
+    </p>
   {% endif %}
+
   {% if isLink and entry.readingAuthor != '' %}
-    <p class="c-post-lead_source">By {{ entry.readingAuthor }}</p>
+    <p class="c-post-lead_source">
+      By {{ entry.readingAuthor }}
+    </p>
   {% endif %}
 
   <div class="o-post_excerpt c-post-lead_excerpt s-text">
