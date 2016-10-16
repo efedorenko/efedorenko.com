@@ -12,7 +12,7 @@
 
       <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">{{ entry.postDate.format('M j, Y') }}</time>
 
-      {% include 'elements/components/books/_cover' with {'entry': entry, 'class': 'o-post_cover'} %}
+      {% include 'elements/components/books/_cover' with {'entry': entry, 'class': 'o-post_cover', 'url': entry.amazonLink} %}
 
       <h1 class="o-post_title u-title-section">
         {% if entry.type == 'book' %}
@@ -23,27 +23,31 @@
       </h1>
 
       {% if entry.readingAuthor %}
-        <p class="o-post_author">By {{ entry.readingAuthor }}</p>
+        <p class="o-post_author">
+          By {{ entry.readingAuthor }}
+
+          {% if entry.type == 'book' and entry.amazonLink %}
+            <span class="u-sep">&bull;</span>
+            <a href="{{ entry.amazonLink }}">Amazon</a>
+          {% endif %}
+        </p>
       {% endif %}
 
       <div class="o-post_body s-text">
-        {% if entry.type == 'book' %}
-          <small>
-            {% if entry.amazonLink %}<a href="{{ entry.amazonLink }}">Amazon</a>{% endif %}
-
-            &nbsp;&bull;&nbsp;
-
-            {% if entry.bookStarted %}{{ entry.bookStarted }}{% endif %}
-            —
-            {% if entry.bookFinished %}
-              {{ entry.bookFinished }}
-            {% else %}
-              &hellip;
-            {% endif %}
-          </small>
-        {% endif %}
 
         {{ entry.body }}
+
+        {% if entry.type == 'book' and entry.bookStarted and entry.bookFinished %}
+          <p class="u-small"><i>
+            Read from
+            {{ entry.bookStarted.format('F j, Y') }}
+            to
+            {{ entry.bookFinished.format('F j, Y') }}
+            .
+          </i></p>
+        {% endif %}
+
+
       </div>
 
       {% set prev = entry.getNext( craft.entries.section('reading') ) %}
