@@ -51,17 +51,34 @@
   &_author {
     color: #AAA;
     font: .85em $f-sansserif;
+
+    a:link {
+      color: $c-link;
+    }
+    a:visited {
+      color: $c-visited;
+    }
+    a:hover {
+      color: $c-hover;
+    }
+    a:active {
+      color: $c-active;
+    }
   }
 
 
   // Book cover
 
   &_cover {
-    float: left;
-    margin-top: .33em;
-    margin-left: -150px;
+    display: block;
     width: 120px;
     height: auto;
+    margin-top: .33em;
+
+    @medium {
+      float: left;
+      margin-left: -150px;
+    }
   }
 
 

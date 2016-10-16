@@ -1,17 +1,17 @@
 .c-dribbble {
   display: flex;
-  justify-content: space-between;
-  margin: ($grid-gutter / 2) 0 $grid-gutter;
+  // justify-content: space-between;
+  flex-wrap: wrap;
+  margin: ($grid-gutter / 2) -30px $grid-gutter 0;
   padding: 0;
 
   &_item {
-    margin: 0;
+    margin: 0 30px 30px 0;
     padding: 0;
     list-style: none;
     background-color: pink;
 
     a {
-
     }
       img {
         width: (grid-width(4) - 30px * 2) / 3;
@@ -26,7 +26,13 @@
   }
 }
 .c-dribbble--wide {
-  img {
-    width: (grid-width(6) - 40px * 3) / 4;
+  margin-right: -40px;
+
+  .c-dribbble_item {
+    margin-right: 40px;
+    margin-bottom: 40px;
   }
+    img {
+      width: (grid-width(6) - 40px * 3) / 4;
+    }
 }

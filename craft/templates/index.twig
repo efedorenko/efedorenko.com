@@ -13,7 +13,7 @@
 {% include 'elements/components/hero-intro/_hero-intro' %}
 
 <div class="u-container">
-  <div class="u-grid u-grid--gutters-l u-grid--1of2">
+  <div class="u-grid u-grid--gutters-l u-grid--full u-grid--1of2-at-medium">
     <div class="u-grid-cell">
 
       <h2 class="u-title-section"><a href="{{ url('writing') }}" class="u-title-section_link">Writing</a></h2>
@@ -39,7 +39,7 @@
         {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
       </ul>
 
-      <a href="/reading" class="u-see-more">See more recommendations</a>
+      <a href="{{ url('reading') }}" class="u-see-more">See more recommendations</a>
 
     </div>
   </div>
@@ -49,8 +49,8 @@
 <div class="c-work-wrapper">
 
   <div class="u-container">
-    <div class="u-grid u-grid--gutters-l">
-      <div class="u-grid-cell u-grid-cell--1of3 c-portfolio">
+    <div class="u-grid u-grid--gutters-s u-grid--gutters-l-at-medium u-grid--full">
+      <div class="u-grid-cell u-grid-cell--1of3-at-medium c-portfolio">
         <span class="ss ss_beanstalk-dashboard-60"></span>
         <span class="ss ss_beanstalk-landing-30"></span>
         <span class="ss ss_deploybot-dashboard-45"></span>
@@ -63,7 +63,7 @@
         <span class="ss ss_whentobuymac-70"></span>
       </div>
 
-      <div class="u-grid-cell u-grid-cell--2of3">
+      <div class="u-grid-cell u-grid-cell--2of3-at-medium">
 
         <h2 class="u-title-section"><a href="{{ url('designing') }}" class="u-title-section_link">Designing</a></h2>
         <div class="s-text">

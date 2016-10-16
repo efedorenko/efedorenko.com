@@ -5,7 +5,9 @@
   margin-bottom: $grid-gutter / 2;
 
   &_photo {
-    text-align: right;
+    @include medium {
+      text-align: right;
+    }
   }
     &_img {
       width: 180px;

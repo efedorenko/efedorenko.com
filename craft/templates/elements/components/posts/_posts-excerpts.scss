@@ -2,18 +2,24 @@
   margin: $grid-gutter 0;
 
   &_time {
-    float: right;
-    width: 8em;
-    margin-top: .9em;
-    margin-right: -9.5em;
-    white-space: nowrap;
+    @include medium {
+      float: right;
+      width: 8em;
+      margin-top: .9em;
+      margin-right: -9.5em;
+      white-space: nowrap;
+    }
   }
   &_cover {
     float: left;
     width: 60px;
     height: auto;
     margin-top: .25em;
-    margin-left: -80px;
+    margin-right: 20px;
+
+    @include medium {
+      margin-left: -80px;
+    }
   }
   &_title {
     margin: .75em 0 .5em;
