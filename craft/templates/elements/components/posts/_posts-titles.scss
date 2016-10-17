@@ -8,6 +8,7 @@
     list-style: none;
   }
     &_time {
+      display: none;
       position: absolute;
       left: -4.25em;
       width: 3em;
@@ -17,6 +18,10 @@
 
       &:not(:empty)::after {
         content: ' —';
+      }
+
+      @include large {
+        display: block;
       }
     }
     &_title {
