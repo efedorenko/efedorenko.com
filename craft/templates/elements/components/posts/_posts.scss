@@ -75,7 +75,7 @@
     height: auto;
     margin-top: .33em;
 
-    @medium {
+    @include medium {
       float: left;
       margin-left: -150px;
     }
