@@ -1,38 +1,52 @@
 .c-portfolio {
   position: relative;
   min-height: 400px;
+
+  // Used on home page
+  &--aside {
+    margin-top: -45px;
+
+    @include medium {
+      margin-top: 0;
+    }
+  }
+
+  // Used on Designing page
+  &--split {
+    .c-portfolio_left {
+      position: relative;
+      min-height: 400px;
+      z-index: -1;
+      margin-top: -($grid-gutter * 1.5);
+      margin-bottom: $grid-gutter * 1.5;
+
+      @include medium {
+        position: absolute;
+        top: 0;
+        right: calc(50% + #{grid-width(2) + $grid-gutter});
+        bottom: 0;
+        left: 0;
+        margin: 0;
+      }
+    }
+    .c-portfolio_right {
+      position: relative;
+      min-height: 400px;
+      z-index: -1;
+      margin-top: -(400px + $grid-gutter * 1.5);
+      margin-bottom: $grid-gutter * 1.5;
+
+      @include medium {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: calc(50% + #{grid-width(2) + $grid-gutter});
+        margin: 0;
+      }
+    }
+  }
 }
-  .c-portfolio_left {
-    position: relative;
-    min-height: 400px;
-    margin-top: -($grid-gutter * 1.5);
-    margin-bottom: $grid-gutter * 1.5;
-
-    @include medium {
-      position: absolute;
-      top: 0;
-      right: calc(50% + #{grid-width(2) + $grid-gutter});
-      bottom: 0;
-      left: 0;
-      margin: 0;
-    }
-  }
-  .c-portfolio_right {
-    position: relative;
-    min-height: 400px;
-    margin-top: -(400px + $grid-gutter * 1.5);
-    margin-bottom: $grid-gutter * 1.5;
-
-    @include medium {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: calc(50% + #{grid-width(2) + $grid-gutter});
-      margin: 0;
-    }
-  }
-
   .ss {
     position: absolute;
     vertical-align: middle;
@@ -103,7 +117,7 @@
     background-size: 60px 73px;
   }
   .ss_wildbit-card-30 {
-    bottom: -7.5%;
+    bottom: -2.5%;
     left: 30%;
     width: 30px;
     height: 40px;
