@@ -1,6 +1,6 @@
 {% if entry.type == 'book' and entry.bookCover.total() %}
   {% set cover = entry.bookCover[0] %}
   {% if url is defined %}<a href="{{ url }}">{% endif %}
-    <img src="{{ cover.url }}" alt="{{ entry.title }}" class="{{ class }}"></a>
+    <img src="{{ cover.url }}" alt="{{ entry.title }}" class="{{ class }}">
   {% if url is defined %}</a>{% endif %}
 {% endif %}
