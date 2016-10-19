@@ -1,8 +1,11 @@
 <li class="o-post o-post--{{ entryModifier }} c-posts-list_item">
 
-  <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-posts-list_time">{{ markerUnique }}</time>
+  <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-posts-list_time">
+    {{ markerUnique|slice(0,3) }}<span class="c-posts-list_full-month">{{ markerUnique|slice(3) }}</span>
+  </time>
 
-  {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }}"></span>{% endif %}
-
-  <a href="{{ entryURL }}" class="o-post_title o-post_link c-posts-list_title">{{ entry.title }}</a>
+  <span class="o-post_title c-posts-list_title {% if isExternalWriting %}c-posts-list_title--w-favicon{% endif %}">
+    {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-posts-list_favicon"></span>{% endif %}
+    <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
+  </span>
 </li>

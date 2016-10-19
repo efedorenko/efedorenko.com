@@ -1,8 +1,11 @@
 .c-hero-intro {
-  align-items: center;
+  margin-top: $grid-gutter / 4;
+  margin-bottom: $grid-gutter / 4;
 
-  margin-top: $grid-gutter / 2;
-  margin-bottom: $grid-gutter / 2;
+  @include medium {
+    margin-top: $grid-gutter / 2;
+    margin-bottom: $grid-gutter / 2;
+  }
 
   &_photo {
     @include medium {

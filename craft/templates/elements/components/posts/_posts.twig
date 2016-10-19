@@ -10,7 +10,7 @@
   {% set entryModifier = isExternalWriting or isLink ? 'external' : 'local'  %}
 
   {# Show only unique months in _posts-titles #}
-  {% set marker = entry.postDate.format('M') %}
+  {% set marker = entry.postDate.format('F') %}
   {% set markerUnique = (markerPrev == '' or markerPrev != marker) ? marker : '' %}
   {% set markerPrev = marker %}
 

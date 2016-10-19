@@ -13,13 +13,18 @@
 {% include 'elements/components/hero-intro/_hero-intro' %}
 
 <div class="u-container">
-  <div class="u-grid u-grid--gutters-l u-grid--full u-grid--2-cols-at-medium">
+  <div class="u-grid u-grid--gutters-s u-grid--gutters-l-at-medium u-grid--full u-grid--2-cols-at-medium">
     <div class="u-grid-cell">
 
       <h2 class="u-title-section"><a href="{{ url('writing') }}" class="u-title-section_link">Writing</a></h2>
 
       <ul class="c-posts-list">
-        {% include 'elements/components/posts/_posts' with {'channel': 'writing', 'limit': 7, 'type': 'titles', 'isPaginationVisible': false} %}
+        {% include 'elements/components/posts/_posts' with {
+          'channel': 'writing',
+          'limit': 7,
+          'type': 'titles',
+          'isPaginationVisible': false
+        } %}
       </ul>
 
       <a href="/writing" class="u-see-more">Read older posts</a>
@@ -36,7 +41,13 @@
       </div>
 
       <ul class="c-posts-list">
-        {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 5, 'type': 'titles', 'modifier': 'compact', 'isPaginationVisible': false} %}
+        {% include 'elements/components/posts/_posts' with {
+          'channel': 'reading',
+          'limit': 5,
+          'type': 'titles',
+          'modifier': 'compact',
+          'isPaginationVisible': false
+        } %}
       </ul>
 
       <a href="{{ url('reading') }}" class="u-see-more">See more recommendations</a>
