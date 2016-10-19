@@ -29,37 +29,6 @@
     box-sizing: border-box;
   }
 
-// With gutters
-
-.u-grid--gutters-s {
-  margin: #{-$grid-gutter / 4} 0 0 #{-$grid-gutter / 4};
-
-  > .u-grid-cell {
-    padding: ($grid-gutter / 4) 0 0 ($grid-gutter / 4);
-  }
-}
-.u-grid--gutters-m {
-  margin: #{-$grid-gutter / 2} 0 0 #{-$grid-gutter / 2};
-
-  > .u-grid-cell {
-    padding: ($grid-gutter / 2) 0 0 ($grid-gutter / 2);
-  }
-}
-.u-grid--gutters-l {
-  margin: #{-$grid-gutter} 0 0 #{-$grid-gutter};
-
-  > .u-grid-cell {
-    padding: $grid-gutter 0 0 $grid-gutter;
-  }
-}
-.u-grid--gutters-xl {
-  margin: #{-$grid-column} 0 0 #{-$grid-column};
-
-  > .u-grid-cell {
-    padding: $grid-column 0 0 $grid-column;
-  }
-}
-
 // Alignment per row
 
 .u-grid--top {
@@ -87,271 +56,73 @@
   align-self: center;
 }
 
-// Sizing
+// Gutters and sizing
 
-.u-grid--fit > .u-grid-cell {
-  flex: 1;
-}
-.u-grid--full > .u-grid-cell {
-  flex: 0 0 100%;
-}
-.u-grid--1of2 > .u-grid-cell {
-  flex: 0 0 50%;
-}
-.u-grid--1of3 > .u-grid-cell {
-  flex: 0 0 33.3333%;
-}
-.u-grid--1of4 > .u-grid-cell {
-  flex: 0 0 25%;
+$gutters: (
+  s:  $grid-gutter / 4,
+  m:  $grid-gutter / 2,
+  l:  $grid-gutter,
+  xl: $grid-column
+);
+
+$grid-sizing: (
+  fit: '1',
+  full: '0 0 100%',
+  2-cols: '0 0 50%',
+  3-cols: '0 0 33.33%',
+  4-cols: '0 0 25%'
+);
+
+$cell-sizing: (
+  fit: '1',
+  full: '0 0 100%',
+  1of2: '0 0 50%',
+  1of3: '0 0 33.3333%',
+  2of3: '0 0 66.6667%',
+  1of4: '0 0 25%',
+  2of4: '0 0 50%',
+  3of4: '0 0 75%'
+);
+
+@mixin grid-sizes($breakpoint: '') {
+  // Generate gutters
+  @each $name, $size in $gutters {
+    .u-grid--gutters-#{$name}#{$breakpoint} {
+      margin-top: -$size;
+      margin-left: -$size;
+
+      > .u-grid-cell {
+        padding-top: $size;
+        padding-left: $size;
+      }
+    }
+  }
+
+  // Generate grid sizing
+  @each $name, $size in $grid-sizing {
+    .u-grid--#{$name}#{$breakpoint} > .u-grid-cell {
+      flex: #{$size};
+    }
+  }
+
+  // Generate cell sizing
+  @each $name, $size in $cell-sizing {
+    .u-grid > .u-grid-cell--#{$name}#{$breakpoint} {
+      flex: #{$size};
+    }
+  }
 }
 
-.u-grid-cell--fit {
-  flex: 1;
-}
-.u-grid-cell--full {
-  flex: 0 0 100%;
-}
-.u-grid-cell--1of2 {
-  flex: 0 0 50%;
-}
-.u-grid-cell--1of3 {
-  flex: 0 0 33.3333%;
-}
-.u-grid-cell--2of3 {
-  flex: 0 0 66.6667%;
-}
-.u-grid-cell--1of4 {
-  flex: 0 0 25%;
-}
-.u-grid-cell--2of4 {
-  flex: 0 0 50%;
-}
-.u-grid-cell--3of4 {
-  flex: 0 0 75%;
-}
-
-
-// Responsive Modifiers
+@include grid-sizes;
 
 @include small {
-  .u-grid--gutters-s-at-small {
-    margin: #{-$grid-gutter / 4} 0 0 #{-$grid-gutter / 4};
-
-    > .u-grid-cell {
-      padding: ($grid-gutter / 4) 0 0 ($grid-gutter / 4);
-    }
-  }
-  .u-grid--gutters-m-at-small {
-    margin: #{-$grid-gutter / 2} 0 0 #{-$grid-gutter / 2};
-
-    > .u-grid-cell {
-      padding: ($grid-gutter / 2) 0 0 ($grid-gutter / 2);
-    }
-  }
-  .u-grid--gutters-l-at-small {
-    margin: #{-$grid-gutter} 0 0 #{-$grid-gutter};
-
-    > .u-grid-cell {
-      padding: $grid-gutter 0 0 $grid-gutter;
-    }
-  }
-  .u-grid--gutters-xl-at-small {
-    margin: #{-$grid-column} 0 0 #{-$grid-column};
-
-    > .u-grid-cell {
-      padding: $grid-column 0 0 $grid-column;
-    }
-  }
-
-
-  .u-grid--fit-at-small > .u-grid-cell {
-    flex: 1;
-  }
-  .u-grid--full-at-small > .u-grid-cell {
-    flex: 0 0 100%;
-  }
-  .u-grid--1of2-at-small > .u-grid-cell {
-    flex: 0 0 50%;
-  }
-  .u-grid--1of3-at-small > .u-grid-cell {
-    flex: 0 0 33.3333%;
-  }
-  .u-grid--1of4-at-small > .u-grid-cell {
-    flex: 0 0 25%;
-  }
-
-
-  .u-grid > .u-grid-cell--fit-at-small {
-    flex: 1;
-  }
-  .u-grid > .u-grid-cell--full-at-small {
-    flex: 0 0 100%;
-  }
-  .u-grid > .u-grid-cell--1of2-at-small {
-    flex: 0 0 50%;
-  }
-  .u-grid > .u-grid-cell--1of3-at-small {
-    flex: 0 0 33.3333%;
-  }
-  .u-grid > .u-grid-cell--2of3-at-small {
-    flex: 0 0 66.6667%;
-  }
-  .u-grid > .u-grid-cell--1of4-at-small {
-    flex: 0 0 25%;
-  }
-  .u-grid > .u-grid-cell--2of4-at-small {
-    flex: 0 0 50%;
-  }
-  .u-grid > .u-grid-cell--3of4-at-small {
-    flex: 0 0 75%;
-  }
+  @include grid-sizes('-at-small');
 }
-
 @include medium {
-  .u-grid--gutters-s-at-medium {
-    margin: #{-$grid-gutter / 4} 0 0 #{-$grid-gutter / 4};
-
-    > .u-grid-cell {
-      padding: ($grid-gutter / 4) 0 0 ($grid-gutter / 4);
-    }
-  }
-  .u-grid--gutters-m-at-medium {
-    margin: #{-$grid-gutter / 2} 0 0 #{-$grid-gutter / 2};
-
-    > .u-grid-cell {
-      padding: ($grid-gutter / 2) 0 0 ($grid-gutter / 2);
-    }
-  }
-  .u-grid--gutters-l-at-medium {
-    margin: #{-$grid-gutter} 0 0 #{-$grid-gutter};
-
-    > .u-grid-cell {
-      padding: $grid-gutter 0 0 $grid-gutter;
-    }
-  }
-  .u-grid--gutters-xl-at-medium {
-    margin: #{-$grid-column} 0 0 #{-$grid-column};
-
-    > .u-grid-cell {
-      padding: $grid-column 0 0 $grid-column;
-    }
-  }
-
-
-  .u-grid--fit-at-medium > .u-grid-cell {
-    flex: 1;
-  }
-  .u-grid--full-at-medium > .u-grid-cell {
-    flex: 0 0 100%;
-  }
-  .u-grid--1of2-at-medium > .u-grid-cell {
-    flex: 0 0 50%;
-  }
-  .u-grid--1of3-at-medium > .u-grid-cell {
-    flex: 0 0 33.3333%;
-  }
-  .u-grid--1of4-at-medium > .u-grid-cell {
-    flex: 0 0 25%;
-  }
-
-
-  .u-grid > .u-grid-cell--fit-at-medium {
-    flex: 1;
-  }
-  .u-grid > .u-grid-cell--full-at-medium {
-    flex: 0 0 100%;
-  }
-  .u-grid > .u-grid-cell--1of2-at-medium {
-    flex: 0 0 50%;
-  }
-  .u-grid > .u-grid-cell--1of3-at-medium {
-    flex: 0 0 33.3333%;
-  }
-  .u-grid > .u-grid-cell--2of3-at-medium {
-    flex: 0 0 66.6667%;
-  }
-  .u-grid > .u-grid-cell--1of4-at-medium {
-    flex: 0 0 25%;
-  }
-  .u-grid > .u-grid-cell--2of4-at-medium {
-    flex: 0 0 50%;
-  }
-  .u-grid > .u-grid-cell--3of4-at-medium {
-    flex: 0 0 75%;
-  }
+  @include grid-sizes('-at-medium');
 }
-
 @include large {
-  .u-grid--gutters-s-at-large {
-    margin: #{-$grid-gutter / 4} 0 0 #{-$grid-gutter / 4};
-
-    > .u-grid-cell {
-      padding: ($grid-gutter / 4) 0 0 ($grid-gutter / 4);
-    }
-  }
-  .u-grid--gutters-m-at-large {
-    margin: #{-$grid-gutter / 2} 0 0 #{-$grid-gutter / 2};
-
-    > .u-grid-cell {
-      padding: ($grid-gutter / 2) 0 0 ($grid-gutter / 2);
-    }
-  }
-  .u-grid--gutters-l-at-large {
-    margin: #{-$grid-gutter} 0 0 #{-$grid-gutter};
-
-    > .u-grid-cell {
-      padding: $grid-gutter 0 0 $grid-gutter;
-    }
-  }
-  .u-grid--gutters-xl-at-large {
-    margin: #{-$grid-column} 0 0 #{-$grid-column};
-
-    > .u-grid-cell {
-      padding: $grid-column 0 0 $grid-column;
-    }
-  }
-
-
-  .u-grid--fit-at-large > .u-grid-cell {
-    flex: 1;
-  }
-  .u-grid--full-at-large > .u-grid-cell {
-    flex: 0 0 100%;
-  }
-  .u-grid--1of2-at-large > .u-grid-cell {
-    flex: 0 0 50%;
-  }
-  .u-grid--1of3-at-large > .u-grid-cell {
-    flex: 0 0 33.3333%;
-  }
-  .u-grid--1of4-at-large > .u-grid-cell {
-    flex: 0 0 25%;
-  }
-
-  .u-grid > .u-grid-cell--fit-at-large {
-    flex: 1;
-  }
-  .u-grid > .u-grid-cell--full-at-large {
-    flex: 0 0 100%;
-  }
-  .u-grid > .u-grid-cell--1of2-at-large {
-    flex: 0 0 50%;
-  }
-  .u-grid > .u-grid-cell--1of3-at-large {
-    flex: 0 0 33.3333%;
-  }
-  .u-grid > .u-grid-cell--2of3-at-large {
-    flex: 0 0 66.6667%;
-  }
-  .u-grid > .u-grid-cell--1of4-at-large {
-    flex: 0 0 25%;
-  }
-  .u-grid > .u-grid-cell--2of4-at-large {
-    flex: 0 0 50%;
-  }
-  .u-grid > .u-grid-cell--3of4-at-large {
-    flex: 0 0 75%;
-  }
+  @include grid-sizes('-at-large');
 }
 
 
