@@ -1,5 +1,5 @@
 .c-footer {
-  margin-top: ($grid-gutter * 1.5);
+  margin-top: $grid-gutter;
   border: 0;
   border-style: solid;
   border-width: 6px 0 0;
@@ -7,6 +7,10 @@
   border-image: url('/images/waves-pattern.svg') 6 0 0 repeat;
   padding: $grid-gutter 0;
   color: #444;
+
+  @include medium {
+    margin-top: ($grid-gutter * 1.5);
+  }
 
   &_container {
     display: flex;
