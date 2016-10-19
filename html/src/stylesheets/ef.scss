@@ -19,23 +19,29 @@
 /* Components
 ------------------------------------------------- */
 
+// Home page
+
 @import '../../../craft/templates/elements/components/hero-intro/hero-intro';
+
+// Layout
+
 @import '../../../craft/templates/elements/components/header/header';
 @import '../../../craft/templates/elements/components/footer/footer';
+
+// Writing and Reading
 
 @import '../../../craft/templates/elements/components/posts/posts';
 @import '../../../craft/templates/elements/components/posts/posts-titles';
 @import '../../../craft/templates/elements/components/posts/posts-excerpts';
 @import '../../../craft/templates/elements/components/posts/text';
-
 @import '../../../craft/templates/elements/components/page-title/page-title';
 @import '../../../craft/templates/elements/components/page-title/page-head';
-
 @import '../../../craft/templates/elements/components/pagination/pagination';
-
 @import '../../../craft/templates/elements/components/books/current-books';
 
+// Designing
+
 @import '../../../craft/templates/elements/components/work/work';
-@import '../../../craft/templates/elements/components/work/portfolio';
-@import '../../../craft/templates/elements/components/work/wb-projects';
-@import '../../../craft/templates/elements/components/work/dribbble';
+@import '../../../craft/templates/elements/components/project/project';
+@import '../../../craft/templates/elements/components/portfolio/portfolio';
+@import '../../../craft/templates/elements/components/dribbble/dribbble';
