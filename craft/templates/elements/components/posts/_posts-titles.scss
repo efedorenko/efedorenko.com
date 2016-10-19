@@ -8,10 +8,14 @@
     list-style: none;
   }
     &_time {
-      display: block;
-      margin-top: 1.5em;
-      margin-bottom: .5em;
-      white-space: nowrap;
+      display: none;
+
+      @include medium {
+        display: block;
+        margin-top: 1.5em;
+        margin-bottom: .5em;
+        white-space: nowrap;
+      }
 
       @include large {
         float: left;
