@@ -13,17 +13,22 @@
   }
 
   &--page-title {
-    float: right;
-    width: 10em;
-    margin-right: -11.5em;
+    margin-top: 2em;
 
-    .c-current-books_label {
-      display: block;
-      margin-bottom: .25em;
-      color: #CCC;
-    }
-    .c-current-books_cover {
-      margin-left: 0;
+    @include large {
+      float: right;
+      width: 10em;
+      margin-top: 0;
+      margin-right: -11.5em;
+
+      .c-current-books_label {
+        display: block;
+        margin-bottom: .25em;
+        color: #CCC;
+      }
+      .c-current-books_cover {
+        margin-left: 0;
+      }
     }
   }
 }

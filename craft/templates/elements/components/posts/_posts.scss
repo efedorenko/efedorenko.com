@@ -75,7 +75,7 @@
     height: auto;
     margin-top: .33em;
 
-    @include medium {
+    @include large {
       float: left;
       margin-left: -150px;
     }
@@ -104,6 +104,9 @@
   }
   &--local {
     color: #000;
-    font-size: 1.2em;
+
+    @include medium {
+      font-size: 1.2em;
+    }
   }
 }
