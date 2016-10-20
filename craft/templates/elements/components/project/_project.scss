@@ -16,21 +16,22 @@
   &_link--db {
     background: #665B7A url('../images/deploybot-logo.svg') no-repeat 50% 50% / auto 90px;
   }
+}
 
-  &_favs {
-    margin-bottom: 0;
-    font-size: .75rem;
-    color: #AAA;
+.c-project-favs {
+  margin-bottom: 0;
+  font-size: .75rem;
+  color: #AAA;
+
+  &_subtitle {
+    font-size: 1em;
+    font-weight: normal;
+    font-style: italic;
+    text-align: right;
   }
-    &_subtitle {
-      font-size: 1em;
-      font-weight: normal;
-      font-style: italic;
-      text-align: right;
-    }
-    &_fav-link {
-      color: inherit;
-    }
+  &_link {
+    color: inherit;
+  }
 }
 
 .u-link-bs {
