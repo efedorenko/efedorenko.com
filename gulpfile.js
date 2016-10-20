@@ -41,7 +41,7 @@ gulp.task('styles:sass', function () {
     }))
     .pipe(postcss([
       autoprefixer({
-        browsers: ['last 2 versions', 'ie >= 9']
+        browsers: ['last 2 versions', 'ie >= 9', 'ios >= 8']
       }),
 /*
       cssnano({
