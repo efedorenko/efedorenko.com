@@ -20,21 +20,26 @@
 /* Responsiveness
 ------------------------------------------------- */
 
-// Mobile to portrait table
+// Portrait mobile by default
+// iPhone SE: 320x568
+// iPhone 6:  375x667
+// iPhone 6+: 414x736
+
+// From landscape mobile to portrait tablet
 @mixin small {
   @media only screen and (min-width: 480px) {
     @content;
   }
 }
 
-// Landscape tablet to small screen
+// From landscape tablet to small browser window
 @mixin medium {
-  @media only screen and (min-width: 750px) {
+  @media only screen and (min-width: 769px) {
     @content;
   }
 }
 
-// Small screen to big screen
+// From small browser window (grid of 6) to infinity
 @mixin large {
   @media only screen and (min-width: 1080px) {
     @content;

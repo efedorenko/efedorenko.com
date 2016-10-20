@@ -1,11 +1,11 @@
 .c-dribbble {
   display: flex;
   flex-wrap: wrap;
-  margin: ($grid-gutter / 2) -30px -30px 0;
+  margin: (30px - 15px) -15px -15px;
   padding: 0;
 
   &_item {
-    margin: 0 30px 30px 0;
+    margin: 15px;
     padding: 0;
     list-style: none;
 
@@ -14,6 +14,7 @@
     }
       img {
         width: (grid-width(4) - 30px * 2) / 3;
+        width: 199px; // TODO: A nasty fix for IE
         height: auto;
         vertical-align: middle;
         box-shadow: 0 1px 1px rgba(#808080, .4);
@@ -25,12 +26,10 @@
   }
 }
 .c-dribbble--wide {
-  margin-right: -40px;
-  margin-bottom: -40px;
+  margin: (30px - 20px) -20px -20px;
 
   .c-dribbble_item {
-    margin-right: 40px;
-    margin-bottom: 40px;
+    margin: 20px;
   }
     img {
       width: (grid-width(6) - 40px * 3) / 4;
