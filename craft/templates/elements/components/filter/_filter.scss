@@ -2,7 +2,8 @@
   display: inline-block;
   padding: 0;
   color: #AAA;
-  font: normal .875rem $f-sansserif;
+  font: normal 14px $f-sansserif;
+  font-size: .875rem;
   vertical-align: .15em;
 
   &_item {

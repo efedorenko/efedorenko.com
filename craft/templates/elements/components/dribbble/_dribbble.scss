@@ -16,6 +16,7 @@
         width: (grid-width(4) - 30px * 2) / 3;
         width: 199px; // TODO: A nasty fix for IE
         height: auto;
+        border: 0;
         vertical-align: middle;
         box-shadow: 0 1px 1px rgba(#808080, .4);
       }

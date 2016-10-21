@@ -66,22 +66,22 @@ $gutters: (
 );
 
 $grid-sizing: (
-  fit: '1',
-  full: '0 0 100%',
-  2-cols: '0 0 50%',
-  3-cols: '0 0 33.33%',
-  4-cols: '0 0 25%'
+  fit:    '1',
+  full:   '100%',
+  2-cols: '50%',
+  3-cols: '33.3333%',
+  4-cols: '25%'
 );
 
 $cell-sizing: (
   fit: '1',
-  full: '0 0 100%',
-  1of2: '0 0 50%',
-  1of3: '0 0 33.3333%',
-  2of3: '0 0 66.6667%',
-  1of4: '0 0 25%',
-  2of4: '0 0 50%',
-  3of4: '0 0 75%'
+  full: '100%',
+  1of2: '50%',
+  1of3: '33.3333%',
+  2of3: '66.6667%',
+  1of4: '25%',
+  2of4: '50%',
+  3of4: '75%'
 );
 
 @mixin grid-sizes($breakpoint: '') {
@@ -101,14 +101,24 @@ $cell-sizing: (
   // Generate grid sizing
   @each $name, $size in $grid-sizing {
     .u-grid--#{$name}#{$breakpoint} > .u-grid-cell {
-      flex: #{$size};
+      @if $name == 'fit' {
+        flex: 1;
+      } @else {
+        flex: 0 0 #{$size};
+        max-width: #{$size};
+      }
     }
   }
 
   // Generate cell sizing
   @each $name, $size in $cell-sizing {
     .u-grid > .u-grid-cell--#{$name}#{$breakpoint} {
-      flex: #{$size};
+      @if $name == 'fit' {
+        flex: 1;
+      } @else {
+        flex: 0 0 #{$size};
+        max-width: #{$size};
+      }
     }
   }
 }

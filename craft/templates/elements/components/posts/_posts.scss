@@ -4,7 +4,8 @@
 
   &_time {
     color: #CCC;
-    font: normal normal .75rem $f-sansserif;
+    font: normal normal 12px $f-sansserif;
+    font-size: .75rem;
   }
 
 
@@ -74,6 +75,7 @@
     width: 120px;
     height: auto;
     margin-top: .33em;
+    border: 0;
 
     @include large {
       float: left;
