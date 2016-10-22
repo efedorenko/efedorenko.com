@@ -26,10 +26,11 @@ var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var cssnano = require('cssnano');
 var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
 var md5 = require("gulp-md5-assets");
 var rename = require('gulp-rename');
-// var include = require("gulp-include");
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 
 // Stylesheets
@@ -57,50 +58,11 @@ gulp.task('styles:sass', function () {
 
 // Scripts
 
-gulp.task('scripts:sync', function () {
-  return gulp.src([
-    paths.scripts.src + 'vendor/jquery-2.2.2.min.js',
-    paths.scripts.src + 'vendor/modernizr.js',
-    paths.scripts.src + 'vendor/prism.min.js'
-  ])
-    .pipe(gulp.dest(paths.scripts.dist));
-});
-
 gulp.task('scripts:fonts', function () {
-  return gulp.src([
-    paths.scripts.src + 'vendor/cookie.js',
-    paths.scripts.src + 'vendor/fontfaceobserver-1.7.1.js',
-
-    // Modules
-    paths.scripts.src + 'font-loader.js'
-  ])
-    .pipe(concat('fonts.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(paths.scripts.dist));
-});
-
-gulp.task('scripts:landing', function () {
-  return gulp.src([
-    // Vendor plugins
-    paths.scripts.src + 'vendor/jquery.magnific-popup.js',
-    paths.scripts.src + 'vendor/slick.js',
-
-    // Modules
-    paths.scripts.src + 'landing/carousel.js',
-    paths.scripts.src + 'landing/popups.js',
-    paths.scripts.src + 'landing/timezones.js',
-    paths.scripts.src + 'landing/decors.js'
-  ])
-    .pipe(concat('landing.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(paths.scripts.dist));
-});
-
-gulp.task('scripts:jobs', function () {
-  return gulp.src([
-    paths.scripts.src + 'jobs/jobs.js'
-  ])
-    .pipe(concat('jobs.min.js'))
+  return browserify(paths.elements.src + 'components/fonts-check/fonts-loader.js')
+    .bundle()
+    .pipe(source('fonts.min.js'))
+    .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest(paths.scripts.dist));
 });
@@ -141,18 +103,36 @@ gulp.task('cachebust:js', ['default'], function () {
 // Watch & Default
 
 gulp.task('watch', function () {
-  gulp.watch(paths.styles.src   + '**/*.scss', ['styles:sass', 'cachebust:images']);
+  gulp.watch([
+    paths.elements.src + '**/*.scss',
+    paths.styles.src   + '**/*.scss'
+  ], [
+    'styles:sass',
+    'cachebust:images'
+  ]);
 
-  gulp.watch(paths.elements.src + '**/*.scss', ['styles:sass', 'cachebust:images']);
+  gulp.watch([
+    paths.elements.src + '**/*.jpg',
+    paths.elements.src + '**/*.png',
+    paths.elements.src + '**/*.gif',
+    paths.elements.src + '**/*.svg',
+  ], [
+    'images:sync'
+  ]);
 
-  gulp.watch(paths.images.dist  + '**/*', ['cachebust:images']);
+  gulp.watch([
+    paths.images.dist  + '**/*'
+  ], [
+    'cachebust:images'
+  ]);
 
-  gulp.watch(paths.scripts.src  + 'vendor/**/*.js', ['scripts']);
-  gulp.watch(paths.scripts.src  + '*.js', ['scripts:fonts']);
-  gulp.watch(paths.scripts.src  + 'landing/**/*.js', ['scripts:landing']);
-  gulp.watch(paths.scripts.src  + 'jobs/**/*.js', ['scripts:jobs']);
+  gulp.watch([
+    paths.elements.src + '**/*.js',
+    paths.scripts.src  + '**/*.js'
+  ], [
+    'scripts:fonts'
+  ]);
 });
 
-gulp.task('default', ['styles:sass', 'images:sync', 'cachebust:images', 'scripts:sync', 'scripts:landing', 'scripts:fonts', 'scripts:jobs']);
-
+gulp.task('default', ['styles:sass', 'scripts:fonts', 'images:sync', 'cachebust:images']);
 gulp.task('production', ['default', 'cachebust:css', 'cachebust:js']);

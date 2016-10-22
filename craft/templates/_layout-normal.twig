@@ -1,11 +1,6 @@
-{#
- # Standard layout
- # ---------------
- #}
-
 <!doctype html>
 
-<html lang="en">
+{% include 'elements/components/fonts-check/_fonts-cookie-check' %}
 
 <head>
   {% include 'elements/components/head-meta/_head-meta' %}
@@ -19,7 +14,8 @@
 {% block content %}{% endblock %}
 
 {% include 'elements/components/footer/_footer' %}
-{% include 'elements/components/scripts/_ga' %}
+
+{% include 'elements/components/scripts/_scripts' %}
 
 </body>
 </html>
