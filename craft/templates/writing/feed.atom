@@ -1,0 +1,16 @@
+{% extends "_layout-feed.atom" %}
+
+{% set title = 'Writing by Eugene Fedorenko' %}
+{% set altUrl = url('writing') %}
+
+{% block content %}
+
+  {% include 'elements/components/posts/_posts' with {
+    'channel': 'writing',
+    'limit': 10,
+    'type': 'feed',
+    'isPaginationVisible': false
+  } %}
+
+{% endblock %}
+

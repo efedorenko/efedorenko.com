@@ -1,0 +1,34 @@
+<entry>
+
+  <title>
+    {{ entry.title }}
+    {% if isExternalWriting or isLink %}→{% endif %}
+  </title>
+  <link rel="alternate" type="text/html" href="{{ entryURL }}" />
+  <id>{{ entryURL }}</id>
+  <published>{{ entry.postDate.atom }}</published>
+  <updated>{{ entry.dateUpdated.atom }}</updated>
+  <author>
+    <name>Eugene Fedorenko</name>
+    <email>{{ entry.author.email }}</email>
+  </author>
+
+  <content type="html" xml:lang="en" xml:base="{{ siteUrl }}"><![CDATA[
+
+    {% if isExternalWriting %}
+      <small>Published at {{ entry.postSource.label }}</small>
+    {% endif %}
+
+    {% if isLink and entry.readingAuthor != '' %}
+      <small>By {{ entry.readingAuthor }}</small>
+    {% endif %}
+
+    {% if isLink %}
+      {{ entry.body }}
+    {% else %}
+      {{ entry.excerpt}}
+    {% endif %}
+
+  ]]></content>
+</entry>
+

@@ -3,6 +3,10 @@
 {% set title = entry.title ~ ' | Eugene Fedorenko' %}
 {% set metaDesc = entry.metaDesc %}
 
+{% block headMeta %}
+  <link rel="alternate" href="{{ url('reading') }}/feed.atom" type="application/atom+xml" title="What Eugene is reading">
+{% endblock %}
+
 {% block content %}
 
   <div class="u-container u-container--narrow">

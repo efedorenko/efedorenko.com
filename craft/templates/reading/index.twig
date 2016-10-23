@@ -4,6 +4,8 @@
 {% set metaDesc = 'Books, articles, and websites that Eugene Fedorenko recently read.' %}
 
 {% block headMeta %}
+  <link rel="alternate" href="{{ url('reading') }}/feed.atom" type="application/atom+xml" title="What Eugene is reading">
+
   {#
   <link rel="alternate" href="{{ url('blog') }}/feed.atom" type="application/atom+xml" title="DeployBot Blog">
 

@@ -1,0 +1,16 @@
+{% extends "_layout-feed.atom" %}
+
+{% set title = 'What Eugene is reading' %}
+{% set altUrl = url('reading') %}
+
+{% block content %}
+
+  {% include 'elements/components/posts/_posts' with {
+    'channel': 'reading',
+    'limit': 10,
+    'type': 'feed',
+    'isPaginationVisible': false
+  } %}
+
+{% endblock %}
+

@@ -5,6 +5,8 @@
 {% set isExternalWriting = (entry.type == 'externalPost') %}
 
 {% block headMeta %}
+  <link rel="alternate" href="{{ url('writing') }}/feed.atom" type="application/atom+xml" title="Writing by Eugene Fedorenko">
+
 {#
   <meta property="og:title" content="{{ title }}">
   <meta property="og:description" content="{{ metaDesc }}">
