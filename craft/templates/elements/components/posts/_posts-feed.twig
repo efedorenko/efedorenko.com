@@ -20,10 +20,10 @@
       <small>By {{ entry.readingAuthor }}</small>
     {% endif %}
 
-    {% if isLink %}
-      {{ entry.body }}
+    {% if isExternalWriting %}
+      {{ entry.excerpt }}
     {% else %}
-      {{ entry.excerpt}}
+      {{ entry.body }}
     {% endif %}
 
   ]]></content>
