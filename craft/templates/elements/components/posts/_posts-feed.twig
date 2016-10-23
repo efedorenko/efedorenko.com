@@ -1,9 +1,6 @@
 <entry>
 
-  <title>
-    {{ entry.title }}
-    {% if isExternalWriting or isLink %}→{% endif %}
-  </title>
+  <title>{{ entry.title }} {% if isExternalWriting or isLink %}→{% endif %}</title>
   <link rel="alternate" type="text/html" href="{{ entryURL }}" />
   <id>{{ entryURL }}</id>
   <published>{{ entry.postDate.atom }}</published>
