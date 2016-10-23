@@ -14,7 +14,9 @@
 
   h1 {
     margin: 0 0 .6em;
-    font: bold 1.4375em/1.4 $f-serif;
+    font-weight: bold;
+    font-size: 1.4375em;
+    line-height: 1.4;
     text-align: center;
 
     @include medium {
@@ -23,7 +25,8 @@
   }
   h2 {
     margin: 2em 0 .8em;
-    font: bold 1.294em $f-serif;
+    font-weight: bold;
+    font-size: 1.294em;
 
   }
   h3 {
@@ -101,7 +104,6 @@
       th,
       td {
         font-size: .75em;
-        font-family: $f-serif;
       }
     }
 
