@@ -13,14 +13,6 @@
   <content type="html" xml:lang="en" xml:base="{{ siteUrl }}"><![CDATA[
 
     {% if isExternalWriting %}
-      <small>Published at {{ entry.postSource.label }}</small>
-    {% endif %}
-
-    {% if isLink and entry.readingAuthor != '' %}
-      <small>By {{ entry.readingAuthor }}</small>
-    {% endif %}
-
-    {% if isExternalWriting %}
       {{ entry.excerpt }}
     {% else %}
       {{ entry.body }}
