@@ -4,6 +4,14 @@
 {% set metaDesc = entry.metaDesc %}
 
 {% block headMeta %}
+  {% include 'elements/components/open-graph/_open-graph' with {
+    'url': entry.url,
+    'title': entry.title,
+    'description': entry.metaDesc,
+    'image': entry.type == 'book' and entry.bookCover.total() ? entry.bookCover[0] : null
+  } only %}
+
+  <link rel="canonical" href="{{ entry.url }}">
   <link rel="alternate" href="{{ url('reading') }}/feed.atom" type="application/atom+xml" title="What Eugene is reading">
 {% endblock %}
 

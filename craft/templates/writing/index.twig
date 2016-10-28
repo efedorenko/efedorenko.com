@@ -4,15 +4,14 @@
 {% set metaDesc = 'Collection of blog posts and articles written by Eugene Fedorenko and published at various websites.' %}
 
 {% block headMeta %}
-  <link rel="alternate" href="{{ url('writing') }}/feed.atom" type="application/atom+xml" title="Writing by Eugene Fedorenko">
+  {% include 'elements/components/open-graph/_open-graph' with {
+    'url': url('writing'),
+    'title': title,
+    'description': metaDesc
+  } only %}
 
-  {#
-  <meta property="og:title" content="{{ title }}">
-  <meta property="og:description" content="{{ metaDesc }}">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="{{ url('blog') }}">
-  <link rel="canonical" href="{{ url('blog') }}">
-  #}
+  <link rel="canonical" href="{{ url('writing') }}">
+  <link rel="alternate" href="{{ url('writing') }}/feed.atom" type="application/atom+xml" title="Writing by Eugene Fedorenko">
 {% endblock %}
 
 {% block content %}

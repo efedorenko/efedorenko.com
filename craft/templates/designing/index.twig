@@ -5,6 +5,11 @@
 {% set bodyMods = 'c-body--works' %}
 
 {% block headMeta %}
+  {% include 'elements/components/open-graph/_open-graph' with {
+    'url': url('designing'),
+    'title': title,
+    'description': metaDesc
+  } only %}
 {% endblock %}
 
 {% block content %}

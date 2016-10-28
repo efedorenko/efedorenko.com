@@ -1,0 +1,20 @@
+{# Twitter #}
+
+{% set twitterSquare = {
+    mode: 'crop',
+    width: 120,
+    height: 120,
+    quality: 85,
+    position: 'top-center'
+} %}
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@efedorenko">
+<meta name="twitter:creator" content="@efedorenko">
+
+{# Open Graph #}
+
+<meta property="og:url" content="{{ url }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description|default('') }}">
+<meta property="og:image" content="{{ image.getUrl(twitterSquare)|default(siteUrl ~ 'images/og-twitter-card.jpg') }}">

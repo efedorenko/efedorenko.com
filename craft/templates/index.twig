@@ -7,6 +7,12 @@
 <head>
   {% include 'elements/components/head-meta/_head-meta' %}
 
+  {% include 'elements/components/open-graph/_open-graph' with {
+    'url': siteUrl,
+    'title': 'Eugene Fedorenko, Product Designer',
+    'description': metaDesc
+  } only %}
+
   <link rel="alternate" href="{{ url('writing') }}/feed.atom" type="application/atom+xml" title="Writing by Eugene Fedorenko">
   <link rel="alternate" href="{{ url('reading') }}/feed.atom" type="application/atom+xml" title="What Eugene is reading">
 </head>
