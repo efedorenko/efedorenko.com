@@ -1,20 +1,49 @@
-{# Twitter #}
+{#
+  Accepted parameters:
+  'url': string
+  'title': string
+  'description': string
+  'type': string
+  'image': asset or null
+#}
 
-{% set twitterSquare = {
-    mode: 'crop',
-    width: 120,
-    height: 120,
-    quality: 85,
-    position: 'top-center'
-} %}
+<meta property="og:url" content="{{ url }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description|default('') }}">
+<meta property="og:type" content="{{ type|default('website') }}">
+<meta property="og:site_name" content="Eugene Fedorenko">
+
+{# Twitter-specific #}
 
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@efedorenko">
 <meta name="twitter:creator" content="@efedorenko">
 
-{# Open Graph #}
+{#
+  Image
+  Facebook: min 600x315 pixels, but 1200x630 or larger is preferred (up to 5MB). Stay close to a 1.91:1 aspect ratio to avoid cropping.
+  Twitter Summary Card: min 120x120 pixels (up to 1MB).
+  Twitter Summary Card with Large Image: min 280x150 pixels (up to 1MB).
+#}
+{% set largeImage = {
+  mode: 'crop',
+  width: 600,
+  height: 315,
+  quality: 80,
+  position: 'top-center'
+} %}
+{% set summaryCard = {
+  mode: 'crop',
+  width: 240,
+  height: 240,
+  quality: 80,
+  position: 'top-center'
+} %}
 
-<meta property="og:url" content="{{ url }}">
-<meta property="og:title" content="{{ title }}">
-<meta property="og:description" content="{{ description|default('') }}">
-<meta property="og:image" content="{{ image.getUrl(twitterSquare)|default(siteUrl ~ 'images/og-twitter-card.jpg') }}">
+{% set ogTransform = image is defined and image is not null ? largeImage : summaryCard %}
+{% set ogImage = image|default(craft.assets.source('userpic')[0]) %}
+
+<meta property="og:image" content="{{ ogImage.getUrl(ogTransform) }}">
+<meta property="og:image:width" content="{{ ogImage.getWidth(ogTransform) }}">
+<meta property="og:image:height" content="{{ ogImage.getHeight(ogTransform) }}">
+<meta property="og:image:type" content="{{ ogImage.mimeType }}">

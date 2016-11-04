@@ -8,7 +8,8 @@
   {% include 'elements/components/open-graph/_open-graph' with {
     'url': entry.url,
     'title': entry.title,
-    'description': entry.metaDesc
+    'description': entry.metaDesc,
+    'type': 'article'
   } only %}
 
   <meta name="author" content="Eugene Fedorenko">

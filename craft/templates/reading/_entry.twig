@@ -8,6 +8,7 @@
     'url': entry.url,
     'title': entry.title,
     'description': entry.metaDesc,
+    'type': entry.type == 'book' ? 'book' : 'article',
     'image': entry.type == 'book' and entry.bookCover.total() ? entry.bookCover[0] : null
   } only %}
 
