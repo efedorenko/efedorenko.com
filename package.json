@@ -32,7 +32,6 @@
     "start": "gulp watch",
     "build": "gulp",
     "build:production": "gulp production",
-    "cleanup": "gulp cleanup",
     "stylelint": "stylelint --syntax scss 'html/src/stylesheets/**/*.scss'",
     "stylelint-hook": "stylelint --quiet --syntax scss 'html/src/stylesheets/**/*.scss'"
   },
