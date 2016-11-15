@@ -4,6 +4,9 @@
   font-style: italic;
   font-size: .875em;
 
+  &_link {
+    display: inline-block;
+  }
   &_cover {
     display: inline-block;
     width: auto;
