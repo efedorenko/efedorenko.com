@@ -27,17 +27,17 @@ return array(
   /* Live environment */
 
   '107.170.36.109' => array(
-    'siteUrl' => 'http://107.170.36.109/',
+    'siteUrl' => 'https://107.170.36.109/',
     'environmentVariables' => array(
       'basePath' => '/var/www/html/',
-      'baseUrl'  => 'http://107.170.36.109/',
+      'baseUrl'  => 'https://107.170.36.109/',
     )
   ),
 
   'efedorenko.com' => array(
-    'siteUrl' => 'http://efedorenko.com/',
+    'siteUrl' => 'https://efedorenko.com/',
     'environmentVariables' => array(
-      'baseUrl'  => 'http://efedorenko.com/',
+      'baseUrl'  => 'https://efedorenko.com/',
     )
   )
 );
