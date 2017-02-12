@@ -69,6 +69,10 @@
     border-left: 1px solid #EEE;
     padding: .4em 0 .4em 1.6em;
     font-style: italic;
+
+    em, i {
+      font-style: regular;
+    }
   }
   img {
     max-width: 100% !important;
