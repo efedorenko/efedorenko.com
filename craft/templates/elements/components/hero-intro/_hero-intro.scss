@@ -23,7 +23,7 @@
     margin: .66em 0;
     font-weight: 500;
     font-size: 24px;
-    font-size: 1.5rem;
+    font-size: 1.4375rem;
     letter-spacing: -.0075em;
   }
     &_link {
@@ -45,4 +45,9 @@
     &_link--cv {
       color: #BD3F82;
     }
+
+  &_location {
+    color: #808080;
+    font: .8125rem $f-sansserif
+  }
 }
