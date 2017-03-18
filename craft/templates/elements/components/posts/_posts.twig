@@ -14,11 +14,7 @@
   {% set markerUnique = (markerPrev == '' or markerPrev != marker) ? marker : '' %}
   {% set markerPrev = marker %}
 
-  {% if entry.type == 'book' and not entry.bookFinished|length %}
-    {# Do not show unfinished books #}
-  {% else %}
-    {% include 'elements/components/posts/_posts-' ~ type %}
-  {% endif %}
+  {% include 'elements/components/posts/_posts-' ~ type %}
 {% endfor %}
 
 
