@@ -9,7 +9,7 @@
     </a>
     {% for book in currentBooks %}
       {% if book.amazonLink|length %}<a href="{{ book.amazonLink }}" target="_blank" rel="noopener noreferrer" class="c-current-books_link">{% endif %}
-        <img src="{{ book.currentBookCover }}" alt="{{ book.title }}" class="c-current-books_cover">
+        <img src="{{ book.currentBookCover }}" alt="{{ book.title }} by {{ book.readingAuthor }}" title="{{ book.title }} by {{ book.readingAuthor }}" class="c-current-books_cover">
       {% if book.amazonLink|length %}</a>{% endif %}
     {% endfor %}
   </p>
