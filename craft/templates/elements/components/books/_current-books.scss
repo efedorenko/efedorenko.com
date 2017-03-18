@@ -4,6 +4,9 @@
   font-style: italic;
   font-size: .875em;
 
+  &_label {
+    color: inherit;
+  }
   &_link {
     display: inline-block;
   }
@@ -11,9 +14,11 @@
     display: inline-block;
     width: auto;
     height: 35px;
-    margin-left: .5em;
+    margin-left: .33em;
     border: 0;
     vertical-align: bottom;
+    outline: 1px solid rgba(#000, .15);
+    outline-offset: -1px;
   }
 
   &--page-title {
@@ -28,7 +33,6 @@
       .c-current-books_label {
         display: block;
         margin-bottom: .25em;
-        color: #CCC;
       }
       .c-current-books_cover {
         margin-left: 0;
