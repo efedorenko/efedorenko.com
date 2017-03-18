@@ -1,0 +1,63 @@
+{% cache for 3 hours %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+{# Home
+ # -------------------------- #}
+
+  <url>
+    <loc>{{ siteUrl }}</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+
+{# Designing
+ # -------------------------- #}
+
+  <url>
+    <loc>{{ url('designing') }}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+
+{# Writing
+ # -------------------------- #}
+
+  <url>
+    <loc>{{ url('writing') }}</loc>
+    <lastmod>{{ craft.entries.section('writing').order('postDate desc')[0].postDate.w3c() }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+{% for entry in craft.entries.section('writing').limit(none) %}
+  <url>
+    <loc>{{ entry.url }}</loc>
+    <lastmod>{{ entry.postDate.w3c() }}</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+{% endfor %}
+
+
+{# Reading
+ # -------------------------- #}
+
+  <url>
+    <loc>{{ url('reading') }}</loc>
+    <lastmod>{{ craft.entries.section('reading').order('postDate desc')[0].postDate.w3c() }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+{% for entry in craft.entries.section('reading').limit(none) %}
+  <url>
+    <loc>{{ entry.url }}</loc>
+    <lastmod>{{ entry.postDate.w3c() }}</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+{% endfor %}
+
+</urlset> 
+{% endcache %}
