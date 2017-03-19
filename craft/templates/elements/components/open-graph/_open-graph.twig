@@ -42,7 +42,7 @@
   {% set twitterCard = 'summary' %}
 {% endif %}
 
-{% set ogImage = image|default(craft.assets.source('userpic')[0]) %}
+{% set ogImage = image|default(globals.userpic.first()) %}
 
 <meta property="og:image" content="{{ ogImage.getUrl(ogTransform) }}">
 <meta property="og:image:width" content="{{ ogImage.getWidth(ogTransform) }}">

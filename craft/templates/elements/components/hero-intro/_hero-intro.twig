@@ -1,7 +1,19 @@
 <div class="u-container">
   <div class="u-grid u-grid--center u-grid--gutters-s u-grid--gutters-l-at-medium u-grid--full c-hero-intro">
     <div class="u-grid-cell u-grid-cell--1of3-at-medium c-hero-intro_photo">
-      <img src="/images/ef@2x.jpg" alt="Photo of Eugene Fedorenko" class="c-hero-intro_img">
+      {% set userpic = {
+        mode: 'crop',
+        width: 180,
+        height: 180,
+        quality: 90
+      } %}
+      {% set userpic2x = {
+        mode: 'crop',
+        width: 360,
+        height: 360,
+        quality: 90
+      } %}
+      <img src="{{ globals.userpic.first().getUrl(userpic) }}" srcset="{{ globals.userpic.first().getUrl(userpic2x) }} 2x" alt="Photo of Eugene Fedorenko" class="c-hero-intro_img">
     </div>
     <div class="u-grid-cell u-grid-cell--2of3-at-medium">
       <h1 class="c-hero-intro_text"><strong>Eugene Fedorenko</strong> is a product designer at <a href="http://wildbit.com" class="c-hero-intro_link c-hero-intro_link--wb">Wildbit</a>, working primarily on <a href="https://conveyor.com" class="c-hero-intro_link c-hero-intro_link--cv">Conveyor</a> at the moment and <a href="http://beanstalkapp.com" class="c-hero-intro_link c-hero-intro_link--bs">Beanstalk</a>, <a href="https://postmarkapp.com" class="c-hero-intro_link c-hero-intro_link--pm">Postmark</a>, and <a href="https://deploybot.com" class="c-hero-intro_link c-hero-intro_link--db">DeployBot</a> in the past.</h1>
