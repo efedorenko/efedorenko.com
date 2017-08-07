@@ -25,80 +25,58 @@ class TableFeedMeFieldType extends BaseFeedMeFieldType
         $data = Hash::get($fieldData, 'data');
 
         if (empty($data)) {
-            return;
+            return array();
         }
 
-        // When we import a non-repeatable node into a table, we must ensure its treated consistently
-        // Because Table/Row/Column1 is not the same as Table/Row/.../Column1 - it should be the latter
-        if (Hash::dimensions($data) == 2) {
-            foreach ($data as $columnHandle => $row) {
-                //$data[$columnHandle] = array($row);
+        /*foreach (Hash::flatten($data) as $key => $value) {
+            preg_match('/^(col\d+)/', $key, $matches);
+
+            if (isset($matches[1]) && $matches[1] != '') {
+                $index = $matches[1];
+            } else {
+                $index = 0;
             }
-        }
 
-        // And an even more special-case, when use it Matrix 'Matrix/MatrixItem/.../Table/Row/.../Column1'
-        // we need to process it a little differently. Notice the two repeatable nodes.
-        /*if (substr_count($options['feedHandle'][0], '/.../') == 2) {
-            $next = reset($data);
-            $next = reset($next);
-
-            if (is_array($next)) {
-                foreach ($data as $i => $row) {
-                    foreach ($row as $j => $column) {
-                        foreach ($column as $k => $col) {
-                            // Check for false for checkbox
-                            if ($col === 'false') {
-                                $col = null;
-                            }
-
-                            $preppedData[$k][($j+1)][$i] = $col;
-                        }
-                    }
-                }
-
-                return $preppedData;
-            }
+            $parsedData[$index][] = $value;
         }*/
 
+        if (Hash::dimensions($data) == 2) {
+            $data = array($data);
+        }
+
+        // Normalise some data
+        $parsedData = array();
+
+        foreach (Hash::flatten($data) as $key => $value) {
+            preg_match('/^(col\d+).*(\d+)$/', $key, $matches);
+
+            if (isset($matches[1]) && $matches[1] != '') {
+                $index = $matches[2] . '.data.' . $matches[1];
+
+                $parsedData[$index] = $value;
+            } else {
+                $parsedData[$key] = $value;
+            }
+        }
+
+        $data = Hash::expand($parsedData);
+    
         foreach ($data as $i => $row) {
-            if (!isset($row['data'])) {
-                continue;
+            if (isset($row['data'])) {
+                $row = $row['data'];
             }
 
-            if (!is_array($row['data'])) {
-                $row['data'] = array($row['data']);
-            }
-
-            foreach ($row['data'] as $j => $column) {
-                // Check for false for checkbox
-                if ($column === 'false') {
-                    $column = null;
+            foreach ($row as $j => $column) {
+                if (!isset($column['data'])) {
+                    $column = array('data' => $column);
                 }
 
-                // Actually need to invert keys. Feed-mapping will deliver feed data as:
-                // array: {
-                //   col1: {
-                //     0: val,
-                //     1: val,
-                //   }
-                //   col2: {
-                //     0: val,
-                //     1: val,
-                //   }
-                // }
-                // We need to convert this to:
-                // array: {
-                //   0: {
-                //     col1: val,
-                //     col2: val,
-                //   }
-                //   1: {
-                //     col1: val,
-                //     col2: val,
-                //   }
-                // }
+                // Check for false for checkbox
+                if ($column['data'] === 'false') {
+                    $column['data'] = null;
+                }
 
-                $preppedData[($j+1)][$i] = $column;
+                $preppedData[($i)][$j] = $column['data'];
             }
         }
 

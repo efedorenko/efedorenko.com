@@ -25,7 +25,7 @@ class EntriesFeedMeFieldType extends BaseFeedMeFieldType
         $data = Hash::get($fieldData, 'data');
 
         if (empty($data)) {
-            return;
+            return array();
         }
 
         if (!is_array($data)) {
@@ -49,6 +49,8 @@ class EntriesFeedMeFieldType extends BaseFeedMeFieldType
                     $sectionIds[] = $id;
                 }
             }
+        } else if ($sources === '*') {
+            $sectionIds = array($element->sectionId);
         }
 
         // Find existing
@@ -109,14 +111,22 @@ class EntriesFeedMeFieldType extends BaseFeedMeFieldType
                 }
 
                 $preppedData[$fieldHandle] = $data;
+
+                if (craft()->config->get('checkExistingFieldData', 'feedMe')) {
+                    $field = craft()->fields->getFieldByHandle($fieldHandle);
+
+                    craft()->feedMe_fields->checkExistingFieldData($entry, $preppedData, $fieldHandle, $field);
+                }
             }
 
-            $entry->setContentFromPost($preppedData);
+            if ($preppedData) {
+                $entry->setContentFromPost($preppedData);
 
-            if (!craft()->entries->saveEntry($entry)) {
-                FeedMePlugin::log('Entry error: ' . json_encode($entry->getErrors()), LogLevel::Error, true);
-            } else {
-                FeedMePlugin::log('Updated Entry (ID ' . $entryId . ') inner-element with content: ' . json_encode($preppedData), LogLevel::Info, true);
+                if (!craft()->entries->saveEntry($entry)) {
+                    FeedMePlugin::log('Entry error: ' . json_encode($entry->getErrors()), LogLevel::Error, true);
+                } else {
+                    FeedMePlugin::log('Updated Entry (ID ' . $entryId . ') inner-element with content: ' . json_encode($preppedData), LogLevel::Info, true);
+                }
             }
         }
     }
@@ -129,7 +139,7 @@ class EntriesFeedMeFieldType extends BaseFeedMeFieldType
         $element = new EntryModel();
 
         if ($attribute == 'title') {
-            $element->getContent()->title = DbHelper::escapeParam($entry);
+            $element->getContent()->title = $entry;
         } else {
             $element->$attribute = DbHelper::escapeParam($entry);
         }

@@ -74,24 +74,59 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
                     $variantCriteria->limit = null;
                     $variantCriteria->localeEnabled = null;
 
-                    $variantCriteria->$attribute = DbHelper::escapeParam($data['variants']['data'][$attribute]['data']);
+                    // Because a single product can have multiple attached variants - therefore multiple data,
+                    // we only really need the first variant value to find the parent product ID.
+                    $feedValue = Hash::get($data, 'variants.data.0.' . $attribute);
+                    $feedValue = Hash::get($data, 'variants.data.0.' . $attribute . '.data', $feedValue);
+
+                    // Check for single-variant
+                    if (!$feedValue) {
+                        $feedValue = Hash::get($data, 'variants.data.' . $attribute);
+                        $feedValue = Hash::get($data, 'variants.data.' . $attribute . '.data', $feedValue);
+                    }
+
+                    if (!$feedValue) {
+                        FeedMePlugin::log('Commerce Variants: no data for `' . $attribute . '` to match an existing element on. Is data present for this in your feed?', LogLevel::Error, true);
+                        return false;
+                    }
+
+                    $variantCriteria->$attribute = DbHelper::escapeParam($feedValue);
 
                     // Get the variants - interestingly, find()[0] is faster than first()
                     $variants = $variantCriteria->find();
 
                     // Set the Product ID for the criteria from our found variant - thats what we need to update
-                    if (isset($variants[0])) {
+                    if (count($variants)) {
                         $criteria->id = $variants[0]->productId;
+                    } else {
+                        return null;
                     }
                 } else {
-                    $feedValue = Hash::get($data, $handle . '.data', $data[$handle]);
-                    $criteria->$handle = DbHelper::escapeParam($feedValue);
+                    $feedValue = Hash::get($data, $handle);
+                    $feedValue = Hash::get($data, $handle . '.data', $feedValue);
+
+                    if ($handle == 'postDate' || $handle == 'expiryDate') {
+                        $feedValue = FeedMeDateHelper::getDateTimeString($feedValue);
+                    }
+
+                    if ($feedValue) {
+                        $criteria->$handle = DbHelper::escapeParam($feedValue);
+                    } else {
+                        FeedMePlugin::log('Commerce Products: no data for `' . $handle . '` to match an existing element on. Is data present for this in your feed?', LogLevel::Error, true);
+                        return false;
+                    }
                 }
             }
         }
 
         // Check to see if an element already exists - interestingly, find()[0] is faster than first()
-        return $criteria->find();
+        $elements = $criteria->find();
+
+        if (count($elements)) {
+            return $elements[0];
+        }
+
+        return null;
     }
 
     public function delete(array $elements)
@@ -119,9 +154,15 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
             }
 
             if (is_array($value)) {
-                $dataValue = Hash::get($value, 'data', $value);
+                $dataValue = Hash::get($value, 'data', null);
             } else {
                 $dataValue = $value;
+            }
+
+            // Check for any Twig shorthand used
+            if (is_string($dataValue)) {
+                $objectModel = $this->getObjectModel($data);
+                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
             }
             
             switch ($handle) {
@@ -135,7 +176,13 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
                     break;
                 case 'postDate':
                 case 'expiryDate';
-                    $element->$handle = $this->_prepareDateForElement($dataValue);
+                    $dateValue = FeedMeDateHelper::parseString($dataValue);
+
+                    // Ensure there's a parsed data - null will auto-generate a new date
+                    if ($dateValue) {
+                        $element->$handle = $dateValue;
+                    }
+
                     break;
                 case 'enabled':
                 case 'freeShipping':
@@ -219,7 +266,12 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
             return false;
         }
 
-        $variantData = $this->_prepProductData($variantData);
+        // Ensure we handle single-variants correctly
+        $keys = array_keys($variantData);
+
+        if (!is_numeric($keys[0])) {
+            $variantData = array($variantData);
+        }
 
         // Update original data
         $data['variants'] = $variantData;
@@ -244,16 +296,16 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
 
             $variantModel->enabled = Hash::get($variant, 'enabled.data', 1);
             $variantModel->isDefault = Hash::get($variant, 'isDefault.data', 0);
-            $variantModel->sku = Hash::get($variant, 'sku.data');
-            $variantModel->price = Hash::get($variant, 'price.data');
-            $variantModel->width = LocalizationHelper::normalizeNumber(Hash::get($variant, 'width.data'));
-            $variantModel->height = LocalizationHelper::normalizeNumber(Hash::get($variant, 'height.data'));
-            $variantModel->length = LocalizationHelper::normalizeNumber(Hash::get($variant, 'length.data'));
-            $variantModel->weight = LocalizationHelper::normalizeNumber(Hash::get($variant, 'weight.data'));
-            $variantModel->stock = LocalizationHelper::normalizeNumber(Hash::get($variant, 'stock.data'));
-            $variantModel->unlimitedStock = LocalizationHelper::normalizeNumber(Hash::get($variant, 'unlimitedStock.data'));
-            $variantModel->minQty = LocalizationHelper::normalizeNumber(Hash::get($variant, 'minQty.data'));
-            $variantModel->maxQty = LocalizationHelper::normalizeNumber(Hash::get($variant, 'maxQty.data'));
+            $variantModel->sku = Hash::get($variant, 'sku.data', $variantModel->sku);
+            $variantModel->price = Hash::get($variant, 'price.data', $variantModel->price);
+            $variantModel->width = LocalizationHelper::normalizeNumber(Hash::get($variant, 'width.data', $variantModel->width));
+            $variantModel->height = LocalizationHelper::normalizeNumber(Hash::get($variant, 'height.data', $variantModel->height));
+            $variantModel->length = LocalizationHelper::normalizeNumber(Hash::get($variant, 'length.data', $variantModel->length));
+            $variantModel->weight = LocalizationHelper::normalizeNumber(Hash::get($variant, 'weight.data', $variantModel->weight));
+            $variantModel->stock = LocalizationHelper::normalizeNumber(Hash::get($variant, 'stock.data', $variantModel->stock));
+            $variantModel->unlimitedStock = LocalizationHelper::normalizeNumber(Hash::get($variant, 'unlimitedStock.data', $variantModel->unlimitedStock));
+            $variantModel->minQty = LocalizationHelper::normalizeNumber(Hash::get($variant, 'minQty.data', $variantModel->minQty));
+            $variantModel->maxQty = LocalizationHelper::normalizeNumber(Hash::get($variant, 'maxQty.data', $variantModel->maxQty));
 
             $variantModel->sortOrder = $count++;
 
@@ -266,7 +318,19 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
                 $fieldData = Hash::get($variant, $handle);
 
                 if ($fieldData) {
-                    $variantContent[$handle] = craft()->feedMe_fields->prepForFieldType($variantModel, $fieldData, $handle);
+                    // Parse this inner-field's data, just like a regular field
+                    $parsedData = craft()->feedMe_fields->prepForFieldType($variantModel, $fieldData, $handle);
+
+                    // Fire any post-processing for the field type
+                    $posted = craft()->feedMe_fields->postForFieldType($variantModel, $parsedData, $handle, $field);
+
+                    if ($posted) {
+                        $parsedData = $parsedData[$handle];
+                    }
+
+                    if ($parsedData) {
+                        $variantContent[$handle] = $parsedData;
+                    }
                 }
             }
 
@@ -280,110 +344,8 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
         $product->setVariants($variants);
     }
 
-    private function _prepProductData($variantData) {
-        $variants = array();
-
-        // Check for single Variant - thats easy
-        if (Hash::dimensions($variantData) == 2) {
-            return array($variantData);
-        }
-
-        // We need to parse our variant data, because they're stored in a specific way from field-mapping
-        // [title] => Array (
-        //     [data] => Array (
-        //         [0] => Product 1
-        //         [1] => Product 2
-        // )
-        // Into:
-        // [0] => Array (
-        //     [data] => Array (
-        //          [title] => Product 1
-        // )
-        // [1] => Array (
-        //     [data] => Array (
-        //          [title] => Product 2
-        // )
-
-        $flatten = Hash::flatten($variantData);
-
-        $optionsArray = array();
-        $tempVariants = array();
-        foreach ($flatten as $keyedIndex => $value) {
-            $tempArray = explode('.', $keyedIndex);
-
-            // Check for a value for this field...
-            if (!isset($value) || $value === null) {
-                continue;
-            }
-
-            if (is_array($value) && empty($value)) {
-                continue;
-            }
-
-            // Save field options for later - they're a special case
-            if (strstr($keyedIndex, '.options.')) {
-                FeedMeArrayHelper::arraySet($optionsArray, $tempArray, $value);
-            } else {
-                // Extract 'data.[number]' - we need the number for which variant we're talking about
-                preg_match_all('/data.(\d*)/', $keyedIndex, $variantKeys);
-                $fieldHandle = $tempArray[0];
-                $variantKey = $variantKeys[1];
-
-                // Remove the index from inside [data], to the front
-                array_splice($tempArray, 0, 0, $variantKey);
-
-                // Check for nested data (elements, table)
-                if (preg_match('/data.(\d*\.\d*)/', $keyedIndex)) {
-                    //array_pop($tempArray);
-
-                    unset($tempArray[count($tempArray) - 2]);
-                } else {
-                    array_pop($tempArray);
-                }
-
-                // Special case for Table field. This will be refactored once again with field-aware-parsing
-                $field = craft()->fields->getFieldByHandle($fieldHandle);
-
-                if ($field && $field->type == 'Table') {
-                    array_splice($tempArray, 2, 0, 'data');
-                }
-
-                FeedMeArrayHelper::arraySet($variants, $tempArray, $value);
-            }
-        }
-
-        // Put the variants back in place where they should be
-        foreach ($variants as $blockOrder => $blockData) {
-            foreach ($blockData as $blockHandle => $innerData) {
-                $optionData = Hash::get($optionsArray, $blockHandle);
-
-                if ($optionData) {
-                    $variants[$blockOrder][$blockHandle] = Hash::merge($innerData, $optionData);
-                }
-            }
-        }
-
-        return $variants;
-    }
-
     private function _getVariantBySku($sku, $localeId = null)
     {
         return craft()->elements->getCriteria('Commerce_Variant', array('sku' => $sku, 'status' => null, 'locale' => $localeId))->first();
-    }
-
-    private function _prepareDateForElement($date)
-    {
-        $craftDate = null;
-
-        if (!is_array($date)) {
-            $d = date_parse($date);
-            $date_string = date('Y-m-d H:i:s', mktime($d['hour'], $d['minute'], $d['second'], $d['month'], $d['day'], $d['year']));
-
-            $craftDate = DateTime::createFromString($date_string, craft()->timezone);
-        } else {
-            $craftDate = $date;
-        }
-
-        return $craftDate;
     }
 }

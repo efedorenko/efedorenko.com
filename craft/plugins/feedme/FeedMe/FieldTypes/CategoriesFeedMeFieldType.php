@@ -25,7 +25,7 @@ class CategoriesFeedMeFieldType extends BaseFeedMeFieldType
         $data = Hash::get($fieldData, 'data');
 
         if (empty($data)) {
-            return;
+            return array();
         }
 
         if (!is_array($data)) {
@@ -98,14 +98,22 @@ class CategoriesFeedMeFieldType extends BaseFeedMeFieldType
                 }
 
                 $preppedData[$fieldHandle] = $data;
+
+                if (craft()->config->get('checkExistingFieldData', 'feedMe')) {
+                    $field = craft()->fields->getFieldByHandle($fieldHandle);
+
+                    craft()->feedMe_fields->checkExistingFieldData($category, $preppedData, $fieldHandle, $field);
+                }
             }
 
-            $category->setContentFromPost($preppedData);
+            if ($preppedData) {
+                $category->setContentFromPost($preppedData);
 
-            if (!craft()->categories->saveCategory($category)) {
-                FeedMePlugin::log('Category error: ' . json_encode($category->getErrors()), LogLevel::Error, true);
-            } else {
-                FeedMePlugin::log('Updated Category (ID ' . $categoryId . ') inner-element with content: ' . json_encode($preppedData), LogLevel::Info, true);
+                if (!craft()->categories->saveCategory($category)) {
+                    FeedMePlugin::log('Category error: ' . json_encode($category->getErrors()), LogLevel::Error, true);
+                } else {
+                    FeedMePlugin::log('Updated Category (ID ' . $categoryId . ') inner-element with content: ' . json_encode($preppedData), LogLevel::Info, true);
+                }
             }
         }
     }

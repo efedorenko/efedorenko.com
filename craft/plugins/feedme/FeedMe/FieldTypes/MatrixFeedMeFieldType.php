@@ -21,89 +21,62 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
     public function prepFieldData($element, $field, $fieldData, $handle, $options)
     {
         $preppedData = array();
-        $sortedData = array();
 
         $data = Hash::get($fieldData, 'data');
 
         if (empty($data)) {
-            return;
+            return array();
         }
-
-        // Because of how mapping works, we need to do some extra work here, which is a pain!
-        // This is to ensure blocks are ordered as they are provided. Data will be provided as:
-        // blockhandle = [
-        //   fieldHandle = [
-        //     orderIndex = [
-        //       data
-        //     ]
-        //   ]
-        // ]
-        //
-        // We change it to:
-        //
-        // orderIndex = [
-        //   blockhandle = [
-        //     orderIndex = [
-        //       data
-        //     ]
-        //   ]
-        // ]
-        //
-        $optionsArray = array();
-        $flatten = Hash::flatten($data);
-
-        foreach ($flatten as $keyedIndex => $value) {
-            $tempArray = explode('.', $keyedIndex);
-
-            // Save field options for later - they're a special case
-            if (strstr($keyedIndex, '.options.')) {
-                FeedMeArrayHelper::arraySet($optionsArray, $tempArray, $value);
-            } else {
-                preg_match_all('/data.(\d*)/', $keyedIndex, $blockKeys);
-                $blockKey = $blockKeys[1];
-    
-                // Single Row
-                if (!$blockKey) {
-                    $tempArray[] = 0;
-                    $blockKey = count($tempArray) - 1;
-                }
-
-                // Remove the index from inside [data], to the front
-                array_splice($tempArray, 0, 0, $blockKey);
-
-                // Check for nested data (elements, table)
-                if (preg_match('/data.(\d*\.\d*)/', $keyedIndex)) {
-                    unset($tempArray[count($tempArray) - 2]);
-                } else {
-                    array_pop($tempArray);
-                }
-
-                FeedMeArrayHelper::arraySet($sortedData, $tempArray, $value);
-            }
-        }
-
-        // Now a special case for field options. Because of the way field-mapping stored them, we need to
-        // loop through and apply across all blocks of this type. This also makes field-processing easier
-        foreach ($sortedData as $blockOrder => $blockData) {
-            foreach ($blockData as $blockHandle => $innerData) {
-                $optionData = Hash::get($optionsArray, $blockHandle);
-
-                if ($optionData) {
-                    $sortedData[$blockOrder][$blockHandle] = Hash::merge($innerData, $optionData);
-                }
-            }
-        }
-
-        // Sort by the new ordering we've set
-        ksort($sortedData);
 
         // Store the fields for this Matrix - can't use the fields service due to context
         $blockTypes = craft()->matrix->getBlockTypesByFieldId($field->id, 'handle');
 
-        $count = 0;
-        $allPreppedFieldData = array();
+        // Ensure when importing only one block thats its treated correctly.
+        $keys = array_keys($data);
 
-        foreach ($sortedData as $sortKey => $sortData) {
+        if (!is_numeric($keys[0])) {
+            $data = array($data);
+        }
+
+        // If we've got Matrix data like 0.0.blockHandle.fieldHandle - then we've got a problem.
+        // Commonly, this will be due to a field being referenced outside of inner-repeatable Matrix data.
+        $hasOrphanedData = false;
+
+        foreach (Hash::flatten($data) as $key => $value) {
+            if (preg_match('/^\d+\.\d+/', $key)) {
+                $hasOrphanedData = true;
+                break;
+            }
+        }
+
+        if ($hasOrphanedData) {
+            $seperateBlockData = array();
+
+            foreach ($data as $sortKey => $sortData) {
+                foreach ($sortData as $blockHandle => $blockFieldData) {
+                    if (!is_numeric($blockHandle)) {
+                        $seperateBlockData[$blockHandle] = $blockFieldData;
+
+                        unset($data[$sortKey][$blockHandle]);
+                    }
+                }
+            }
+
+            // Now, append this content to each block that we're importing, so it gets sorted out properly
+            if ($seperateBlockData) {
+                foreach ($data as $sortKey => $sortData) {
+                    foreach ($sortData as $blockHandle => $blockFieldData) {
+                        $data[$sortKey][$blockHandle] = array_merge_recursive($blockFieldData, $seperateBlockData);
+                    }
+                }
+
+                $data = $data[0];
+            }
+        }
+
+        foreach ($data as $sortKey => $sortData) {
+            $preppedFieldData = array();
+
             foreach ($sortData as $blockHandle => $blockFieldData) {
                 foreach ($blockFieldData as $blockFieldHandle => $blockFieldContent) {
 
@@ -124,52 +97,35 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
                         'field' => $subField,
                     );
 
-                    // Special-case for Table - this is not great...
+                    // Special-case for table!
                     if ($subField->type == 'Table') {
-                        $blockFieldContent['data'] = $blockFieldContent;
+                        $blockFieldContent = array('data' => $blockFieldContent);
                     }
 
                     // Parse this inner-field's data, just like a regular field
                     $parsedData = craft()->feedMe_fields->prepForFieldType(null, $blockFieldContent, $blockFieldHandle, $fieldOptions);
 
+                    // Fire any post-processing for the field type
+                    $posted = craft()->feedMe_fields->postForFieldType(null, $parsedData, $blockFieldHandle, $subField);
+
+                    if ($posted) {
+                        $parsedData = $parsedData[$blockFieldHandle];
+                    }
+
                     if ($parsedData) {
-                        // Special-case for inner table - not a great solution at the moment, needs to be more flexible
-                        /*if ($subField->type == 'Table') {
-                            foreach ($parsedData as $i => $tableFieldRow) {
-                                $next = reset($tableFieldRow);
-
-                                if (!is_array($next)) {
-                                    $tableFieldRow = array($i => $tableFieldRow);
-                                }
-
-                                foreach ($tableFieldRow as $j => $tableFieldColumns) {
-                                    foreach ($tableFieldColumns as $k => $tableFieldColumn) {
-                                        $allPreppedFieldData[$k][$blockHandle][$blockFieldHandle][$j][$sortKey] = $tableFieldColumn;
-                                    }
-                                }
-                            }
-                        } else {*/
-                            $allPreppedFieldData[$sortKey][$blockHandle][$blockFieldHandle] = $parsedData;
-                        //}
+                        $preppedFieldData[$blockFieldHandle] = $parsedData;
                     }
                 }
             }
-        }
 
-        // Now we've got a bit more sane data - its a simple (regular) import
-        if ($allPreppedFieldData) {
-            foreach ($allPreppedFieldData as $key => $preppedBlockFieldData) {
-                foreach ($preppedBlockFieldData as $blockHandle => $preppedFieldData) {
-                    $preppedData['new'.($count+1)] = array(
-                        'type' => $blockHandle,
-                        'order' => ($count+1),
-                        'enabled' => true,
-                        'fields' => $preppedFieldData,
-                    );
+            $order = $sortKey + 1;
 
-                    $count++;
-                }
-            }
+            $preppedData['new' . $order] = array(
+                'type' => $blockHandle,
+                'order' => $order,
+                'enabled' => true,
+                'fields' => $preppedFieldData,
+            );
         }
 
         return $preppedData;
@@ -177,10 +133,10 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
 
     // Allows us to smartly-check to look at existing Matrix fields for an element, and whether data has changed or not.
     // No need to update Matrix blocks unless content has changed, which causes needless new elements to be created.
-    public function postFieldData($element, $field, &$data, $handle)
+    public function checkExistingFieldData($element, $field, &$feedData, $handle)
     {
         $existingFieldData = array();
-        $fieldData = $data[$handle];
+        $fieldData = Hash::get($feedData, $handle);
 
         // Get our Matrix blocks from the existing element
         $blocks = $element->getFieldValue($field->handle);
@@ -214,13 +170,12 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
             );
         }
 
-
         // Now, we should have identically formatted existing content to how we're about to import.
         // Simply see if the arrays match exactly - size and attributes must be identical
         if ($existingFieldData == $fieldData) {
             // If they do equal, then nothing has changed from existing content. Se, we want to remove our mapped
             // data from the feed entirely, so the element doesn't get updated (because it doesn't need to),
-            unset($data[$handle]);
+            unset($feedData[$handle]);
         }
     }
     

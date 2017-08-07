@@ -71,16 +71,26 @@ class UserFeedMeElementType extends BaseFeedMeElementType
     {
         foreach ($settings['fieldUnique'] as $handle => $value) {
             if ((int)$value === 1) {
-                $feedValue = Hash::get($data, $handle . '.data', $data[$handle]);
+                $feedValue = Hash::get($data, $handle);
+                $feedValue = Hash::get($data, $handle . '.data', $feedValue);
 
                 if ($feedValue) {
                     $criteria->$handle = DbHelper::escapeParam($feedValue);
+                } else {
+                    FeedMePlugin::log('User: no data for `' . $handle . '` to match an existing element on. Is data present for this in your feed?', LogLevel::Error, true);
+                    return false;
                 }
             }
         }
 
         // Check to see if an element already exists - interestingly, find()[0] is faster than first()
-        return $criteria->find();
+        $elements = $criteria->find();
+
+        if (count($elements)) {
+            return $elements[0];
+        }
+
+        return null;
     }
 
     public function delete(array $elements)
@@ -109,9 +119,15 @@ class UserFeedMeElementType extends BaseFeedMeElementType
             }
 
             if (is_array($value)) {
-                $dataValue = Hash::get($value, 'data', $value);
+                $dataValue = Hash::get($value, 'data', null);
             } else {
                 $dataValue = $value;
+            }
+
+            // Check for any Twig shorthand used
+            if (is_string($dataValue)) {
+                $objectModel = $this->getObjectModel($data);
+                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
             }
             
             switch ($handle) {
@@ -120,10 +136,12 @@ class UserFeedMeElementType extends BaseFeedMeElementType
                 case 'firstName':
                 case 'lastName':
                 case 'email':
-                case 'prefLocale':
+                case 'preferredLocale':
                 case 'newPassword':
-                case 'photo':
                     $element->$handle = $dataValue;
+                    break;
+                case 'photo':
+                    $this->_handleUserPhoto($element, $dataValue);
                     break;
                 case 'status':
                     $this->_setUserStatus($element, $dataValue);
@@ -152,7 +170,23 @@ class UserFeedMeElementType extends BaseFeedMeElementType
         $element->setContentFromPost($data);
         
         if (craft()->users->saveUser($element)) {
-            craft()->userGroups->assignUserToGroups($element->id, $settings['elementGroup']['User']);
+            // Check for any existing groups this user exists on
+            $groups = array();
+
+            if ($element->groups) {
+                foreach ($element->groups as $group) {
+                    $groups[] = $group->id;
+                }
+            }
+
+            $newGroupId = $settings['elementGroup']['User'];
+
+            if (!in_array($newGroupId, $groups)) {
+                $groups[] = $newGroupId;
+            }
+
+            craft()->userGroups->assignUserToGroups($element->id, $groups);
+            
             return true;
         }
 
@@ -167,6 +201,26 @@ class UserFeedMeElementType extends BaseFeedMeElementType
 
     // Private Methods
     // =========================================================================
+
+    private function _handleUserPhoto(UserModel $user, $filename)
+    {
+        $photo = craft()->path->getUserPhotosPath() . $filename;
+
+        if (!IOHelper::fileExists($photo)) {
+            return false;
+        }
+
+        $image = craft()->images->loadImage($photo);
+        $imageWidth = $image->getWidth();
+        $imageHeight = $image->getHeight();
+
+        $dimension = min($imageWidth, $imageHeight);
+        $horizontalMargin = ($imageWidth - $dimension) / 2;
+        $verticalMargin = ($imageHeight - $dimension) / 2;
+        $image->crop($horizontalMargin, $imageWidth - $horizontalMargin, $verticalMargin, $imageHeight - $verticalMargin);
+
+        craft()->users->saveUserPhoto($filename, $image, $user);
+    }
 
     private function _setUserStatus(UserModel $user, $status)
     {

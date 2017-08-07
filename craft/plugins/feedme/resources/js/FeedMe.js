@@ -67,19 +67,26 @@ $(function() {
         }
     }
 
+
     // For Assets, only show the upload options if we decide to upload
     $('.assets-uploads input').on('change', function(e) {
         var $options = $(this).parents('.field-extra-settings').find('.select');
+        var $label = $(this).parents('.field-extra-settings').find('.asset-label-hide');
 
         if ($(this).prop('checked')) {
+            $label.css({ opacity: 1, visibility: 'visible' });
             $options.css({ opacity: 1, visibility: 'visible' });
         } else {
+            $label.css({ opacity: 0, visibility: 'hidden' });
             $options.css({ opacity: 0, visibility: 'hidden' });
         }
     });
 
     // On-load, hide/show upload options
     $('.assets-uploads input').trigger('change');
+
+    // Selectize inputs
+    $('.feedme-mapping select').selectize();
 
 
     // Allow multiple submit actions, that trigger different actions as required
@@ -98,6 +105,14 @@ $(function() {
 
 
 (function() {
+
+var feedMeSuccessHtml = '<div><span data-icon="check"></span> ' +
+        Craft.t('Processing complete!') +
+    '</div>' + 
+    '<div class="feedme-success-btns">' +
+        '<a class="btn submit" href="' + Craft.getUrl('feedme/feeds') + '">Back to Feeds</a>' + 
+        '<a class="btn" href="' + Craft.getUrl('feedme/logs') + '">View logs</a>' + 
+    '</div>';
 
 Craft.FeedMeTaskProgress = Garnish.Base.extend({
     tasksById: null,
@@ -136,7 +151,7 @@ Craft.FeedMeTaskProgress = Garnish.Base.extend({
             newTaskIds.push(taskInfo.id);
         } else {
             // Likely too fast for Craft to register this was even a task!
-            $('.progress-container').html('<div><span data-icon="check"></span> ' + Craft.t('Processing complete!') + '</div>');
+            $('.progress-container').html(feedMeSuccessHtml);
         }
 
         for (var id in this.tasksById) {
@@ -238,7 +253,7 @@ Craft.FeedMeTaskProgress.Task = Garnish.Base.extend({
     complete: function()
     {
         this.$statusContainer.empty();
-        $('<div><span data-icon="check"></span> ' + Craft.t('Processing complete!') + '</div>').appendTo(this.$statusContainer);
+        $(feedMeSuccessHtml).appendTo(this.$statusContainer);
     },
 
     destroy: function() {

@@ -41,7 +41,7 @@ class FeedMe_LicenseService extends BaseApplicationComponent
                 $etResponse = $et->phoneHome();
                 craft()->cache->set($this->pingStateKey, true, $this->pingCacheTime);
 
-                return $this->_handleEtResponse($etResponse);
+                return $this->_handleEtResponse($etResponse, false);
             }
         }
 
@@ -125,13 +125,13 @@ class FeedMe_LicenseService extends BaseApplicationComponent
     public function unregisterLicenseKey()
     {
         $et = new FeedMe_License(static::UnregisterPlugin, $this->pluginHandle, $this->pluginVersion, $this->licenseKey);
-        $etResponse = $et->phoneHome(true);
+        $et->phoneHome(true);
 
         $this->setLicenseKey(null);
         $this->setLicenseKeyStatus(LicenseKeyStatus::Unknown);
         $this->setEdition('0');
 
-        return $this->_handleEtResponse($etResponse);
+        return true;
     }
 
     public function transferLicenseKey()
@@ -155,7 +155,7 @@ class FeedMe_LicenseService extends BaseApplicationComponent
     // Private Methods
     // =========================================================================
 
-    private function _handleEtResponse($etResponse)
+    private function _handleEtResponse($etResponse, $log = true)
     {
         if (!empty($etResponse->data['success'])) {
             // Set the local details
@@ -177,7 +177,9 @@ class FeedMe_LicenseService extends BaseApplicationComponent
                         $this->setLicenseKeyStatus(LicenseKeyStatus::Unknown);
                 }
 
-                FeedMePlugin::log('License error: ' . $etResponse->errors[0], LogLevel::Error, true);
+                if ($log) {
+                    FeedMePlugin::log('License error: ' . $etResponse->errors[0], LogLevel::Error, true);
+                }
             } else {
                 return false;
             }

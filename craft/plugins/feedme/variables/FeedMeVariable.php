@@ -1,6 +1,8 @@
 <?php
 namespace Craft;
 
+use Cake\Utility\Hash as Hash;
+
 class FeedMeVariable
 {
     public function getPlugin()
@@ -37,6 +39,11 @@ class FeedMeVariable
         }
 
         return $values;
+    }
+
+    public function getElementTypes()
+    {
+        return craft()->feedMe->getRegisteredElementTypes();
     }
 
     public function getElementTypeMapping($elementType)
@@ -127,14 +134,29 @@ class FeedMeVariable
         return craft()->commerce_productTypes->getProductTypeById($productTypeId);
     }
 
+    public function getOrderSettings()
+    {
+        return craft()->commerce_orderSettings->getOrderSettingByHandle('order');
+    }
+
 
     // Helper functions for element fields in getting their inner-element field layouts
     public function getAssetFieldLayout($settings)
     {
+        $folderSourceId = null;
+
+        if (!$settings) {
+            return false;
+        }
+
         if (empty($settings['useSingleFolder'])) {
-            $folderSourceId = $settings['defaultUploadLocationSource'];
+            $folderSourceId = Hash::get($settings, 'defaultUploadLocationSource');
         } else {
-            $folderSourceId = $settings['singleUploadLocationSource'];
+            $folderSourceId = Hash::get($settings, 'singleUploadLocationSource');
+        }
+
+        if (!$folderSourceId) {
+            return false;
         }
 
         $source = craft()->assetSources->getSourceById($folderSourceId);
@@ -167,6 +189,40 @@ class FeedMeVariable
         return craft()->fields->getLayoutById($layoutId);
     }
 
+    public function getEntriesFieldLayout($sources)
+    {
+        $sectionIds = array();
+
+        // Because an Entry field can have multiple sources selected, we need to filter a bit
+        if (is_array($sources)) {
+            foreach ($sources as $source) {
+                // When singles is selected as the only option to search in, it doesn't contain any ids...
+                if ($source == 'singles') {
+                    foreach (craft()->sections->getAllSections() as $section) {
+                        if ($section->type == 'single') {
+                            $sectionIds[] = $section->id;
+                        }
+                    }
+                } else {
+                    list($type, $id) = explode(':', $source);
+                    $sectionIds[] = $id;
+                }
+            }
+        }
+
+        if (count($sectionIds)) {
+            $entryType = craft()->sections->getEntryTypesBySectionId($sectionIds[0]);
+
+            if (!$entryType) {
+                return false;
+            }
+
+            // Get the field layout of the first entry type for this section
+            $layoutId = $entryType[0]->fieldLayoutId;
+            return craft()->fields->getLayoutById($layoutId);
+        }
+    }
+
     public function getTagsFieldLayout($tagGroup)
     {
         // Get the Tag Group ID
@@ -185,6 +241,37 @@ class FeedMeVariable
     public function getAssetSourceById($id)
     {
         return craft()->assetSources->getSourceById($id);
+    }
+
+    public function getAssetFolderBySourceId($id)
+    {
+        $folders = craft()->assets->getFolderTreeBySourceIds(array($id));
+
+        $return = array();
+
+        $return[''] = 'Don\'t Import';
+
+        if (is_array($folders)) {
+            foreach ($folders as $folder) {
+                $return[] = array(
+                    'value' => 'root',
+                    'label' => Craft::t('Root Folder'),
+                );
+
+                $children = $folder->getChildren();
+
+                if ($children) {
+                    foreach ($children as $childFolder) {
+                        $return[] = array(
+                            'value' => $childFolder['name'],
+                            'label' => $childFolder['name'],
+                        );
+                    }
+                }
+            }
+        }
+
+        return $return;
     }
 
     public function getClientUsers()

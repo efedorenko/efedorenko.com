@@ -62,16 +62,30 @@ class AssetFeedMeElementType extends BaseFeedMeElementType
     {
         foreach ($settings['fieldUnique'] as $handle => $value) {
             if ((int)$value === 1) {
-                $feedValue = Hash::get($data, $handle . '.data', $data[$handle]);
+                $feedValue = Hash::get($data, $handle);
+                $feedValue = Hash::get($data, $handle . '.data', $feedValue);
+
+                if ($handle == 'dateModified') {
+                    $feedValue = FeedMeDateHelper::getDateTimeString($feedValue);
+                }
 
                 if ($feedValue) {
                     $criteria->$handle = DbHelper::escapeParam($feedValue);
+                } else {
+                    FeedMePlugin::log('Asset: no data for `' . $handle . '` to match an existing element on. Is data present for this in your feed?', LogLevel::Error, true);
+                    return false;
                 }
             }
         }
 
         // Check to see if an element already exists - interestingly, find()[0] is faster than first()
-        return $criteria->find();
+        $elements = $criteria->find();
+
+        if (count($elements)) {
+            return $elements[0];
+        }
+
+        return null;
     }
 
     public function delete(array $elements)
@@ -89,13 +103,9 @@ class AssetFeedMeElementType extends BaseFeedMeElementType
             $folder = craft()->assets->getRootFolderBySourceId($element->sourceId);
             $urlData = $fieldData['data'];
 
-            // Check config settings if we need to clean url
-            if (craft()->config->get('cleanAssetUrls', 'feedMe')) {
-                $urlData = UrlHelper::stripQueryString($urlData);
+            if (isset($data['folderName'])) {
+                $fieldData['options']['folderPath'] = $data['folderName']['data'];
             }
-
-            // Cleanup filenames to match Craft Assets
-            $urlData = str_replace(',', '\,', $urlData);
 
             $fileId = $service->fetchRemoteImage($urlData, $folder->id, $fieldData['options']);
 
@@ -111,7 +121,7 @@ class AssetFeedMeElementType extends BaseFeedMeElementType
                 }
 
                 if (is_array($value)) {
-                    $dataValue = Hash::get($value, 'data', $value);
+                    $dataValue = Hash::get($value, 'data', null);
                 } else {
                     $dataValue = $value;
                 }

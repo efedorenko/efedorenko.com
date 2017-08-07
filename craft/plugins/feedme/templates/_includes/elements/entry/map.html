@@ -54,6 +54,11 @@
     label: 'Slug' | t,
     handle: 'slug',
     instructions: 'If not set, the Slug will be automatically created from Title.' | t,
+    default: forms.textField({
+        id: 'fieldDefaults-slug',
+        name: 'fieldDefaults[slug]',
+        value: feed.fieldDefaults.slug ?? '',
+    }),
 }, parentField, {
     label: 'Post Date' | t,
     handle: 'postDate',
@@ -86,7 +91,27 @@
             { label: 'Disabled', value: '0' },
         ],
     }),
-}, {
+}] %}
+
+{% if craft.isLocalized() %}
+    {% set fields = fields | merge([{
+        label: 'Locale Status' | t,
+        handle: 'localeEnabled',
+        instructions: 'Choose whether this entry should be enabled for this locale. This settings is in addition to the overall Entry Status above.' | t,
+        default: forms.selectField({
+            id: 'fieldDefaults-localeEnabled',
+            name: 'fieldDefaults[localeEnabled]',
+            value: feed.fieldDefaults.localeEnabled is defined ? feed.fieldDefaults.localeEnabled : '',
+            options: [
+                { label: 'Don\'t import', value: '' },
+                { label: 'Enabled', value: '1' },
+                { label: 'Disabled', value: '0' },
+            ],
+        })
+    }]) %}
+{% endif %}
+
+{% set fields = fields | merge([{
     label: 'Author' | t,
     handle: 'authorId',
     instructions: 'Entries will be assigned to the user in this field. If the field does not match any existing member, the default author will be assigned.' | t,
@@ -100,7 +125,12 @@
     label: 'Entry ID' | t,
     handle: 'id',
     instructions: '<strong class="error">Warning: </strong>This should only be used for an existing Craft Entry ID.' | t,
-}] %}
+    default: forms.textField({
+        id: 'fieldDefaults-id',
+        name: 'fieldDefaults[id]',
+        value: feed.fieldDefaults.id ?? '',
+    }),
+}]) %}
 
 <h2>{{ 'Entry Fields' | t }}</h2>
 

@@ -33,35 +33,43 @@
 
     <td class="col-default">
         <div class="default-fields">
-            
+            {% namespace 'fieldDefaults' %}
+                {{ forms.textField({
+                    id: fieldHandle,
+                    name: fieldHandle,
+                    value: feed.fieldDefaults[fieldHandle] ?? '',
+                }) }}
+            {% endnamespace %}
         </div>
     </td>
 </tr>
 
 {% if parentElementField is not defined %}
-    {% set fieldLayout = craft.feedMe.getTagsFieldLayout(field.settings.source) %}
+    {% if field.settings.source is defined %}
+        {% set fieldLayout = craft.feedMe.getTagsFieldLayout(field.settings.source) %}
 
-    {% if fieldLayout %}
-        {% for fieldtype in fieldLayout.getFields() %}
-            {% set innerField = fieldtype.getField() %}
+        {% if fieldLayout %}
+            {% for fieldtype in fieldLayout.getFields() %}
+                {% set innerField = fieldtype.getField() %}
 
-            {# Lets not allow a few fields at this time - itself for recursive reasons, and Matrix because :O #}
-            {% if innerField.type in supportedSubElementFields and elementType != 'Tag' %}
-                {% set handleFieldPrefix = (handlePrefix is defined) ? handlePrefix : '' %}
-                
-                {% set variables = {
-                    field: innerField,
-                    feed: feed,
-                    feedData: feedData,
-                    handlePrefix: handleFieldPrefix ~ field.handle ~ '-fields-',
-                    labelName: innerField.name,
-                    labelHandle: innerField.handle,
-                    isSubElementField: true,
-                } %}
-                
-                {% include 'feedme/_includes/field' with variables %}
-            {% endif %}
-        {% endfor %}
+                {# Lets not allow a few fields at this time - itself for recursive reasons, and Matrix because :O #}
+                {% if innerField.type in supportedSubElementFields and elementType != 'Tag' %}
+                    {% set handleFieldPrefix = (handlePrefix is defined) ? handlePrefix : '' %}
+                    
+                    {% set variables = {
+                        field: innerField,
+                        feed: feed,
+                        feedData: feedData,
+                        handlePrefix: handleFieldPrefix ~ field.handle ~ '-fields-',
+                        labelName: innerField.name,
+                        labelHandle: innerField.handle,
+                        isSubElementField: true,
+                    } %}
+                    
+                    {% include 'feedme/_includes/field' with variables %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
 {% endif %}
 

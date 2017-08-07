@@ -49,7 +49,7 @@
         instructions: 'Choose what type of feed you\'re retrieving.' | t,
         id: 'feedType',
         name: 'feedType',
-        options: {'xml': 'XML Feed', 'rss': 'RSS Feed', 'atom': 'ATOM Feed', 'json': 'JSON Feed'},
+        options: feedTypes,
         value: feed.feedType,
         errors: feed.getErrors('feedType'),
         required: true,
@@ -67,9 +67,11 @@
 
     <hr>
 
+    {% set feedMeElementTypes = craft.feedMe.getElementTypes() %}
+
     {% set elementTypes = [] %}
     {% for elementType in craft.elements.getAllElementTypes %}
-        {% if craft.feedMe.getElementTypeGroups(elementType.classHandle) %}
+        {% if feedMeElementTypes[elementType.classHandle] is defined %}
             {% set elementTypes = elementTypes | merge({ (elementType.classHandle): elementType.name }) %}
         {% endif %}
     {% endfor %}
@@ -122,7 +124,10 @@
                         <strong>{{ "Update existing elements:" | t }}</strong> {{ "Updates elements that match the Unique Identifier (next step)." | t }}
                     </span>
                     <span style="display:inline-block;">
-                        <strong>{{ "Delete old elements:" | t }}</strong> {{ "Deletes elements that are not updated by this feed. Be careful." | t }}
+                        <strong>{{ "Disable missing elements:" | t }}</strong> {{ "Disables any elements that are missing from the feed." | t }}
+                    </span>
+                    <span style="display:inline-block;">
+                        <strong>{{ "Delete missing elements:" | t }}</strong> {{ "Deletes any elements that are missing from the feed. Be careful." | t }}
                     </span>
                 </span>
             </label>
@@ -141,7 +146,8 @@
                 options: {
                     'add': 'Create new elements' | t,
                     'update': 'Update existing elements' | t,
-                    'delete': 'Delete old elements' | t
+                    'disable': 'Disable missing elements' | t,
+                    'delete': 'Delete missing elements' | t
                 },
                 values: feed.duplicateHandle ?? ['add'],
                 required: true,
@@ -169,6 +175,30 @@
         name: 'backup',
         on: (feed.id) ? feed.backup : true,
     }) }}
+
+    <hr>
+
+    {% set directUrl = actionUrl('/feedMe/feeds/runTask', { direct: true, feedId: feed.id, passkey: feed.passkey }) | replace(craft.config.cpTrigger ~ '/', '') %}
+
+    {{ forms.textField({
+        label: 'Direct Feed URL' | t,
+        instructions: 'Copy and paste this URL for direct-access to processing this feed. Commonly used when triggering via a Cron Job.' | t,
+        readonly: true,
+        value: directUrl,
+    }) }}
+
+    <div class="field">
+        <div class="heading">
+            <label>{{ 'Duplicate Feed' | t }}</label>
+            <div class="instructions">
+                <p>{{ 'Quickly duplicate this feed, including all settings and field mappings.' | t }}</p>
+            </div>
+        </div>
+
+        <div class="input ltr">
+            <input type="button" data-action="feedMe/feeds/saveAndDuplicateFeed" class="btn" value="{{ 'Duplicate Feed' | t }}">
+        </div>
+    </div>
 
 {% endblock %}
 

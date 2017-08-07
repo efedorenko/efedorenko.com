@@ -15,6 +15,7 @@ class FeedMe_FeedsController extends BaseController
     public function actionFeedsIndex()
     {
         $variables['feeds'] = craft()->feedMe_feeds->getFeeds();
+        $variables['feedTypes'] = craft()->feedMe->getRegisteredDataTypesDisplayNames();
 
         $this->renderTemplate('feedme/feeds/index', $variables);
     }
@@ -30,6 +31,8 @@ class FeedMe_FeedsController extends BaseController
             }
         }
 
+        $variables['feedTypes'] = craft()->feedMe->getRegisteredDataTypesDisplayNames(' Feed');
+
         $this->renderTemplate('feedme/feeds/_edit', $variables);
     }
 
@@ -37,12 +40,13 @@ class FeedMe_FeedsController extends BaseController
     {
         if (empty($variables['feed'])) {
             $feed = craft()->feedMe_feeds->getFeedById($variables['feedId']);
-            $feedData = craft()->feedMe_data->getFeedMapping($feed->feedType, $feed->feedUrl, $feed->primaryElement, $feed);
+            $feedData = craft()->feedMe_data->getFeed($feed->feedType, $feed->feedUrl, $feed->primaryElement, $feed);
+            $feedRawData = craft()->feedMe_data->getFeedMapping($feedData);
 
             $variables['feed'] = $feed;
 
-            if ($feedData) {
-                $variables['feedRawData'] = $feedData;
+            if ($feedRawData) {
+                $variables['feedRawData'] = $feedRawData;
             }
         }
 
@@ -70,8 +74,17 @@ class FeedMe_FeedsController extends BaseController
 
             $this->renderTemplate('feedme/feeds/_direct', $variables);
         } else {
-            $this->renderTemplate('feedme/feeds/_run', $variables);
+            $this->redirect(craft()->request->urlReferrer);
         }
+    }
+
+    public function actionStatusFeed(array $variables = array())
+    {
+        $feed = craft()->feedMe_feeds->getFeedById($variables['feedId']);
+
+        $variables['feed'] = $feed;
+
+        $this->renderTemplate('feedme/feeds/_status', $variables);
     }
 
     public function actionSaveFeed()
@@ -88,11 +101,24 @@ class FeedMe_FeedsController extends BaseController
         $this->_saveAndRedirect($feed, 'feedme/feeds/map/', true);
     }
 
-    public function actionSaveAndImportFeed()
+    public function actionSaveAndReviewFeed()
     {
         $feed = $this->_getModelFromPost();
 
-        $this->_saveAndRedirect($feed, 'feedme/feeds/run/', true);
+        $this->_saveAndRedirect($feed, 'feedme/feeds/status/', true);
+    }
+
+    public function actionSaveAndDuplicateFeed()
+    {
+        $feed = $this->_getModelFromPost();
+
+        if (craft()->feedMe_feeds->saveFeed($feed)) {
+            craft()->feedMe_feeds->duplicateFeed($feed);
+        }
+
+        craft()->userSession->setNotice(Craft::t('Feed duplicated.'));
+
+        $this->redirect('feedme/feeds');
     }
 
     public function actionDeleteFeed()
@@ -118,8 +144,9 @@ class FeedMe_FeedsController extends BaseController
     {
         $feedId = craft()->request->getParam('feedId');
         $limit = craft()->request->getParam('limit');
+        $offset = craft()->request->getParam('offset');
 
-        craft()->feedMe_process->debugFeed($feedId, $limit);
+        craft()->feedMe_process->debugFeed($feedId, $limit, $offset);
         craft()->end();
     }
 
@@ -150,6 +177,8 @@ class FeedMe_FeedsController extends BaseController
 
             // if not using the direct param for this request, do UI stuff 
             craft()->userSession->setNotice(Craft::t('Feed processing started.'));
+
+            craft()->userSession->setFlash('runFeed', true);
         }
 
         // If not, are we running directly?

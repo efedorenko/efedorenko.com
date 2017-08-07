@@ -36,6 +36,9 @@ class FeedMe_FieldsService extends BaseApplicationComponent
         if ($field) {
             $service = $this->_getService($field->type);
 
+            // Give the field some context of the owning element
+            $field->getFieldType()->element = $element;
+
             // Get data for the field we're mapping to - can be all sorts of logic here
             return $service->prepFieldData($element, $field, $data, $handle, $options);
         }
@@ -43,10 +46,8 @@ class FeedMe_FieldsService extends BaseApplicationComponent
         return $data;
     }
 
-    public function postForFieldType($element, &$data, $handle)
+    public function postForFieldType($element, &$data, $handle, $field = null)
     {
-        $field = null;
-
         if (isset($this->_fields[$handle])) {
             $field = $this->_fields[$handle];
         }
@@ -54,9 +55,31 @@ class FeedMe_FieldsService extends BaseApplicationComponent
         if ($field) {
             $service = $this->_getService($field->type);
 
+            // Give the field some context of the owning element
+            $field->getFieldType()->element = $element;
+
             // Get data for the field we're mapping to - can be all sorts of logic here
             if (method_exists($service, 'postFieldData')) {
                 return $service->postFieldData($element, $field, $data, $handle);
+            }
+        }
+    }
+
+    public function checkExistingFieldData($element, &$data, $handle, $field = null)
+    {
+        if (isset($this->_fields[$handle])) {
+            $field = $this->_fields[$handle];
+        }
+
+        if ($field) {
+            $service = $this->_getService($field->type);
+
+            // Give the field some context of the owning element
+            $field->getFieldType()->element = $element;
+
+            // Get data for the field we're mapping to - can be all sorts of logic here
+            if (method_exists($service, 'checkExistingFieldData')) {
+                return $service->checkExistingFieldData($element, $field, $data, $handle);
             }
         }
     }

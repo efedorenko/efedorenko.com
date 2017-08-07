@@ -16,6 +16,11 @@
     label: 'Slug',
     handle: 'slug',
     instructions: 'If not set, the Slug will be automatically created from Title.' | t,
+    default: forms.textField({
+        id: 'fieldDefaults-slug',
+        name: 'fieldDefaults[slug]',
+        value: feed.fieldDefaults.slug ?? '',
+    })
 }, {
     label: 'Post Date',
     handle: 'postDate',
@@ -86,6 +91,11 @@
     label: 'Product ID' | t,
     handle: 'id',
     instructions: '<strong class="error">Warning: </strong>This should only be used for an existing Craft Commerce Product ID.' | t,
+    default: forms.textField({
+        id: 'fieldDefaults-id',
+        name: 'fieldDefaults[id]',
+        value: feed.fieldDefaults.id ?? '',
+    }),
 }] %}
 
 
@@ -104,16 +114,31 @@
     handle: 'variant-sku',
     name: 'variants--sku',
     value: feed.fieldMapping['variants--sku'] ?? '',
+    default: forms.textField({
+        id: 'fieldDefaults-variants--sku',
+        name: 'fieldDefaults[variants--sku]',
+        value: feed.fieldDefaults['variants--sku'] ?? '',
+    })
 }, {
     label: 'Price' | t,
     handle: 'variant-price',
     name: 'variants--price',
     value: feed.fieldMapping['variants--price'] ?? '',
+    default: forms.textField({
+        id: 'fieldDefaults-variants--price',
+        name: 'fieldDefaults[variants--price]',
+        value: feed.fieldDefaults['variants--price'] ?? '',
+    })
 }, {
     label: 'Stock' | t,
     handle: 'variant-stock',
     name: 'variants--stock',
     value: feed.fieldMapping['variants--stock'] ?? '',
+    default: forms.textField({
+        id: 'fieldDefaults-variants--stock',
+        name: 'fieldDefaults[variants--stock]',
+        value: feed.fieldDefaults['variants--stock'] ?? '',
+    })
 }, {
     label: 'Unlimited Stock' | t,
     handle: 'variant-unlimitedStock',
@@ -284,7 +309,10 @@
     {# Special-case for a few attributes - we need to select the default #}
     {% set handle = field.handle | replace('variant-', '') %}
 
-    {% set uniqueFields = uniqueFields | merge([{ label: 'Variant ' ~ field.label, handle: field.name }]) %}
+    {# Only the Variant SKU is supported as an element criteria attribute for a Variant element #}
+    {% if field.handle == 'variant-sku' %}
+        {% set uniqueFields = uniqueFields | merge([{ label: 'Variant ' ~ field.label, handle: field.name }]) %}
+    {% endif %}
 {% endfor %}
 
 {% for tab in craft.fields.getLayoutById(productType.fieldLayoutId).getTabs() %}

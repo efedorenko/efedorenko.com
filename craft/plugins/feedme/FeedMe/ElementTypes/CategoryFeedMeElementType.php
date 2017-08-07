@@ -62,16 +62,26 @@ class CategoryFeedMeElementType extends BaseFeedMeElementType
     {
         foreach ($settings['fieldUnique'] as $handle => $value) {
             if ((int)$value === 1) {
-                $feedValue = Hash::get($data, $handle . '.data', $data[$handle]);
+                $feedValue = Hash::get($data, $handle);
+                $feedValue = Hash::get($data, $handle . '.data', $feedValue);
 
                 if ($feedValue) {
                     $criteria->$handle = DbHelper::escapeParam($feedValue);
+                } else {
+                    FeedMePlugin::log('Category: no data for `' . $handle . '` to match an existing element on. Is data present for this in your feed?', LogLevel::Error, true);
+                    return false;
                 }
             }
         }
 
         // Check to see if an element already exists - interestingly, find()[0] is faster than first()
-        return $criteria->find();
+        $elements = $criteria->find();
+
+        if (count($elements)) {
+            return $elements[0];
+        }
+
+        return null;
     }
 
     public function delete(array $elements)
@@ -91,9 +101,15 @@ class CategoryFeedMeElementType extends BaseFeedMeElementType
             }
 
             if (is_array($value)) {
-                $dataValue = Hash::get($value, 'data', $value);
+                $dataValue = Hash::get($value, 'data', null);
             } else {
                 $dataValue = $value;
+            }
+
+            // Check for any Twig shorthand used
+            if (is_string($dataValue)) {
+                $objectModel = $this->getObjectModel($data);
+                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
             }
 
             switch ($handle) {
@@ -105,6 +121,10 @@ class CategoryFeedMeElementType extends BaseFeedMeElementType
                     break;
                 case 'title':
                     $element->getContent()->$handle = $dataValue;
+                    break;
+                case 'enabled':
+                case 'localeEnabled':
+                    $element->$handle = (bool)$dataValue;
                     break;
                 default:
                     continue 2;

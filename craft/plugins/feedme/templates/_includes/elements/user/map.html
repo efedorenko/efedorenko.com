@@ -39,12 +39,27 @@
 }, {
     label: 'Photo',
     handle: 'photo',
+    default: forms.textField({
+        id: 'fieldDefaults-photo',
+        name: 'fieldDefaults[photo]',
+        value: feed.fieldDefaults.photo ?? '',
+    }),
 }, {
     label: 'Preferred Locale',
     handle: 'preferredLocale',
+    default: forms.textField({
+        id: 'fieldDefaults-preferredLocale',
+        name: 'fieldDefaults[preferredLocale]',
+        value: feed.fieldDefaults.preferredLocale ?? '',
+    }),
 }, {
     label: 'Password',
     handle: 'newPassword',
+    default: forms.textField({
+        id: 'fieldDefaults-newPassword',
+        name: 'fieldDefaults[newPassword]',
+        value: feed.fieldDefaults.newPassword ?? '',
+    }),
 }, {
     label: 'Status',
     handle: 'status',
@@ -66,6 +81,11 @@
     label: 'User ID' | t,
     handle: 'id',
     instructions: '<strong class="error">Warning: </strong>This should only be used for an existing Craft User ID.' | t,
+    default: forms.textField({
+        id: 'fieldDefaults-id',
+        name: 'fieldDefaults[id]',
+        value: feed.fieldDefaults.id ?? '',
+    }),
 }] %}
 
 <h2>{{ 'User Fields' | t }}</h2>

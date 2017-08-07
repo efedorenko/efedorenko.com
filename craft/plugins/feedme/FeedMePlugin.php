@@ -19,12 +19,12 @@ class FeedMePlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '2.0.1';
+        return '2.0.7';
     }
 
     public function getSchemaVersion()
     {
-        return '2.0.0';
+        return '2.0.5';
     }
 
     public function getDeveloper()
@@ -71,6 +71,7 @@ class FeedMePlugin extends BasePlugin
             'feedme/feeds/(?P<feedId>\d+)' => array('action' => 'feedMe/feeds/editFeed'),
             'feedme/feeds/map/(?P<feedId>\d+)' => array('action' => 'feedMe/feeds/mapFeed'),
             'feedme/feeds/run/(?P<feedId>\d+)' => array('action' => 'feedMe/feeds/runFeed'),
+            'feedme/feeds/status/(?P<feedId>\d+)' => array('action' => 'feedMe/feeds/statusFeed'),
             'feedme/logs' => array('action' => 'feedMe/logs/logs'),
             'feedme/settings/general' => array('action' => 'feedMe/settings'),
             'feedme/settings/license' => array('action' => 'feedMe/license/edit'),
@@ -129,7 +130,9 @@ class FeedMePlugin extends BasePlugin
     public function registerFeedMeDataTypes()
     {
         return array(
+            new AtomFeedMeDataType(),
             new JsonFeedMeDataType(),
+            new RssFeedMeDataType(),
             new XmlFeedMeDataType(),
         );
     }
@@ -141,6 +144,7 @@ class FeedMePlugin extends BasePlugin
             return array(
                 new AssetFeedMeElementType(),
                 new CategoryFeedMeElementType(),
+                new Commerce_OrderFeedMeElementType(),
                 new Commerce_ProductFeedMeElementType(),
                 new EntryFeedMeElementType(),
                 new UserFeedMeElementType(),

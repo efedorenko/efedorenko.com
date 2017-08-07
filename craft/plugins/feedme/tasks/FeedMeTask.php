@@ -61,14 +61,23 @@ class FeedMeTask extends BaseTask
                 // Fire an "onBeforeProcessFeed" event
                 $event = new Event($this, array('settings' => $this->_feedSettings));
                 craft()->feedMe_process->onBeforeProcessFeed($event);
+
+                // Check for backup
+                if ($this->_feed->backup) {
+                    FeedMePlugin::log($this->_feed->name . ': Starting database backup', LogLevel::Info, true);
+
+                    $backup = craft()->db->backup();
+
+                    FeedMePlugin::log($this->_feed->name . ': Finished database backup', LogLevel::Info, true);
+                }
             }
 
             // Process each feed node
             if (isset($this->_feedData[$step])) {
-                craft()->feedMe_process->processFeed($step, $this->_feedSettings);
+                $element = craft()->feedMe_process->processFeed($step, $this->_feedSettings);
 
                 // Fire an "onStepProcessFeed" event
-                $event = new Event($this, array('settings' => $this->_feedSettings));
+                $event = new Event($this, array('settings' => $this->_feedSettings, 'element' => $element));
                 craft()->feedMe_process->onStepProcessFeed($event);
             } else {
                 FeedMePlugin::log($this->_feed->name . ': FeedMeError', LogLevel::Error, true);
