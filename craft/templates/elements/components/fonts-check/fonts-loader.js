@@ -10,9 +10,13 @@ var cookie = require('fg-cookie');
   var sentinelA = new FontFaceObserver('Sentinel SSm A');
   var sentinelB = new FontFaceObserver('Sentinel SSm B');
 
-  Promise.all([sentinelA.load(), sentinelB.load()]).then(function () {
-    console.log('Sentinel is loaded');
-    w.document.documentElement.className += " fonts-loaded";
-    cookie("fonts-loaded", "Sentinel", 7);
-  });
+  Promise
+    .all([sentinelA.load(), sentinelB.load()])
+    .catch((error) => {
+      console.log(`Problem with loading fonts: ${error}`);
+    })
+    .then(function () {
+      w.document.documentElement.className += " fonts-loaded";
+      cookie("fonts-loaded", "Sentinel", 7);
+    });
 }(window));
