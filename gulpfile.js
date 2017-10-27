@@ -25,6 +25,7 @@ var sass = require('gulp-sass');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var cssnano = require('cssnano');
+var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
 var md5 = require("gulp-md5-assets");
 var rename = require('gulp-rename');
@@ -63,6 +64,7 @@ gulp.task('scripts:fonts', function () {
     .bundle()
     .pipe(source('fonts.min.js'))
     .pipe(buffer())
+    .pipe(babel({presets: ['es2015']}))
     .pipe(uglify())
     .pipe(gulp.dest(paths.scripts.dist));
 });
