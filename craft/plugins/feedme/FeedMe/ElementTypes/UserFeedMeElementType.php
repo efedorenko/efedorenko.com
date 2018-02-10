@@ -95,16 +95,21 @@ class UserFeedMeElementType extends BaseFeedMeElementType
 
     public function delete(array $elements)
     {
-        $return = true;
+        $success = true;
 
-        // Delete users
         foreach ($elements as $element) {
             if (!craft()->users->deleteUser($element)) {
-                $return = false;
+                if ($element->getErrors()) {
+                    throw new Exception(json_encode($element->getErrors()));
+                } else {
+                    throw new Exception(Craft::t('Something went wrong while updating elements.'));
+                }
+
+                $success = false;
             }
         }
 
-        return $return;
+        return $success;
     }
 
     public function prepForElementModel(BaseElementModel $element, array &$data, $settings)
@@ -125,10 +130,7 @@ class UserFeedMeElementType extends BaseFeedMeElementType
             }
 
             // Check for any Twig shorthand used
-            if (is_string($dataValue)) {
-                $objectModel = $this->getObjectModel($data);
-                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
-            }
+            $this->parseInlineTwig($data, $dataValue);
             
             switch ($handle) {
                 case 'id':
@@ -139,6 +141,9 @@ class UserFeedMeElementType extends BaseFeedMeElementType
                 case 'preferredLocale':
                 case 'newPassword':
                     $element->$handle = $dataValue;
+                    break;
+                case 'groups':
+                    $this->_handleUserGroups($element, $dataValue);
                     break;
                 case 'photo':
                     $this->_handleUserPhoto($element, $dataValue);
@@ -170,22 +175,12 @@ class UserFeedMeElementType extends BaseFeedMeElementType
         $element->setContentFromPost($data);
         
         if (craft()->users->saveUser($element)) {
-            // Check for any existing groups this user exists on
-            $groups = array();
-
+            // Set user groups, but careful to check if we're actually mapping or using existing ones
             if ($element->groups) {
-                foreach ($element->groups as $group) {
-                    $groups[] = $group->id;
+                if (is_numeric($element->groups[0])) {
+                    craft()->userGroups->assignUserToGroups($element->id, $element->groups);
                 }
             }
-
-            $newGroupId = $settings['elementGroup']['User'];
-
-            if (!in_array($newGroupId, $groups)) {
-                $groups[] = $newGroupId;
-            }
-
-            craft()->userGroups->assignUserToGroups($element->id, $groups);
             
             return true;
         }
@@ -202,12 +197,101 @@ class UserFeedMeElementType extends BaseFeedMeElementType
     // Private Methods
     // =========================================================================
 
-    private function _handleUserPhoto(UserModel $user, $filename)
+    private function _handleUserGroups(UserModel $user, $dataValue)
     {
-        $photo = craft()->path->getUserPhotosPath() . $filename;
+        $groups = array();
 
-        if (!IOHelper::fileExists($photo)) {
-            return false;
+        // Get any existing groups for this user
+        if ($user->groups) {
+            foreach ($user->groups as $group) {
+                if (is_numeric($group)) {
+                    $groups[] = $group;
+                } else {
+                    $groups[] = $group->id;
+                }
+            }
+        }
+
+        if (!is_array($dataValue)) {
+            $dataValue = array($dataValue);
+        }
+
+        foreach ($dataValue as $value) {
+            if (!is_numeric($value)) {
+                $result = UserGroupRecord::model()->findByAttributes(array('name' => $value));
+
+                if (!$result) {
+                    $result = UserGroupRecord::model()->findByAttributes(array('handle' => $value));
+                }
+
+                if (!$result) {
+                    continue;
+                }
+
+                $group = UserGroupModel::populateModel($result);
+                $value = $group->id;
+            }
+
+            if (!in_array($value, $groups)) {
+                $groups[] = $value;
+            }
+        }
+
+        $user->groups = $groups;
+
+        return $user;
+    }
+
+    private function _handleUserPhoto(UserModel $user, $dataValue)
+    {
+        $photoPath = craft()->path->getUserPhotosPath();
+
+        // Support for remote-download of image for profile
+        if (UrlHelper::isAbsoluteUrl($dataValue)) {
+            $filename = basename($dataValue);
+
+            $tempPath = craft()->path->getTempPath();
+
+            // Check if the temp path exists first
+            if (!IOHelper::getRealPath($tempPath)) {
+                IOHelper::createFolder($tempPath, craft()->config->get('defaultFolderPermissions'), true);
+
+                if (!IOHelper::getRealPath($tempPath)) {
+                    throw new Exception(Craft::t('Temp folder “{tempPath}” does not exist and could not be created', array('tempPath' => $tempPath)));
+                }
+            }
+
+            $photo = $tempPath . $filename;
+
+            $defaultOptions = array(
+                CURLOPT_FILE => fopen($photo, 'w'),
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_URL => $dataValue,
+                CURLOPT_FAILONERROR => true,
+            );
+
+            $configOptions = craft()->config->get('curlOptions', 'feedMe');
+
+            if ($configOptions) {
+                $opts = $configOptions + $defaultOptions;
+            } else {
+                $opts = $defaultOptions;
+            }
+
+            $ch = curl_init();
+            curl_setopt_array($ch, $opts);
+            $result = curl_exec($ch);
+
+            if (!$result) {
+                return false;
+            }
+        } else {
+            $filename = $dataValue;
+            $photo = $photoPath . $dataValue;
+
+            if (!IOHelper::fileExists($photo)) {
+                return false;
+            }
         }
 
         $image = craft()->images->loadImage($photo);
@@ -220,6 +304,11 @@ class UserFeedMeElementType extends BaseFeedMeElementType
         $image->crop($horizontalMargin, $imageWidth - $horizontalMargin, $verticalMargin, $imageHeight - $verticalMargin);
 
         craft()->users->saveUserPhoto($filename, $image, $user);
+
+        // Cleanup any leftover temp image from remote upload
+        if (UrlHelper::isAbsoluteUrl($dataValue)) {
+            IOHelper::deleteFile($photo, true);
+        }
     }
 
     private function _setUserStatus(UserModel $user, $status)

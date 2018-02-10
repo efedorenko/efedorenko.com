@@ -26,13 +26,14 @@
 
             <div class="field-extra-settings">
                 <div class="element-match">
-                    <span>{{ 'Data provided for this field is:' | t }}</span>
+                    <span>{{ 'Data provided for this entry is:' | t }}</span>
 
                     {{ forms.selectField({
                         name: fieldHandle ~ '-options-match',
                         options: [
-                            { value: 'value', label: 'Value' | t },
-                            { value: 'label', label: 'Label' | t }
+                            { value: 'title', label: 'Title' | t },
+                            { value: 'id', label: 'ID' | t },
+                            { value: 'slug', label: 'Slug' | t },
                         ],
                         value: feed.fieldMapping[fieldHandle ~ '-options-match'] ?? '',
                     }) }}
@@ -53,3 +54,33 @@
         </div>
     </td>
 </tr>
+
+{% if parentElementField is not defined %}
+    {% if field.settings.sources is defined %}
+        {% set fieldLayout = craft.feedMe.getProductsFieldLayout(field.settings.sources) %}
+
+        {% if fieldLayout %}
+            {% for fieldtype in fieldLayout.getFields() %}
+                {% set innerField = fieldtype.getField() %}
+
+                {# Lets not allow a few fields at this time - itself for recursive reasons, and Matrix because :O #}
+                {% if innerField.type in supportedSubElementFields and elementType != 'Commerce_Products' %}
+                    {% set handleFieldPrefix = (handlePrefix is defined) ? handlePrefix : '' %}
+                    
+                    {% set variables = {
+                        field: innerField,
+                        feed: feed,
+                        feedData: feedData,
+                        handlePrefix: handleFieldPrefix ~ field.handle ~ '-fields-',
+                        labelName: innerField.name,
+                        labelHandle: innerField.handle,
+                        isSubElementField: true,
+                    } %}
+                    
+                    {% include 'feedme/_includes/field' with variables %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+

@@ -86,7 +86,21 @@ class CategoryFeedMeElementType extends BaseFeedMeElementType
 
     public function delete(array $elements)
     {
-        return craft()->categories->deleteCategory($elements);
+        $success = true;
+
+        foreach ($elements as $element) {
+            if (!craft()->categories->deleteCategory($element)) {
+                if ($element->getErrors()) {
+                    throw new Exception(json_encode($element->getErrors()));
+                } else {
+                    throw new Exception(Craft::t('Something went wrong while updating elements.'));
+                }
+
+                $success = false;
+            }
+        }
+
+        return $success;
     }
     
     public function prepForElementModel(BaseElementModel $element, array &$data, $settings)
@@ -107,16 +121,17 @@ class CategoryFeedMeElementType extends BaseFeedMeElementType
             }
 
             // Check for any Twig shorthand used
-            if (is_string($dataValue)) {
-                $objectModel = $this->getObjectModel($data);
-                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
-            }
+            $this->parseInlineTwig($data, $dataValue);
 
             switch ($handle) {
                 case 'id';
                     $element->$handle = $dataValue;
                     break;
                 case 'slug':
+                    if (craft()->config->get('limitAutoSlugsToAscii')) {
+                        $dataValue = StringHelper::asciiString($dataValue);
+                    }
+                    
                     $element->$handle = ElementHelper::createSlug($dataValue);
                     break;
                 case 'title':
@@ -124,7 +139,7 @@ class CategoryFeedMeElementType extends BaseFeedMeElementType
                     break;
                 case 'enabled':
                 case 'localeEnabled':
-                    $element->$handle = (bool)$dataValue;
+                    $element->$handle = FeedMeHelper::parseBoolean($dataValue);
                     break;
                 default:
                     continue 2;

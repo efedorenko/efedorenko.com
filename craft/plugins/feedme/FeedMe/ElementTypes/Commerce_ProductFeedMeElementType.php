@@ -131,15 +131,21 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
 
     public function delete(array $elements)
     {
-        $return = true;
+        $success = true;
 
         foreach ($elements as $element) {
             if (!craft()->commerce_products->deleteProduct($element)) {
-                $return = false;
+                if ($element->getErrors()) {
+                    throw new Exception(json_encode($element->getErrors()));
+                } else {
+                    throw new Exception(Craft::t('Something went wrong while updating elements.'));
+                }
+
+                $success = false;
             }
         }
 
-        return $return;
+        return $success;
     }
     
     public function prepForElementModel(BaseElementModel $element, array &$data, $settings)
@@ -160,18 +166,33 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
             }
 
             // Check for any Twig shorthand used
-            if (is_string($dataValue)) {
-                $objectModel = $this->getObjectModel($data);
-                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
-            }
+            $this->parseInlineTwig($data, $dataValue);
             
             switch ($handle) {
                 case 'id';
                 case 'taxCategoryId';
+                    // Support getting category by ID, Name or Handle
+                    $taxCategory = $this->_getTaxCategory($dataValue);
+
+                    if ($taxCategory) {
+                        $element->$handle = $taxCategory->id;
+                    }
+
+                    break;
                 case 'shippingCategoryId';
-                    $element->$handle = $dataValue;
+                    // Support getting category by ID, Name or Handle
+                    $shippingCategory = $this->_getShippingCategory($dataValue);
+
+                    if ($shippingCategory) {
+                        $element->$handle = $shippingCategory->id;
+                    }
+
                     break;
                 case 'slug';
+                    if (craft()->config->get('limitAutoSlugsToAscii')) {
+                        $dataValue = StringHelper::asciiString($dataValue);
+                    }
+                    
                     $element->$handle = ElementHelper::createSlug($dataValue);
                     break;
                 case 'postDate':
@@ -187,7 +208,7 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
                 case 'enabled':
                 case 'freeShipping':
                 case 'promotable':
-                    $element->$handle = (bool)$dataValue;
+                    $element->$handle = FeedMeHelper::parseBoolean($dataValue);
                     break;
                 case 'title':
                     $element->getContent()->$handle = $dataValue;
@@ -257,6 +278,7 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
 
     private function _populateProductVariantModels(Commerce_ProductModel $product, &$data, $settings)
     {
+        $orphanedValues = [];
         $variants = [];
         $count = 1;
 
@@ -269,14 +291,30 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
         // Ensure we handle single-variants correctly
         $keys = array_keys($variantData);
 
-        if (!is_numeric($keys[0])) {
-            $variantData = array($variantData);
+        foreach ($keys as $index => $key) {
+            if (!is_numeric($key)) {
+                // Save for later
+                $orphanedValues[$key] = $variantData[$key];
+
+                // Remove from original data
+                unset($variantData[$key]);
+            }
+        }
+
+        // If we've actually just got a single variant, we've messed with things above, so put all attributes
+        // back to their first variant. This should also move in the defaults as well.
+        if (empty($variantData)) {
+            $variantData = array($orphanedValues);
         }
 
         // Update original data
         $data['variants'] = $variantData;
 
         foreach ($variantData as $key => $variant) {
+            // Check each to add our orphaned data in (if any), which is usually dropped in through
+            // defaults - this is pretty nasty, and will be much better in future Feed Me versions
+            $variant = array_merge($variant, $orphanedValues);
+
             $variantModel = $this->_getVariantBySku($variant['sku']['data']);
 
             if (!$variantModel) {
@@ -336,7 +374,7 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
 
             $variantModel->setContentFromPost($variantContent);
 
-            $variantModel->getContent()->title = Hash::get($variant, 'title.data');
+            $variantModel->getContent()->title = Hash::get($variant, 'title.data', $variantModel->getContent()->title);
 
             $variants[] = $variantModel;
         }
@@ -347,5 +385,49 @@ class Commerce_ProductFeedMeElementType extends BaseFeedMeElementType
     private function _getVariantBySku($sku, $localeId = null)
     {
         return craft()->elements->getCriteria('Commerce_Variant', array('sku' => $sku, 'status' => null, 'locale' => $localeId))->first();
+    }
+
+    private function _getTaxCategory($value)
+    {
+        // Find by ID
+        $result = Commerce_TaxCategoryRecord::model()->findById($value);
+
+        // Find by Name
+        if (!$result) {
+            $result = Commerce_TaxCategoryRecord::model()->findByAttributes(array('name' => $value));
+        }
+
+        // Find by Handle
+        if (!$result) {
+            $result = Commerce_TaxCategoryRecord::model()->findByAttributes(array('handle' => $value));
+        }
+
+        if ($result) {
+            return Commerce_TaxCategoryModel::populateModel($result);
+        }
+
+        return false;
+    }
+
+    private function _getShippingCategory($value)
+    {
+        // Find by ID
+        $result = Commerce_ShippingCategoryRecord::model()->findById($value);
+
+        // Find by Name
+        if (!$result) {
+            $result = Commerce_ShippingCategoryRecord::model()->findByAttributes(array('name' => $value));
+        }
+
+        // Find by Handle
+        if (!$result) {
+            $result = Commerce_ShippingCategoryRecord::model()->findByAttributes(array('handle' => $value));
+        }
+
+        if ($result) {
+            return Commerce_ShippingCategoryModel::populateModel($result);
+        }
+
+        return false;
     }
 }

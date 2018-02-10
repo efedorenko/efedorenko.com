@@ -26,13 +26,15 @@
 
             <div class="field-extra-settings">
                 <div class="element-match">
-                    <span>{{ 'Data provided for this field is:' | t }}</span>
+                    <span>{{ 'Data provided for this field is formatted as:' | t }}</span>
 
                     {{ forms.selectField({
                         name: fieldHandle ~ '-options-match',
                         options: [
-                            { value: 'value', label: 'Value' | t },
-                            { value: 'label', label: 'Label' | t }
+                            { value: 'auto', label: 'Auto' | t },
+                            { value: 'america', label: 'mm/dd/yyyy' | t },
+                            { value: 'asia', label: 'yyyy/mm/dd' | t },
+                            { value: 'world', label: 'dd/mm/yyyy' | t },
                         ],
                         value: feed.fieldMapping[fieldHandle ~ '-options-match'] ?? '',
                     }) }}

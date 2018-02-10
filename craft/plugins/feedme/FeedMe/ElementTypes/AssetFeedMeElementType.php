@@ -90,7 +90,21 @@ class AssetFeedMeElementType extends BaseFeedMeElementType
 
     public function delete(array $elements)
     {
-        return craft()->assets->deleteFiles($elements);
+        $success = true;
+
+        foreach ($elements as $element) {
+            if (!craft()->assets->deleteFiles($element)) {
+                if ($element->getErrors()) {
+                    throw new Exception(json_encode($element->getErrors()));
+                } else {
+                    throw new Exception(Craft::t('Something went wrong while updating elements.'));
+                }
+
+                $success = false;
+            }
+        }
+
+        return $success;
     }
     
     public function prepForElementModel(BaseElementModel $element, array &$data, $settings)
@@ -100,14 +114,18 @@ class AssetFeedMeElementType extends BaseFeedMeElementType
         // Are we uploading a new asset? If so, the element gets created so return that
         if (isset($fieldData['options']['upload'])) {
             $service = craft()->feedMe->getFieldTypeService('Assets');
-            $folder = craft()->assets->getRootFolderBySourceId($element->sourceId);
+            $rootFolder = craft()->assets->getRootFolderBySourceId($element->sourceId);
             $urlData = $fieldData['data'];
 
-            if (isset($data['folderName'])) {
-                $fieldData['options']['folderPath'] = $data['folderName']['data'];
+            $fieldData['options']['rootFolderId'] = $rootFolder->id;
+
+            if (isset($data['folderId'])) {
+                $folderId = $data['folderId']['data'];
+            } else {
+                $folderId = $rootFolder->id;
             }
 
-            $fileId = $service->fetchRemoteImage($urlData, $folder->id, $fieldData['options']);
+            $fileId = $service->fetchRemoteImage($urlData, $folderId, $fieldData['options']);
 
             $element = craft()->assets->getFileById($fileId);
         } else {

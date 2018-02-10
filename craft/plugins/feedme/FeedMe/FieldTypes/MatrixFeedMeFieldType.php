@@ -75,9 +75,11 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
         }
 
         foreach ($data as $sortKey => $sortData) {
-            $preppedFieldData = array();
+            $blockData = array();
 
             foreach ($sortData as $blockHandle => $blockFieldData) {
+                $preppedFieldData = array();
+
                 foreach ($blockFieldData as $blockFieldHandle => $blockFieldContent) {
 
                     // Get the Matrix-contexted field for our regular field-prepping function
@@ -86,6 +88,13 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
                     foreach ($blockType->getFields() as $f) {
                         if ($f->handle == $blockFieldHandle) {
                             $subField = $f;
+                        }
+                    }
+
+                    // Check to see if this is information for a block
+                    if ($blockFieldHandle == 'block') {
+                        foreach ($blockFieldContent as $blockFieldOption => $blockFieldOptionValue) {
+                            $blockData[$blockHandle][$blockFieldOption] = Hash::get($blockFieldOptionValue, 'data');
                         }
                     }
 
@@ -98,7 +107,7 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
                     );
 
                     // Special-case for table!
-                    if ($subField->type == 'Table') {
+                    if ($subField->type == 'Table' || $subField->type == 'SuperTable') {
                         $blockFieldContent = array('data' => $blockFieldContent);
                     }
 
@@ -116,16 +125,23 @@ class MatrixFeedMeFieldType extends BaseFeedMeFieldType
                         $preppedFieldData[$blockFieldHandle] = $parsedData;
                     }
                 }
+
+                if ($preppedFieldData) {
+                    $order = $sortKey + 1;
+                    $enabled = true;
+
+                    if (isset($blockData[$blockHandle]['enabled'])) {
+                        $enabled = FeedMeHelper::parseBoolean($blockData[$blockHandle]['enabled']);
+                    }
+
+                    $preppedData['new' . $order] = array(
+                        'type' => $blockHandle,
+                        'order' => $order,
+                        'enabled' => $enabled,
+                        'fields' => $preppedFieldData,
+                    );
+                }
             }
-
-            $order = $sortKey + 1;
-
-            $preppedData['new' . $order] = array(
-                'type' => $blockHandle,
-                'order' => $order,
-                'enabled' => true,
-                'fields' => $preppedFieldData,
-            );
         }
 
         return $preppedData;

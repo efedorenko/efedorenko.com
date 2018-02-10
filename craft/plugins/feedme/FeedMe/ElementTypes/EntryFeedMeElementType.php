@@ -55,8 +55,17 @@ class EntryFeedMeElementType extends BaseFeedMeElementType
         $element->sectionId = $settings['elementGroup']['Entry']['section'];
         $element->typeId = $settings['elementGroup']['Entry']['entryType'];
 
+        $section = craft()->sections->getSectionById($element->sectionId);
+
         if ($settings['locale']) {
             $element->locale = $settings['locale'];
+        }
+
+        foreach ($element->getLocales() as $localeId => $locale) {
+            if (isset($section->locales[$localeId])) {
+                // $element->localeEnabled = $locale['enabledByDefault'];
+                $element->enabled = $locale['enabledByDefault'];
+            }
         }
 
         // While we're at it - save a list of required fields for later. We only want to do this once
@@ -134,7 +143,21 @@ class EntryFeedMeElementType extends BaseFeedMeElementType
 
     public function delete(array $elements)
     {
-        return craft()->entries->deleteEntry($elements);
+        $success = true;
+
+        foreach ($elements as $element) {
+            if (!craft()->entries->deleteEntry($element)) {
+                if ($element->getErrors()) {
+                    throw new Exception(json_encode($element->getErrors()));
+                } else {
+                    throw new Exception(Craft::t('Something went wrong while updating elements.'));
+                }
+
+                $success = false;
+            }
+        }
+
+        return $success;
     }
 
     public function disable(array $elements)
@@ -169,10 +192,7 @@ class EntryFeedMeElementType extends BaseFeedMeElementType
             }
 
             // Check for any Twig shorthand used
-            if (is_string($dataValue)) {
-                $objectModel = $this->getObjectModel($data);
-                $dataValue = craft()->templates->renderObjectTemplate($dataValue, $objectModel);
-            }
+            $this->parseInlineTwig($data, $dataValue);
 
             switch ($handle) {
                 case 'id';
@@ -182,6 +202,10 @@ class EntryFeedMeElementType extends BaseFeedMeElementType
                     $element->$handle = $this->prepareAuthorForElement($dataValue);
                     break;
                 case 'slug';
+                    if (craft()->config->get('limitAutoSlugsToAscii')) {
+                        $dataValue = StringHelper::asciiString($dataValue);
+                    }
+
                     $element->$handle = ElementHelper::createSlug($dataValue);
                     break;
                 case 'postDate':
@@ -196,7 +220,7 @@ class EntryFeedMeElementType extends BaseFeedMeElementType
                     break;
                 case 'enabled':
                 case 'localeEnabled':
-                    $element->$handle = (bool)$dataValue;
+                    $element->$handle = FeedMeHelper::parseBoolean($dataValue);
                     break;
                 case 'title':
                     $element->getContent()->$handle = $dataValue;
@@ -211,6 +235,9 @@ class EntryFeedMeElementType extends BaseFeedMeElementType
             // Update the original data in our feed - for clarity in debugging
             $data[$handle] = $element->$handle;
         }
+
+        // Locale status should always reference the entry status
+        // $element->localeEnabled = $element->enabled;
 
         // Set default author if not set
         if (!$element->authorId) {

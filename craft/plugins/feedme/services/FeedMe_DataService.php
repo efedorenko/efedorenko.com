@@ -5,6 +5,12 @@ use Cake\Utility\Hash as Hash;
 
 class FeedMe_DataService extends BaseApplicationComponent
 {
+    // Properties
+    // =========================================================================
+
+    private $_headers = array();
+
+
     // Public Methods
     // =========================================================================
 
@@ -133,6 +139,7 @@ class FeedMe_DataService extends BaseApplicationComponent
             CURLOPT_FOLLOWLOCATION => 1,
             CURLOPT_SSL_VERIFYPEER => 0,
             CURLOPT_USERAGENT => craft()->plugins->getPlugin('feedMe')->getName(),
+            CURLOPT_HEADERFUNCTION => array($this, '_handleFeedMeDataHeader'),
         );
 
         $configOptions = craft()->config->get('curlOptions', 'feedMe');
@@ -164,6 +171,42 @@ class FeedMe_DataService extends BaseApplicationComponent
         curl_close($curl);
 
         return $response;
+    }
+
+    public function getFeedHeadersForTemplate($options = array())
+    {
+        $plugin = craft()->plugins->getPlugin('feedMe');
+        $settings = $plugin->getSettings();
+
+        $url = (array_key_exists('url', $options) ? $options['url'] : null);
+        $element = (array_key_exists('element', $options) ? $options['element'] : '');
+        $cache = (array_key_exists('cache', $options) ? $options['cache'] : true);
+        $cacheId = $url . '#headers-' . $element; // cache for this URL and Element Node
+
+        // URL = required
+        if (!$url) {
+            return array();
+        }
+
+        // If cache explicitly set to false, always return latest data
+        if ($cache === false) {
+            return $this->_headers;
+        }
+
+        // We want some caching action!
+        if (is_numeric($cache) || $cache === true) {
+            $cache = (is_numeric($cache)) ? $cache : $settings->cache;
+
+            $cachedRequest = $this->_get($cacheId);
+
+            if ($cachedRequest) {
+                return $cachedRequest;
+            } else {
+                $data = $this->_headers;
+                $this->_set($cacheId, $data, $cache);
+                return $data;
+            }
+        }
     }
 
     public function getFeedForTemplate($options = array())
@@ -198,7 +241,6 @@ class FeedMe_DataService extends BaseApplicationComponent
             } else {
                 $data = craft()->feedMe_data->getFeed($type, $url, $element, null);
                 $this->_set($cacheId, $data, $cache);
-
                 return $data;
             }
         }
@@ -217,6 +259,21 @@ class FeedMe_DataService extends BaseApplicationComponent
     private function _get($url)
     {
         return craft()->cache->get(base64_encode(urlencode($url)));
+    }
+
+    private function _handleFeedMeDataHeader($curl, $header)
+    {
+        $len = strlen($header);
+        $header = explode(':', $header, 2);
+
+        if (count($header) < 2) {
+            return $len;
+        }
+
+        $name = strtolower(trim($header[0]));
+        $this->_headers[$name] = trim($header[1]);
+
+        return $len;
     }
 
 }

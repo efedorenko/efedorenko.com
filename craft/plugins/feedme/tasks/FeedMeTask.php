@@ -64,11 +64,7 @@ class FeedMeTask extends BaseTask
 
                 // Check for backup
                 if ($this->_feed->backup) {
-                    FeedMePlugin::log($this->_feed->name . ': Starting database backup', LogLevel::Info, true);
-
-                    $backup = craft()->db->backup();
-
-                    FeedMePlugin::log($this->_feed->name . ': Finished database backup', LogLevel::Info, true);
+                    craft()->feedMe_process->backupBeforeFeed($this->_feed);
                 }
             }
 
@@ -106,6 +102,9 @@ class FeedMeTask extends BaseTask
                 return false;
             }
         }
+
+        // End the session after each step - this helps the CP against locking up
+        craft()->session->close();
 
         return true;
     }

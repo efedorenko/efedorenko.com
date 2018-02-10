@@ -41,6 +41,10 @@ class FeedMe_ProcessService extends BaseApplicationComponent
 
         craft()->config->maxPowerCaptain();
 
+        // Reset properties to allow an instance of this service to be reused
+        $this->_processedElements = array();
+        $this->_processedElementIds = array();
+
         // Add some additional information to our FeedModel - for ease of use in processing
         $return['fields'] = array();
         $return['existingElements'] = array();
@@ -102,7 +106,7 @@ class FeedMe_ProcessService extends BaseApplicationComponent
         $element = $this->_service->setModel($feed);
 
         // Set criteria according to Element Type 
-        $criteria = $this->_criteria;
+        $criteria = $this->_service->setCriteria($feed);
 
         // From the raw data in our feed, process it ready for mapping (more to do below)
         $data = $this->_data[$step];
@@ -225,12 +229,6 @@ class FeedMe_ProcessService extends BaseApplicationComponent
             if ($elementsToDisable) {
                 if ($this->_service->disable($elementsToDisable)) {
                     FeedMePlugin::log($feed->name . ': The following elements have been disabled: ' . print_r($disableIds, true) . '.', LogLevel::Info, true);
-                } else {
-                    if ($element->getErrors()) {
-                        throw new Exception(json_encode($element->getErrors()));
-                    } else {
-                        throw new Exception(Craft::t('Something went wrong while updating elements.'));
-                    }
                 }
             }
         }
@@ -249,12 +247,6 @@ class FeedMe_ProcessService extends BaseApplicationComponent
             if ($elementsToDelete) {
                 if ($this->_service->delete($elementsToDelete)) {
                     FeedMePlugin::log($feed->name . ': The following elements have been deleted: ' . print_r($deleteIds, true) . '.', LogLevel::Info, true);
-                } else {
-                    if ($element->getErrors()) {
-                        throw new Exception(json_encode($element->getErrors()));
-                    } else {
-                        throw new Exception(Craft::t('Something went wrong while deleting elements.'));
-                    }
                 }
             }
         }
@@ -291,6 +283,11 @@ class FeedMe_ProcessService extends BaseApplicationComponent
             return true;
         }
 
+        // Check for backup
+        if ($feed->backup) {
+            craft()->feedMe_process->backupBeforeFeed($feed);
+        }
+
         foreach ($feedData as $key => $data) {
             $element = craft()->feedMe_process->processFeed($key, $feedSettings);
 
@@ -308,6 +305,38 @@ class FeedMe_ProcessService extends BaseApplicationComponent
         // Fire an "onProcessFeed" event
         $event = new Event($this, array('settings' => $feedSettings));
         craft()->feedMe_process->onProcessFeed($event);
+    }
+
+    public function backupBeforeFeed($feed)
+    {
+        $limit = craft()->config->get('backupLimit', 'feedMe') ? craft()->config->get('backupLimit', 'feedMe') : 100;
+
+        $limit = 2;
+
+        // Check for any existing backups, if more than our limit, we need to kill some off...
+        $currentBackups = glob(craft()->path->getDbBackupPath() . 'feedme-*.sql');
+
+        // Remove all the previous backups, except the amount we want to limit
+        $backupsToDelete = array();
+
+        if (is_array($currentBackups)) {
+            if (count($currentBackups) > $limit) {
+                $backupsToDelete = array_splice($currentBackups, 0, (count($currentBackups) - $limit));
+            }
+        }
+
+        // If we have any to remove, lets delete them
+        if (count($backupsToDelete)) {
+            foreach ($backupsToDelete as $file) {
+                IOHelper::deleteFile($file, true);
+            }
+        }
+
+        FeedMePlugin::log($feed->name . ': Starting database backup', LogLevel::Info, true);
+
+        $backup = craft()->db->backup();
+
+        FeedMePlugin::log($feed->name . ': Finished database backup', LogLevel::Info, true);
     }
     
 
@@ -344,7 +373,19 @@ class FeedMe_ProcessService extends BaseApplicationComponent
         if (is_array($fieldDefaults)) {
             foreach ($fieldDefaults as $fieldHandle => $feedHandle) {
                 if (isset($feedHandle) && $feedHandle !== '') {
-                    $parsedData[$fieldHandle]['data'] = $feedHandle;
+                    if (strstr($fieldHandle, '--')) {
+                        $split = FeedMeArrayHelper::multiExplode(array('--', '-'), $fieldHandle);
+
+                        array_splice($split, 1, 0, 'data');
+
+                        $keyPath = implode('.', $split);
+
+                        $parsedData[$keyPath]['data'] = $feedHandle;
+
+                        $parsedData = Hash::expand($parsedData);
+                    } else {
+                        $parsedData[$fieldHandle]['data'] = $feedHandle;
+                    }
                 }
             }
         }
@@ -361,7 +402,7 @@ class FeedMe_ProcessService extends BaseApplicationComponent
         foreach ($contentNode as $j => $nodePath) {
             $feedPath = str_replace('.', '/', $nodePath);
             $feedPath = preg_replace('/(\/\d+\/)/', '/', $feedPath);
-            $feedPath = preg_replace('/(\/\d+)|(\d+\/)/', '', $feedPath);
+            $feedPath = preg_replace('/(\/\d+)|(\/\d+\/)/', '', $feedPath);
             $feedPath = preg_replace('/(\/\d+)|^(\d+\/)/', '', $feedPath);
 
             // Get the feed value using dot-notation (but specifically for a node)

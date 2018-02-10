@@ -51,7 +51,34 @@ class FeedMe_FeedsService extends BaseApplicationComponent
         }
 
         if ($feed->fieldMapping) {
-            $feedRecord->setAttribute('fieldMapping', json_encode($feed->fieldMapping));
+            $fieldMapping = $feed->fieldMapping;
+
+            // Do some filtering on mapping data. Don't save options if mapping isn't opted-in
+            foreach ($fieldMapping as $key => $value) {
+                if (strstr($key, '-options-')) {
+                    $parts = explode('-options-', $key);
+
+                    if (isset($fieldMapping[$parts[0]])) {
+                        if ($fieldMapping[$parts[0]] === 'noimport') {
+                            unset($fieldMapping[$key]);
+                        }
+                    }
+                }
+
+                if (strstr($key, '-fields-')) {
+                    $parts = explode('-fields-', $key);
+
+                    if (isset($fieldMapping[$parts[0]])) {
+                        if ($fieldMapping[$parts[0]] === 'noimport') {
+                            unset($fieldMapping[$key]);
+                        }
+                    }
+                }
+            }
+
+            $feedRecord->setAttribute('fieldMapping', json_encode($fieldMapping));
+
+            $feed->fieldMapping = $fieldMapping;
         }
 
         if ($feed->fieldDefaults) {
