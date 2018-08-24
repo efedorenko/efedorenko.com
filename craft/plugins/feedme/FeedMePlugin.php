@@ -1,7 +1,7 @@
 <?php
 namespace Craft;
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 class FeedMePlugin extends BasePlugin
 {
@@ -19,7 +19,7 @@ class FeedMePlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '2.0.11';
+        return '2.0.13';
     }
 
     public function getSchemaVersion()
@@ -84,7 +84,7 @@ class FeedMePlugin extends BasePlugin
             'pluginNameOverride' => AttributeType::String,
             'cache' => array(AttributeType::Number, 'default' => 60),
             'enabledTabs' => array(AttributeType::Mixed, 'default' => true),
-            'edition' => array(AttributeType::Mixed),
+            'edition' => array(AttributeType::Mixed, 'default' => -1),
         );
     }
 

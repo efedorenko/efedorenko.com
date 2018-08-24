@@ -30,7 +30,12 @@ class FeedMe_ProcessService extends BaseApplicationComponent
         // A simple license check
         if ($feed['elementType'] != 'Entry') {
             if (!craft()->feedMe_license->isProEdition()) {
-                throw new Exception(Craft::t('Feed Me is not licensed.'));
+                // If unlicensed, make really sure its not just timed out
+                craft()->feedMe_license->getLicenseInfo();
+
+                if (!craft()->feedMe_license->isProEdition()) {
+                    throw new Exception(Craft::t('Feed Me is not licensed.'));
+                }
             }
         }
 
@@ -160,6 +165,16 @@ class FeedMe_ProcessService extends BaseApplicationComponent
             }
         }
 
+        // If we're deleting or disabling only - we don't want to proceed with saving
+        if (FeedMeDuplicate::isDisable($feed, true) || FeedMeDuplicate::isDelete($feed, true)) {
+            // If we've found an existing element however, store that
+            if ($existingElement) {
+                $this->_processedElementIds[] = $existingElement->id;
+            }
+
+            return;
+        }
+
         // Prepare Element Type model - this sets all Element Type attributes (Title, slug, etc).
         $element = $this->_service->prepForElementModel($element, $fieldData, $feed);
 
@@ -228,7 +243,7 @@ class FeedMe_ProcessService extends BaseApplicationComponent
 
             if ($elementsToDisable) {
                 if ($this->_service->disable($elementsToDisable)) {
-                    FeedMePlugin::log($feed->name . ': The following elements have been disabled: ' . print_r($disableIds, true) . '.', LogLevel::Info, true);
+                    FeedMePlugin::log($feed->name . ': The following elements have been disabled: ' . implode(', ', $disableIds) . '.', LogLevel::Info, true);
                 }
             }
         }
@@ -246,7 +261,7 @@ class FeedMe_ProcessService extends BaseApplicationComponent
 
             if ($elementsToDelete) {
                 if ($this->_service->delete($elementsToDelete)) {
-                    FeedMePlugin::log($feed->name . ': The following elements have been deleted: ' . print_r($deleteIds, true) . '.', LogLevel::Info, true);
+                    FeedMePlugin::log($feed->name . ': The following elements have been deleted: ' . implode(', ', $deleteIds) . '.', LogLevel::Info, true);
                 }
             }
         }
@@ -295,6 +310,10 @@ class FeedMe_ProcessService extends BaseApplicationComponent
             $event = new Event($this, array('settings' => $feedSettings, 'element' => $element));
             craft()->feedMe_process->onStepProcessFeed($event);
 
+            // Set logger to automatically flush out of memory each step. For larger feeds memory issues can cause
+            // the logs to never be written to disk, proving them to be pretty useless...
+            Craft::getLogger()->flush(true);
+
             if ($key === ($limit - 1)) {
                 break;
             }
@@ -309,34 +328,38 @@ class FeedMe_ProcessService extends BaseApplicationComponent
 
     public function backupBeforeFeed($feed)
     {
-        $limit = craft()->config->get('backupLimit', 'feedMe') ? craft()->config->get('backupLimit', 'feedMe') : 100;
+        try {
+            $limit = craft()->config->get('backupLimit', 'feedMe') ? craft()->config->get('backupLimit', 'feedMe') : 100;
 
-        $limit = 2;
+            // Check for any existing backups, if more than our limit, we need to kill some off...
+            $currentBackups = glob(craft()->path->getDbBackupPath() . 'feedme-*.sql');
 
-        // Check for any existing backups, if more than our limit, we need to kill some off...
-        $currentBackups = glob(craft()->path->getDbBackupPath() . 'feedme-*.sql');
+            // Remove all the previous backups, except the amount we want to limit
+            $backupsToDelete = array();
 
-        // Remove all the previous backups, except the amount we want to limit
-        $backupsToDelete = array();
-
-        if (is_array($currentBackups)) {
-            if (count($currentBackups) > $limit) {
-                $backupsToDelete = array_splice($currentBackups, 0, (count($currentBackups) - $limit));
+            if (is_array($currentBackups)) {
+                if (count($currentBackups) > $limit) {
+                    $backupsToDelete = array_splice($currentBackups, 0, (count($currentBackups) - $limit));
+                }
             }
-        }
 
-        // If we have any to remove, lets delete them
-        if (count($backupsToDelete)) {
-            foreach ($backupsToDelete as $file) {
-                IOHelper::deleteFile($file, true);
+            // If we have any to remove, lets delete them
+            if (count($backupsToDelete)) {
+                foreach ($backupsToDelete as $file) {
+                    IOHelper::deleteFile($file, true);
+                }
+
+                FeedMePlugin::log($feed->name . ': Deleted ' . count($backupsToDelete) . ' old database backups', LogLevel::Info, true);
             }
+
+            FeedMePlugin::log($feed->name . ': Starting database backup', LogLevel::Info, true);
+
+            $backup = craft()->db->backup();
+
+            FeedMePlugin::log($feed->name . ': Finished database backup', LogLevel::Info, true);
+        } catch (\Exception $e) {
+            FeedMePlugin::log($feed->name . ': Error with database backup - ' . $e->getMessage(), LogLevel::Error, true);
         }
-
-        FeedMePlugin::log($feed->name . ': Starting database backup', LogLevel::Info, true);
-
-        $backup = craft()->db->backup();
-
-        FeedMePlugin::log($feed->name . ': Finished database backup', LogLevel::Info, true);
     }
     
 
@@ -357,6 +380,16 @@ class FeedMe_ProcessService extends BaseApplicationComponent
     public function onProcessFeed(\CEvent $event)
     {
         $this->raiseEvent('onProcessFeed', $event);
+    }
+
+    public function onBeforeFetchFeed(\CEvent $event)
+    {
+        $this->raiseEvent('onBeforeFetchFeed', $event);
+    }
+
+    public function onFetchFeed(\CEvent $event)
+    {
+        $this->raiseEvent('onFetchFeed', $event);
     }
 
 

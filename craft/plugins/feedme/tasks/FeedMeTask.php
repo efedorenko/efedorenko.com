@@ -98,10 +98,14 @@ class FeedMeTask extends BaseTask
         }
 
         if ($step == ($this->_totalSteps - 1)) {
-            if (count($this->_errors) > 0) {
+            if ($this->_errors && count($this->_errors) > 0) {
                 return false;
             }
         }
+
+        // Set logger to automatically flush out of memory each step. For larger feeds memory issues can cause
+        // the logs to never be written to disk, proving them to be pretty useless...
+        Craft::getLogger()->flush(true);
 
         // End the session after each step - this helps the CP against locking up
         craft()->session->close();
