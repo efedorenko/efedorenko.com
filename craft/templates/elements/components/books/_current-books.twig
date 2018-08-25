@@ -5,7 +5,11 @@
 {% if currentBooks|length %}
   <p class="c-current-books {{ extraClass }}">
     <a href="https://www.goodreads.com/efedorenko" class="c-current-books_label">
-      Current {% if currentBooks|length > 1 %}books{% else %}book{% endif %}:
+      {%- if labelText is defined -%}
+        {{ labelText }}
+      {%- else -%}
+        Current {% if currentBooks|length > 1 %}books{% else %}book{% endif %}:
+      {%- endif -%}
     </a>
     {% for book in currentBooks %}
       {% if book.amazonLink|length %}<a href="{{ book.amazonLink }}" target="_blank" rel="noopener noreferrer" class="c-current-books_link">{% endif %}

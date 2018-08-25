@@ -24,6 +24,8 @@
         'books': craft.entries.section('reading').type('book'),
         'extraClass': 'c-current-books--page-title'
       } %}
+
+      {% include 'elements/components/filter/_filter-reading' %}
     </div>
 
     {% include 'elements/components/posts/_posts' with {'channel': 'reading', 'limit': 10, 'type': 'excerpts'} %}

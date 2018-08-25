@@ -39,4 +39,11 @@
       }
     }
   }
+
+  &--independent {
+    margin-top: -($grid-gutter / 2);
+    color: inherit;
+    font-style: normal;
+    font-size: 1em;
+  }
 }

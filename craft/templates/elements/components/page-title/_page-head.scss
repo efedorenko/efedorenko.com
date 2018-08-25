@@ -7,6 +7,12 @@
   }
 
   &_filter {
-    margin-left: 1em;
+    margin: .5em 0 0;
+    color: #555;
+
+    a:link,
+    a:visited {
+      color: $c-link;
+    }
   }
 }

@@ -1,0 +1,39 @@
+{% extends "_layout-normal" %}
+
+{% set title = 'What books Eugene is reading' %}
+{% set metaDesc = 'Highlights from books that Eugene Fedorenko recently read.' %}
+
+{% block headMeta %}
+  {% include 'elements/components/open-graph/_open-graph' with {
+    'url': url('reading'),
+    'title': title,
+    'description': metaDesc
+  } only %}
+
+  <link rel="canonical" href="{{ url('reading') }}">
+  <link rel="alternate" href="{{ url('reading') }}/feed.atom" type="application/atom+xml" title="What Eugene is reading">
+{% endblock %}
+
+{% block content %}
+
+  <div class="u-container u-container--narrow">
+
+    <div class="c-page-head">
+      <h1 class="o-page-title c-page-head_title">Reading books</h1>
+    </div>
+
+    {% include 'elements/components/books/_current-books' with {
+      'books': craft.entries.section('reading').type('book'),
+      'labelText': 'Currently reading:',
+      'extraClass': 'c-current-books--independent'
+    } %}
+
+    {% include 'elements/components/posts/_posts' with {
+      'channel': 'reading',
+      'entryType': 'book',
+      'limit': 10,
+      'type': 'excerpts'
+    } %}
+  </div>
+
+{% endblock %}

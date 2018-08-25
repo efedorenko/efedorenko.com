@@ -1,4 +1,16 @@
+{#
+  'channel': craft.entries.section ('reading', 'writing', 'designing', 'currentBooks', 'homepage')
+  'entryType': entry type
+  'limit': number
+  'type': 'titles' or 'excerpts'
+  ? 'modifier': 'compact'
+  'isPaginationVisible': boolean
+#}
+
 {% set entries = craft.entries.section(channel) %}
+{% if entryType is defined %}
+  {% set entries = entries.type(entryType) %}
+{% endif %}
 {% set markerPrev = '' %}
 
 {% paginate entries.limit(limit) as pageInfo, pageEntries %}
