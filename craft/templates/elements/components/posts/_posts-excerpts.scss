@@ -17,6 +17,7 @@
     margin-top: .25em;
     margin-right: 20px;
     border: 0;
+    box-shadow: 0 1px 1px rgba(#000, .15);
 
     @include medium {
       margin-left: -80px;
