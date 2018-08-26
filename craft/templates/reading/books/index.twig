@@ -1,7 +1,7 @@
 {% extends "_layout-normal" %}
 
-{% set title = 'What books Eugene is reading' %}
-{% set metaDesc = 'Highlights from books that Eugene Fedorenko recently read.' %}
+{% set title = 'Books Eugene is reading' %}
+{% set metaDesc = 'Highlights and notes from books that Eugene Fedorenko recently read.' %}
 
 {% block headMeta %}
   {% include 'elements/components/open-graph/_open-graph' with {
@@ -19,7 +19,7 @@
   <div class="u-container u-container--narrow">
 
     <div class="c-page-head">
-      <h1 class="o-page-title c-page-head_title">Reading books</h1>
+      <h1 class="o-page-title c-page-head_title">Highlights from books</h1>
     </div>
 
     {% include 'elements/components/books/_current-books' with {
