@@ -1,0 +1,127 @@
+{% set isCodeExists = false %}
+
+{% if entry.matrixContent|length %}
+
+  {% for block in entry.matrixContent.all() %}
+
+    {% if block.type == "subtitle" %}
+
+      <h2>{{ block.subtitle }}</h2>
+
+    {% elseif block.type == "text" %}
+
+      {{ block.text }}
+
+    {% elseif block.type == "digression" %}
+
+      <div class="entry_digression">
+        {{ block.digression }}
+      </div>
+
+    {% elseif block.type == "wide" %}
+
+      <div class="entry_wide">
+        {{ block.wide }}
+      </div>
+
+    {% elseif block.type == "image" and block.asset.first() %}
+
+      {% set image = block.asset.first() %}
+      {% set transform = false %}
+      {% set transform2x = false %}
+      {% set width  = (image.getWidth() / 2) %}
+      {% set height = (image.getHeight() / 2) %}
+
+      {# Transform image #}
+
+      {% if block.position == "full" %}
+
+        {% if image.getWidth() > 960 %}
+          {% set transform = "full" %}
+        {% endif %}
+
+        {% if image.getWidth() > 1920 %}
+          {% set transform2x = "full2x" %}
+        {% endif %}
+
+      {% elseif block.position == "left" or block.position == "right" %}
+
+        {% if image.getWidth() > 435 %}
+          {% set transform = "side" %}
+        {% endif %}
+
+        {% if image.getWidth() > 870 %}
+          {% set transform2x = "side2x" %}
+        {% endif %}
+
+      {% elseif block.position == "drop-left" or block.position == "drop-right" %}
+
+        {% if image.getWidth() > 140 %}
+          {% set transform = "drop" %}
+        {% endif %}
+
+        {% if image.getWidth() > 280 %}
+          {% set transform2x = "drop2x" %}
+        {% endif %}
+
+      {% else %}
+
+        {% if image.getWidth() > 630 %}
+          {% set transform = "normal" %}
+        {% endif %}
+
+        {% if image.getWidth() > 1260 %}
+          {% set transform2x = "normal2x" %}
+        {% endif %}
+
+      {% endif %}
+
+      {% if transform %}
+        {% set width  = image.getWidth(transform) %}
+        {% set height = image.getHeight(transform) %}
+      {% endif %}
+
+
+      {# Insert image #}
+
+      {% if image %}
+        <figure class="entry_image entry_image--{{ block.position }} {% if block.showBorder == false %}entry_image--borderless{% endif %}">
+          <div class="entry_figure"><img src="{{ image.getUrl(transform) }}" srcset="{{ image.getUrl(transform2x) }} 2x" width="{{ width }}" height="{{ height }}" itemprop="image" alt="{{ block.alt }}" title="{{ block.alt }}"></div>
+
+          {% if block.caption %}
+            <figcaption class="entry_figcaption">{{ block.caption }}</figcaption>
+          {% endif %}
+
+        </figure>
+      {% endif %}
+
+    {% elseif block.type == "embed" %}
+
+      <div class="entry_embed">
+        {{ block.embed|raw }}
+      </div>
+
+    {% elseif block.type == "code" %}
+
+      {% set isCodeExists = true %}
+      <pre class="entry_code"><code class="language-{{block.lang}}">{{block.code}}</code></pre>
+
+    {% elseif block.type == "pullQuote" %}
+
+      <blockquote class="entry_pull-quote">
+        {{ block.quote }}
+      </blockquote>
+
+    {% elseif block.type == "sidenote" %}
+
+      <aside class="entry_sidenote">{{ block.sidenote }}</aside>
+
+    {% endif %}
+
+  {% endfor %}
+
+{% endif %}
+
+{% if isCodeExists %}
+  <script src="/javascripts/prism.min.js"></script>
+{% endif %}

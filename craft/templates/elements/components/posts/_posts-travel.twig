@@ -1,0 +1,45 @@
+<article class="o-post o-post--{{ entryModifier }} c-post-lead c-post-lead--travel">
+  <div class="u-grid u-grid--gutters-s u-grid--gutters-l-at-medium u-grid--full u-grid--2-cols-at-medium">
+
+    <div class="u-grid-cell u-grid-cell--1of2-at-medium">
+      {% set image = entry.primaryImage.first() %}
+      {% set thumb = {
+          mode: 'crop',
+          width: 600,
+          quality: 75,
+          position: 'center-center'
+      } %}
+      <a href="{{ entryURL }}">
+        <img src="{{ image.getUrl(thumb) }}" alt="" class="c-post-lead_primary-image" />
+      </a>
+    </div>
+
+    <div class="u-grid-cell u-grid-cell--1of2-at-medium">
+{# 
+      <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-post-lead_time">
+        <a href="{{ entry.url }}" class="c-post-lead_permalink">&infin;</a>
+        {{ entry.postDate.format('M j, Y') }}
+      </time>
+ #}
+      {% include 'elements/components/books/_cover' with {'entry': entry, 'url': entryURL, 'class': 'c-post-lead_cover'} %}
+
+      <h2 class="o-post_title c-post-lead_title">
+        {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
+        <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
+        {% if isExternalWriting or isLink %}<span class="o-post_arr">&rarr;</span>{% endif %}
+      </h2>
+
+      <div class="o-post_travel-dates">
+        {% if entry.tripStarted.format('Y') == entry.tripEnded.format('Y') %}
+          From {{ entry.tripStarted.format('F jS') }} to {{ entry.tripEnded.format('F jS, Y') }}
+        {% else %}
+          From {{ entry.tripStarted.format('F jS, Y') }} to {{ entry.tripEnded.format('F jS, Y') }}
+        {% endif %}
+      </div>
+
+      <div class="o-post_excerpt c-post-lead_excerpt s-text">
+        <p>{{ entry.metaDesc }}</p>
+      </div>
+    </div>
+  </div>
+</article>

@@ -85,8 +85,21 @@
 
         <h2 class="u-title-section u-title-section--detached">Coding</h2>
         <div class="s-text">
-          <p>I made small contributions to <a href="https://github.com/efedorenko">a few open-source projects</a>, and maintain Wildbit-specific configs for <a href="https://github.com/wildbit/stylelint-config-wildbit">Stylelint</a> and <a href="https://github.com/wildbit/postcss-sorting-config-wildbit">postcss-sorting</a>. Currently I am working on an open-source set of templates for <a href="https://craftcms.com">Craft</a> that we use on public sites of our products.</p>
+          <p>I made small contributions to <a href="https://github.com/efedorenko">a few open-source projects</a> and maintain Wildbit-specific configs for <a href="https://github.com/wildbit/stylelint-config-wildbit">Stylelint</a> and <a href="https://github.com/wildbit/postcss-sorting-config-wildbit">postcss-sorting</a>.</p>
         </div>
+
+        <h2 class="u-title-section u-title-section--detached"><a href="{{ url('traveling') }}" class="u-title-section_link">Traveling + Photographing</em></a></h2>
+        <div class="s-text">
+          <p>I love outdoors photography and publish reports from trips:</p>
+        </div>
+        <ul class="c-posts-list c-posts-list--travel">
+          {% include 'elements/components/posts/_posts' with {
+            'channel': 'traveling',
+            'limit': 5,
+            'type': 'titles',
+            'isPaginationVisible': false
+          } %}
+        </ul>
 
       </div>
     </div>

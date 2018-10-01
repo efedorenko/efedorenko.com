@@ -27,6 +27,18 @@
     margin: .75em 0 .5em;
     font-size: 1.25em;
   }
+  &_primary-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(#000, .15);
+    transition: transform 150ms ease-in-out;
+
+    :link:hover & {
+      transform: scale(1.033);
+    }
+  }
   &_favicon {
     float: left;
     margin-top: .25em;
@@ -62,5 +74,12 @@
   }
   .c-post-lead_excerpt {
     font-size: .9375em;
+  }
+}
+
+
+.c-post-lead--travel {
+  .o-post_travel-dates {
+    margin: 0 0 .75em;
   }
 }

@@ -1,0 +1,42 @@
+{% extends "_layout-normal" %}
+
+{% set title = entry.title ~ ' | Eugene Fedorenko' %}
+{% set metaDesc = entry.metaDesc %}
+
+{% block headMeta %}
+  {% include 'elements/components/open-graph/_open-graph' with {
+    'url': entry.url,
+    'title': entry.title,
+    'description': entry.metaDesc,
+    'type': 'article'
+  } only %}
+
+  <meta name="author" content="Eugene Fedorenko">
+  <link rel="canonical" href="{{ entry.url }}">
+  <link rel="alternate" href="{{ url('writing') }}/feed.atom" type="application/atom+xml" title="Writing by Eugene Fedorenko">
+{% endblock %}
+
+{% block content %}
+
+  <div class="u-container u-container--narrow">
+    <article class="o-post o-post--local c-post-lead entry">
+
+      <h1 class="o-post_title u-title-section">
+        {{ entry.title }}
+      </h1>
+
+      <div class="o-post_travel-dates">
+        {% if entry.tripStarted.format('Y') == entry.tripEnded.format('Y') %}
+          From {{ entry.tripStarted.format('F jS') }} to {{ entry.tripEnded.format('F jS, Y') }}
+        {% else %}
+          From {{ entry.tripStarted.format('F jS, Y') }} to {{ entry.tripEnded.format('F jS, Y') }}
+        {% endif %}
+      </div>
+
+      <div class="o-post_body entry_text s-text">
+        {% include 'elements/components/matrixContent/_matrixContent' %}
+      </div>
+    </article>
+  </div>
+
+{% endblock %}

@@ -23,6 +23,14 @@
     color: $c-orange;
   }
 
+  // Travel Dates
+
+  &_travel-dates {
+    margin: -.5em 0 1.75em;
+    color: #808080;
+    font: .85em $f-sansserif;    
+  }
+
   // Favicon for external writing
 
   &_favicon {

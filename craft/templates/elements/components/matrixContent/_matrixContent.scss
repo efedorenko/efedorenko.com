@@ -1,0 +1,215 @@
+.entry {
+//  display: flex;
+//  flex-direction: column;
+}
+
+  // Text
+
+  .entry_text {
+    max-width: grid-width(4);
+
+    :first-child {
+      margin-top: 0;
+    }
+  }
+
+  // Editor's Intro
+
+  .entry_digression {
+    margin: -.4em 0 -.6em;
+    padding: .2em 0 .2em 40px;
+    font-size: .85em;
+    line-height: 1.75;
+  }
+
+  // Embed
+
+  .entry_embed {
+    margin: 2em 0;
+    text-align: center;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  // Pull Quote
+
+  .entry_pull-quote {
+    margin: 1.25em 0;
+    border-width: 1px 0;
+    border-style: solid;
+    // border-color: mix(#FFF, $c-entry-pullquote, 25%);
+    padding: 0;
+    // color: $c-entry-pullquote;
+    font-weight: bold;
+    font-size: 1.5em;
+    line-height: 1.4;
+
+    p {
+      margin: 1.25em 0;
+    }
+  }
+
+  // Code
+
+  .entry_code {
+    display: block;
+    margin: 1.25em 0;
+
+    // Reset styles from Prism theme
+    border-radius: 2px !important;
+    padding: 25px !important;
+    overflow: auto;
+    // background-color: $c-entry-code-bg !important;
+    // font: .813em/1.75 $f-monospace !important;
+  }
+    .entry_code--overflow::before {
+      content: '← Drag code horizontally →';
+      display: block;
+      padding: 0 0 1em 0;
+      color: rgba(255, 255, 255, .2);
+      // font: 1.1em/1 $f-sansserif;
+      text-align: center;
+      text-shadow: none;
+
+      @include medium {
+        display: none;
+      }
+    }
+    .entry_code--full {
+      max-width: grid-width(6);
+
+      @include large {
+        margin-right: #{-($grid-column + $grid-gutter)};
+        margin-left:  #{-($grid-column + $grid-gutter)};
+      }
+    }
+
+  // Sidenote
+
+  .entry_sidenote {
+    // color: $c-entry-sidenote-txt;
+    font-size: .75em;
+
+    a {
+      color: inherit !important;
+    }
+
+    @include large {
+      float: right;
+      width: ($grid-column + $grid-gutter / 2);
+      margin-top: .2em;
+      margin-right: -($grid-column + $grid-gutter);
+    }
+  }
+
+  // Images
+
+  .entry_image {
+    box-sizing: border-box;
+    margin: 1.75em 0;
+  }
+    .entry_figure {
+      display: block;
+      margin-right: -10px;
+      margin-left: -10px;
+      border: 2px solid #F2F2F2;
+      padding: 8px;
+
+      img {
+        width: 100%;
+        border: 0;
+        padding: 0;
+        vertical-align: middle;
+      }
+    }
+    .entry_figcaption {
+      margin: .75em 0;
+      color: $c-meta;
+      font: .8125rem $f-sansserif;
+    }
+
+  .entry_image--borderless {
+    .entry_figure {
+      border: 0;
+      padding: 10px;
+    }
+  }
+
+  .entry_image--drop-left,
+  .entry_image--drop-right {
+    max-width: ($grid-column + $grid-gutter / 2);
+    margin-top: .4em;
+
+    .entry_figure {
+      margin-right: -5px;
+      margin-left: -5px;
+      border-width: 1px;
+      padding: 4px;
+    }
+    &.entry_image--borderless .entry_figure {
+      padding: 5px;
+    }
+    .entry_figcaption {
+    }
+  }
+  .entry_image--drop-left {
+    @include large {
+      clear: left;
+      float: left;
+      margin-right: ($grid-gutter / 2);
+      margin-left: -($grid-column + $grid-gutter);
+    }
+  }
+  .entry_image--drop-right {
+    @include large {
+      clear: right;
+      float: right;
+      margin-right: -($grid-column + $grid-gutter);
+      margin-left: ($grid-gutter / 2);
+    }
+  }
+
+  .entry_image--left,
+  .entry_image--right {
+    max-width: grid-width(3);
+    margin-top: .4em;
+  }
+  .entry_image--left {
+    @include large {
+      clear: left;
+      float: left;
+      margin-right: ($grid-gutter / 2);
+      margin-left: -($grid-column + $grid-gutter);
+    }
+  }
+  .entry_image--right {
+    @include large {
+      clear: right;
+      float: right;
+      margin-right: -($grid-column + $grid-gutter);
+      margin-left: ($grid-gutter / 2);
+    }
+  }
+
+  .entry_image--center {
+    max-width: grid-width(4);
+  }
+
+  .entry_image--full {
+    max-width: grid-width(6);
+
+    @include large {
+      margin: 1.25em #{-($grid-column + $grid-gutter)};
+    }
+  }
+
+  // Wide content
+
+  .entry_wide {
+    @include large {
+      margin-right: #{-($grid-column + $grid-gutter)};
+      margin-left:  #{-($grid-column + $grid-gutter)};
+    }
+  }

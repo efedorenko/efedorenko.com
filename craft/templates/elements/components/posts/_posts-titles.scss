@@ -49,3 +49,16 @@
         margin-left: -22px;
       }
 }
+
+.c-posts-list--travel {
+  font-size: 1rem;
+
+  .o-post_link {
+    &:link {
+      color: $c-link;
+    }
+    &:visited {
+      color: $c-visited;
+    }
+  }
+}
