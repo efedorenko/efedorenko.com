@@ -8,7 +8,8 @@
     'url': entry.url,
     'title': entry.title,
     'description': entry.metaDesc,
-    'type': 'article'
+    'type': 'article',
+    'image': entry.primaryImage.first()
   } only %}
 
   <meta name="author" content="Eugene Fedorenko">
