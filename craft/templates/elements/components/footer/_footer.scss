@@ -8,6 +8,11 @@
   padding: $grid-gutter 0;
   color: #444;
 
+  .c-body--dark & {
+    border-image: url('/images/waves-pattern-dark.svg') 6 0 0 repeat;
+    color: #808080;
+  }
+
   @include medium {
     margin-top: ($grid-gutter * 1.5);
   }

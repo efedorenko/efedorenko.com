@@ -68,7 +68,7 @@
       content: '← Drag code horizontally →';
       display: block;
       padding: 0 0 1em 0;
-      color: rgba(255, 255, 255, .2);
+      color: rgba(#FFF, .2);
       // font: 1.1em/1 $f-sansserif;
       text-align: center;
       text-shadow: none;
@@ -116,6 +116,10 @@
       margin-left: -10px;
       border: 2px solid #F2F2F2;
       padding: 8px;
+
+      .c-body--dark & {
+        border-color: rgba(#FFF, .075);
+      }
 
       img {
         width: 100%;

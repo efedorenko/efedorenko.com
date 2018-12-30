@@ -112,9 +112,17 @@
 
   &--external {
     color: #222;
+
+    .c-body--dark & {
+      color: #BBB;
+    }
   }
   &--local {
     color: #000;
+
+    .c-body--dark & {
+      color: #BBB;
+    }
 
     @include medium {
       font-size: 1.125em;

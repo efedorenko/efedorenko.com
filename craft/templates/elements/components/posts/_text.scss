@@ -19,6 +19,10 @@
     line-height: 1.4;
     text-align: center;
 
+    .c-body--dark & {
+      color: #FFF;
+    }
+
     @include medium {
       text-align: left;
     }
@@ -28,6 +32,9 @@
     font-weight: bold;
     font-size: 1.294em;
 
+    .c-body--dark & {
+      color: #EEE;
+    }
   }
   h3 {
     margin: 2em 0 .8em;
@@ -71,6 +78,11 @@
     padding: .2em 0 .2em 1.6em;
     color: #555;
     line-height: 1.75;
+
+    .c-body--dark & {
+      border-left-color: rgba(#FFF, .2);
+      color: #999;
+    }
 
     em, i {
       font-style: normal;
