@@ -15,7 +15,9 @@
     {% if isExternalWriting %}
       {{ entry.excerpt }}
     {% elseif entry.matrixContent is defined and entry.matrixContent|length %}
-      {% include 'elements/components/matrixContent/_matrixContent' %}
+      {% include 'elements/components/matrixContent/_matrixContent' with {
+        'isFeed': true
+      } %}
     {% else %}
       {{ entry.body }}
     {% endif %}

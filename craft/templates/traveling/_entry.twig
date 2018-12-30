@@ -35,7 +35,9 @@
       </div>
 
       <div class="o-post_body entry_text s-text">
-        {% include 'elements/components/matrixContent/_matrixContent' %}
+        {% include 'elements/components/matrixContent/_matrixContent' with {
+          'isFeed': false
+        } %}
       </div>
     </article>
   </div>

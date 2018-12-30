@@ -1,3 +1,4 @@
+{# isFeed = boolean #}
 {% set isCodeExists = false %}
 
 {% if entry.matrixContent|length %}
@@ -34,7 +35,18 @@
 
       {# Transform image #}
 
-      {% if block.position == "full" %}
+      {% if isFeed %}
+        {# All images should be sized normally in a feed #}
+
+        {% if image.getWidth() > 630 %}
+          {% set transform = "normal" %}
+        {% endif %}
+
+        {% if image.getWidth() > 1260 %}
+          {% set transform2x = "normal2x" %}
+        {% endif %}
+
+      {% elseif block.position == "full" %}
 
         {% if image.getWidth() > 960 %}
           {% set transform = "full" %}
@@ -95,7 +107,7 @@
         </figure>
       {% endif %}
 
-    {% elseif block.type == "embed" %}
+    {% elseif block.type == "embed" and not isFeed %}
 
       <div class="entry_embed">
         {{ block.embed|raw }}
