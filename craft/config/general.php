@@ -11,7 +11,8 @@ return array(
   '*' => array(
     'omitScriptNameInUrls' => true,
     'appId' => 'efedorenko',
-    'defaultImageQuality' => 85
+    'defaultImageQuality' => 85,
+    'generateTransformsBeforePageLoad' => true
   ),
 
   /* Local environment */
