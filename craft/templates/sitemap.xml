@@ -59,5 +59,24 @@
   </url>
 {% endfor %}
 
+
+{# Traveling + Photographing
+ # -------------------------- #}
+
+  <url>
+    <loc>{{ url('traveling') }}</loc>
+    <lastmod>{{ craft.entries.section('traveling').order('postDate desc')[0].postDate.w3c() }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+{% for entry in craft.entries.section('traveling').limit(none) %}
+  <url>
+    <loc>{{ entry.url }}</loc>
+    <lastmod>{{ entry.postDate.w3c() }}</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+{% endfor %}
+
 </urlset> 
 {% endcache %}
