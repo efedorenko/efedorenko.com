@@ -14,6 +14,8 @@
 
     {% if isExternalWriting %}
       {{ entry.excerpt }}
+    {% elseif entry.matrixContent is defined and entry.matrixContent|length %}
+      {% include 'elements/components/matrixContent/_matrixContent' %}
     {% else %}
       {{ entry.body }}
     {% endif %}
