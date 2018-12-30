@@ -1,6 +1,10 @@
 .s-text {
   line-height: 1.6;
 
+  .c-body--dark & {
+    line-height: 1.7;
+  }
+
   a:link {
     color: $c-link;
   }
