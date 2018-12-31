@@ -1,0 +1,16 @@
+{% extends "_layout-feed.atom" %}
+
+{% set title = 'Eugene Fedorenko' %}
+{% set altUrl = siteUrl %}
+
+{% block content %}
+
+  {% include 'elements/components/posts/_posts' with {
+    'channel': 'all',
+    'limit': 10,
+    'type': 'feed',
+    'isPaginationVisible': false
+  } %}
+
+{% endblock %}
+

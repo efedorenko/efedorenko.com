@@ -1,5 +1,5 @@
 {#
-  'channel': craft.entries.section ('reading', 'writing', 'designing', 'traveling' 'currentBooks', 'homepage')
+  'channel': 'all', 'reading', 'writing', 'designing', 'traveling', 'currentBooks', 'homepage'
   'entryType': entry type
   'limit': number
   'type': 'titles', 'excerpts', 'travel', 'feed'
@@ -7,10 +7,16 @@
   'isPaginationVisible': boolean
 #}
 
-{% set entries = craft.entries.section(channel) %}
+{% if channel == 'all' %}
+  {% set entries = craft.entries.section(['reading', 'writing', 'traveling']).order('dateCreated desc') %}
+{% else %}
+  {% set entries = craft.entries.section(channel) %}
+{% endif %}
+
 {% if entryType is defined %}
   {% set entries = entries.type(entryType) %}
 {% endif %}
+
 {% set markerPrev = '' %}
 
 {% paginate entries.limit(limit) as pageInfo, pageEntries %}
