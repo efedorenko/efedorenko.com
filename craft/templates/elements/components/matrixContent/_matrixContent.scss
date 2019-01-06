@@ -202,6 +202,7 @@
   }
 
   .entry_image--full {
+    clear: both;
     max-width: grid-width(6);
 
     @include large {
