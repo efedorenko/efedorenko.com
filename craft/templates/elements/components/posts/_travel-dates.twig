@@ -1,4 +1,4 @@
-{% if entry.tripEnded is not defined %}
+{% if entry.tripEnded is null %}
   {{ entry.tripStarted.format('F jS, Y') }}
 {% elseif entry.tripStarted.format('Y') == entry.tripEnded.format('Y') %}
   From {{ entry.tripStarted.format('F jS') }} to {{ entry.tripEnded.format('F jS, Y') }}
