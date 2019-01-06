@@ -30,13 +30,7 @@
       </h2>
 
       <div class="o-post_travel-dates">
-        {% if entry.tripEnded is not defined %}
-          {{ entry.tripStarted.format('F jS, Y') }}
-        {% elseif entry.tripStarted.format('Y') == entry.tripEnded.format('Y') %}
-          From {{ entry.tripStarted.format('F jS') }} to {{ entry.tripEnded.format('F jS, Y') }}
-        {% else %}
-          From {{ entry.tripStarted.format('F jS, Y') }} to {{ entry.tripEnded.format('F jS, Y') }}
-        {% endif %}
+        {% include '_travel-dates' %}
       </div>
 
       <div class="o-post_excerpt c-post-lead_excerpt s-text">
