@@ -37,6 +37,23 @@
         } %}
       </div>
     </article>
+
+
+    {% if entry.hasDescendants() %}
+      {% set entries = entry.descendants %}
+
+      {% for entry in entries %}
+        {% set isExternalWriting = false %}
+        {% set isLink = false %}
+        {% set isTOC = true %}
+        {% set entryURL = entry.url %}
+        {% set entryModifier = 'local'  %}
+
+        {% include 'elements/components/posts/_posts-travel' %}
+      {% endfor %}
+    {% endif %}
+
+
   </div>
 
 {% endblock %}

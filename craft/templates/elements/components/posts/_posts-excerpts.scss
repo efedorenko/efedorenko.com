@@ -86,3 +86,25 @@
     color: #EEE;
   }
 }
+.c-post-lead--multipart-trip {
+  margin-bottom: $grid-gutter / 3;
+
+  .c-post-lead_title {
+    font-size: 2em;
+  }
+}
+.c-post-lead--part-of-trip {
+  margin-top: $grid-gutter / 3;
+  margin-bottom: $grid-gutter / 3;
+
+  & + :not(&) {
+    margin-top: $grid-gutter / 3;
+    border-top: 1px dashed rgba(255, 255, 255, .15);
+    padding-top: $grid-gutter;
+  }
+
+  .c-post-lead_primary-image {
+    width: calc(100% - 60px);
+    margin-left: 60px;
+  }
+}
