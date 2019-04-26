@@ -9,9 +9,11 @@
           quality: 75,
           position: 'center-center'
       } %}
-      <a href="{{ entryURL }}">
-        <img src="{{ image.getUrl(thumb) }}" alt="" class="c-post-lead_primary-image" />
-      </a>
+      {% if image %}
+        <a href="{{ entryURL }}">
+          <img src="{{ image.getUrl(thumb) }}" alt="" class="c-post-lead_primary-image" />
+        </a>
+      {% endif %}
     </div>
 
     <div class="u-grid-cell u-grid-cell--1of2-at-medium">
