@@ -53,6 +53,21 @@
       {% endfor %}
     {% endif %}
 
+    {% if entry.getAncestors(1)|length %}
+      {% set prev = entry.prevSibling %}
+      {% set next = entry.nextSibling %}
+    {% else %}
+      {% set prev = entry.getNext( craft.entries.section('traveling') ) %}
+      {% set next = entry.getPrev( craft.entries.section('traveling') ) %}
+    {% endif %}
+
+    {% include 'elements/components/pagination/_pagination' with {
+      'prevUrl': prev.url | default(''),
+      'prevTitle': prev.title | default(''),
+      'nextUrl': next.url | default(''),
+      'nextTitle': next.title | default('')
+    } only %}
+
 
   </div>
 
