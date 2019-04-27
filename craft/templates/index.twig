@@ -92,6 +92,63 @@
         <div class="s-text">
           <p>I love outdoors photography and publish reports from trips:</p>
         </div>
+
+        <div class="u-grid u-grid--gutters-s u-grid--gutters-l-at-medium u-grid--full u-grid--2-cols-at-medium">
+          {% set type = 'travel' %} 
+          {% set channel = 'traveling' %}
+          {% set entries = craft.entries.section(channel) %}
+
+          {% for entry in entries %}
+            {% set isExternalWriting = (entry.type == 'externalPost') %}
+            {% set isLink = (entry.type == 'article' or entry.type == 'website') %}
+            {% set entryURL = isExternalWriting ? entry.postURL : entry.url %}
+            {% set entryModifier = isExternalWriting or isLink ? 'external' : 'local'  %}
+
+            {# Show only unique months in _posts-titles #}
+            {% set markerPrev = '' %}
+            {% set marker = entry.postDate.format('F') %}
+            {% set markerUnique = marker %}
+            {% set markerPrev = marker %}
+
+            {% if not entry.getAncestors(1)|length %}
+              <div class="u-grid-cell u-grid-cell--1of2-at-medium">
+                <article class="
+                  o-post
+                  o-post--{{ entryModifier }}
+                  c-post-lead
+                  c-post-lead--thumbs
+                  c-post-lead--travel
+                ">
+                  {% set image = entry.primaryImage.first() %}
+                  {% set thumb = {
+                      mode: 'crop',
+                      width: 600,
+                      quality: 75,
+                      position: 'center-center'
+                  } %}
+                  {% if image %}
+                    <a href="{{ entryURL }}">
+                      <img src="{{ image.getUrl(thumb) }}" alt="" class="c-post-lead_primary-image" />
+                    </a>
+                  {% endif %}
+
+                  <h2 class="o-post_title c-post-lead_title">
+                    {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
+                    <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
+                    {% if isExternalWriting or isLink %}<span class="o-post_arr">&rarr;</span>{% endif %}
+                  </h2>
+
+                  <div class="o-post_travel-dates">
+                    {% include 'elements/components/posts/_travel-dates' %}
+                  </div>
+
+                </article>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+{#
         <ul class="c-posts-list c-posts-list--travel">
           {% include 'elements/components/posts/_posts' with {
             'channel': 'traveling',
@@ -100,7 +157,7 @@
             'isPaginationVisible': false
           } %}
         </ul>
-
+#}
       </div>
     </div>
   </div>
