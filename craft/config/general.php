@@ -12,7 +12,8 @@ return array(
     'omitScriptNameInUrls' => true,
     'appId' => 'efedorenko',
     'defaultImageQuality' => 85,
-    'generateTransformsBeforePageLoad' => true
+    'generateTransformsBeforePageLoad' => true,
+    'maxUploadFileSize' => 67108864
   ),
 
   /* Local environment */
