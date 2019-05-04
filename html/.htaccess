@@ -16,7 +16,7 @@ ErrorDocument 404 https://efedorenko.com/404
   # Force SSL on non "www." URLs
   RewriteCond %{HTTP_HOST} (.*)?efedorenko.com [NC]
   RewriteCond %{HTTPS} off
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]
 
   # Remove trailing slashes from the end of the URL
   # This rule must come before removal of index.php from the URL
