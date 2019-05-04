@@ -1,6 +1,6 @@
 Options -Indexes
 
-ErrorDocument 404 http://efedorenko.com/404
+ErrorDocument 404 https://efedorenko.com/404
 
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
@@ -14,7 +14,7 @@ ErrorDocument 404 http://efedorenko.com/404
   RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
   # Force SSL on non "www." URLs
-  RewriteCond %{HTTP_HOST} (.*)?postmarkapp.com [NC]
+  RewriteCond %{HTTP_HOST} (.*)?efedorenko.com [NC]
   RewriteCond %{HTTPS} off
   RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
 
