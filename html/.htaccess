@@ -10,11 +10,6 @@ ErrorDocument 404 https://efedorenko.com/404
 
   # Remove "www." from URLs
   # http://stackoverflow.com/questions/234723/generic-htaccess-redirect-www-to-non-www
-  RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
-  RewriteCond %{HTTPS} on
   RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
   RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
