@@ -45,13 +45,11 @@ gulp.task('styles:sass', function () {
       autoprefixer({
         browsers: ['last 2 versions', 'ie >= 10', 'ios >= 8']
       }),
-/*
       cssnano({
         safe: true,
         autoprefixer: false,       // Run on its own
         discardDuplicates: false   // Extremely slow
       })
-*/
     ]))
     .pipe(gulp.dest(paths.styles.dist));
 });
