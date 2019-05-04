@@ -20,6 +20,7 @@ ErrorDocument 404 https://efedorenko.com/404
 
   # Force SSL on non "www." URLs
   RewriteCond %{HTTP_HOST} (.*)?efedorenko.com [NC]
+  RewriteCond %{HTTPS} off
   RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
 
   # Remove trailing slashes from the end of the URL
