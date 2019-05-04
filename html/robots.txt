@@ -1,4 +1,4 @@
-# Don't allow web crawlers to index Craft CMS
+Sitemap: https://efedorenko.com/sitemap.xml
 User-agent: *
 Disallow: /craft/
 Disallow: /analytics/
