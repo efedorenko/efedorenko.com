@@ -16,6 +16,32 @@
   &_link--db {
     background: #665B7A url('../images/deploybot-logo.svg') no-repeat 50% 50% / auto 90px;
   }
+  &_link--figma {
+    height: auto;
+    background-color: #F8F8F8;
+    box-shadow: 0 0 1px rgba(#000, .33);
+  }
+    &_cover {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+}
+
+.c-project-desc {
+  font: .8125rem/1.4 $f-sansserif;
+  color: #808080;
+
+  a {
+    font-weight: bold;
+  }
+  a:link {
+    color: #222;
+  }
+  a:hover,
+  a:active {
+    color: $c-hover;
+  }
 }
 
 .c-project-favs {
