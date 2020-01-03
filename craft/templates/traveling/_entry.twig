@@ -29,6 +29,10 @@
 
       <div class="o-post_travel-dates">
         {% include 'elements/components/posts/_travel-dates' %}
+        {% if entry.getAncestors(1)|length %}
+          <span class="u-sep">•</span>
+          Part of <a href="{{ entry.getAncestors(1).first.url }}">{{ entry.getAncestors(1).first.title }}</a>
+        {% endif %}
       </div>
 
       <div class="o-post_body entry_text s-text">
