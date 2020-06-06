@@ -8,7 +8,9 @@
   {% include 'elements/components/books/_cover' with {'entry': entry, 'url': entryURL, 'class': 'c-post-lead_cover'} %}
 
   <h2 class="o-post_title c-post-lead_title">
-    {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>{% endif %}
+    {% if isExternalWriting and entry.postSource != 'other' %}
+      <span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-post-lead_favicon"></span>
+    {% endif %}
     <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
     {% if isExternalWriting or isLink %}<span class="o-post_arr">&rarr;</span>{% endif %}
   </h2>

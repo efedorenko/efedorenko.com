@@ -48,7 +48,7 @@
     height: 16px;
     margin-right: .2em;
     vertical-align: -3px;
-    background: url('/images/sources@2x.png') no-repeat 0 0 / 16px 64px;
+    background: url('/images/sources@2x.png') no-repeat 0 0 / 16px 80px;
   }
   &_favicon--wb {
     background-position: 0 0;
@@ -61,6 +61,9 @@
   }
   &_favicon--db {
     background-position: 0 -48px;
+  }
+  &_favicon--medium {
+    background-position: 0 -64px;
   }
 
 

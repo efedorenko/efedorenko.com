@@ -7,7 +7,9 @@
   {% endif %}
 
   <span class="o-post_title c-posts-list_title {% if isExternalWriting %}c-posts-list_title--w-favicon{% endif %}">
-    {% if isExternalWriting %}<span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-posts-list_favicon"></span>{% endif %}
+    {% if isExternalWriting and entry.postSource != 'other' %}
+      <span class="o-post_favicon o-post_favicon--{{ entry.postSource }} c-posts-list_favicon"></span>
+    {% endif %}
     <a href="{{ entryURL }}" class="o-post_link">{{ entry.title }}</a>
   </span>
 </li>
