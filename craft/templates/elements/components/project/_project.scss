@@ -17,9 +17,31 @@
     background: #665B7A url('../images/deploybot-logo.svg') no-repeat 50% 50% / auto 90px;
   }
   &_link--figma {
+    max-width: grid-width(2);
     height: auto;
     background-color: #F8F8F8;
     box-shadow: 0 0 1px rgba(#000, .33);
+
+    .c-project-desc + & {
+      margin-top: #{$grid-gutter / 4};
+
+      @include medium {
+        margin-top: #{$grid-gutter / 2};
+      }
+    }
+  }
+  &_link--figmalion {
+    display: flex;
+    height: grid-width(2);
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #6633cc;
+    background-color: #F7F7F7;
+  }
+  &_link--figmabook {
+    max-width: grid-width(2);
+    height: auto;
+
   }
     &_cover {
       display: block;
@@ -32,6 +54,14 @@
   font: .8125rem/1.4 $f-sansserif;
   color: #808080;
 
+  &_title {
+    margin: 0 0 .5em;
+    font: bold 1rem $f-serif;
+  }
+
+  p {
+    margin: 0;
+  }
   a {
     font-weight: bold;
   }
