@@ -35,7 +35,9 @@
     height: grid-width(2);
     align-items: center;
     justify-content: center;
-    border: 1px solid #6633cc;
+    border: 2px solid #63C;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to bottom, #FE7347, #63C);
     background-color: #F7F7F7;
   }
   &_link--figmabook {
