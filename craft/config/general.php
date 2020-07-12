@@ -23,7 +23,7 @@ return array(
     'environmentVariables' => array(
       'baseUrl'  => 'http://efedorenko.craft:8888/',
     ),
-    'testToEmailAddress' => 'fedorenko@gmail.com',
+    'testToEmailAddress' => 'hello@efedorenko.com',
   ),
 
   /* Live environment */
