@@ -43,7 +43,13 @@
         {% if isExternalWriting %}
           {{ entry.excerpt}}
         {% else %}
-          {{ entry.body}}
+          {% if entry.body != '' %}
+            {{ entry.body}}
+          {% else %}
+            {% include 'elements/components/matrixContent/_matrixContent' with {
+              'isFeed': false
+            } %}
+          {% endif %}
         {% endif %}
       </div>
 
