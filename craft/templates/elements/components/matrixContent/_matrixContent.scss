@@ -61,8 +61,8 @@
     border-radius: 2px !important;
     padding: 25px !important;
     overflow: auto;
-    // background-color: $c-entry-code-bg !important;
-    // font: .813em/1.75 $f-monospace !important;
+    background-color: #F5F5F5 !important;
+    font: .75em/1.75 $f-monospace !important;
   }
     .entry_code--overflow::before {
       content: '← Drag code horizontally →';
