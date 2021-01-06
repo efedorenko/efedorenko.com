@@ -57,6 +57,12 @@ gulp.task('styles:sass', function () {
 
 // Scripts
 
+gulp.task('scripts:sync', function () {
+  return gulp.src([
+    paths.scripts.src + 'prism.min.js'
+  ])
+    .pipe(gulp.dest(paths.scripts.dist));
+});
 gulp.task('scripts:fonts', function () {
   return browserify(paths.elements.src + 'components/fonts-check/fonts-loader.js')
     .bundle()
@@ -134,5 +140,5 @@ gulp.task('watch', function () {
   ]);
 });
 
-gulp.task('default', ['styles:sass', 'scripts:fonts', 'images:sync', 'cachebust:images']);
+gulp.task('default', ['styles:sass', 'scripts:sync', 'scripts:fonts', 'images:sync', 'cachebust:images']);
 gulp.task('production', ['default', 'cachebust:css', 'cachebust:js']);
