@@ -55,9 +55,9 @@
 
   .entry_code {
     display: block;
-    margin: 1.25em 0;
 
     // Reset styles from Prism theme
+    margin: 1.25em 0 !important;
     border-radius: 2px !important;
     padding: 25px !important;
     overflow: auto;
