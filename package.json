@@ -21,7 +21,7 @@
     "gulp-md5-assets": "^0.1.9",
     "gulp-postcss": "^6.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.3.0",
+    "gulp-dart-sass": "^1.0.2",
     "gulp-uglify": "^3.0.0",
     "stylelint": "^6.4.2",
     "stylelint-config-wildbit": "github:wildbit/stylelint-config-wildbit",
