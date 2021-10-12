@@ -39,11 +39,14 @@
     border-image-slice: 1;
     border-image-source: linear-gradient(to bottom, #FE7347, #63C);
     background-color: #FFF;
+
+    .c-project_cover {
+      width: 156px;
+    }
   }
   &_link--figmabook {
     max-width: grid-width(2);
     height: auto;
-
   }
     &_cover {
       display: block;
