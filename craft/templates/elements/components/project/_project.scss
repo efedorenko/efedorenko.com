@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .c-project {
   &_link {
     display: block;
@@ -23,10 +25,10 @@
     box-shadow: 0 0 1px rgba(#000, .33);
 
     .c-project-desc + & {
-      margin-top: #{$grid-gutter / 4};
+      margin-top: math.div($grid-gutter, 4);
 
       @include medium {
-        margin-top: #{$grid-gutter / 2};
+        margin-top: math.div($grid-gutter, 2);
       }
     }
   }

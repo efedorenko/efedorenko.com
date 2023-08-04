@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .c-post-lead {
   margin: $grid-gutter 0;
 
@@ -65,8 +67,8 @@
 }
 
 .c-post-lead--compact {
-  margin-top: ($grid-gutter / 2);
-  margin-bottom: ($grid-gutter / 2);
+  margin-top: math.div($grid-gutter, 2);
+  margin-bottom: math.div($grid-gutter, 2);
 
   .c-post-lead_title {
     margin-bottom: .25em;
@@ -89,18 +91,18 @@
   }
 }
 .c-post-lead--multipart-trip {
-  margin-bottom: $grid-gutter / 3;
+  margin-bottom: math.div($grid-gutter, 3);
 
   .c-post-lead_title {
     font-size: 2em;
   }
 }
 .c-post-lead--part-of-trip {
-  margin-top: $grid-gutter / 3;
-  margin-bottom: $grid-gutter / 3;
+  margin-top: math.div($grid-gutter, 3);
+  margin-bottom: math.div($grid-gutter, 3);
 
   & + :not(&) {
-    margin-top: $grid-gutter / 3;
+    margin-top: math.div($grid-gutter, 3);
     border-top: 1px dashed rgba(255, 255, 255, .15);
     padding-top: $grid-gutter;
   }
@@ -112,10 +114,10 @@
 }
 
 .c-post-lead--thumbs {
-  margin: 0 0 #{$grid-gutter / 3};
+  margin: 0 0 math.div($grid-gutter, 3);
 
   @include medium {
-    margin: 0 0 -#{$grid-gutter / 3};
+    margin: 0 0 (-1 * math.div($grid-gutter, 3));
   }
 
   .c-post-lead_title {

@@ -1,17 +1,19 @@
+@use 'sass:math';
+
 /* Layout
 ------------------------------------------------- */
 
 .u-container {
   max-width: grid-width(6);
   margin: 0 auto;
-  padding: 0 ($grid-gutter / 2);
+  padding: 0 math.div($grid-gutter, 2);
 }
 .u-container--narrow {
   max-width: grid-width(4);
 }
 .u-container--detached {
-  margin-top: ($grid-gutter / 2);
-  margin-bottom: ($grid-gutter / 2);
+  margin-top: math.div($grid-gutter, 2);
+  margin-bottom: math.div($grid-gutter, 2);
 }
 
 
@@ -59,8 +61,8 @@
 // Gutters and sizing
 
 $gutters: (
-  s:  $grid-gutter / 4,
-  m:  $grid-gutter / 2,
+  s:  math.div($grid-gutter, 4),
+  m:  math.div($grid-gutter, 2),
   l:  $grid-gutter,
   xl: $grid-column
 );

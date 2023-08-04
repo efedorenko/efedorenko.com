@@ -1,10 +1,12 @@
+@use 'sass:math';
+
 .c-hero-intro {
-  margin-top: $grid-gutter / 4;
-  margin-bottom: $grid-gutter / 4;
+  margin-top: math.div($grid-gutter, 4);
+  margin-bottom: math.div($grid-gutter, 4);
 
   @include medium {
-    margin-top: $grid-gutter / 2;
-    margin-bottom: $grid-gutter / 2;
+    margin-top: math.div($grid-gutter, 2);
+    margin-bottom: math.div($grid-gutter, 2);
   }
 
   &_photo {

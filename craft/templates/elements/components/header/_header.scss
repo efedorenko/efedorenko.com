@@ -1,5 +1,7 @@
+@use 'sass:math';
+
 .c-header {
-  margin: ($grid-gutter / 2) 0 $grid-gutter;
+  margin: math.div($grid-gutter, 2) 0 $grid-gutter;
   color: #444;
   text-align: center;
   font-size: 1.25em;

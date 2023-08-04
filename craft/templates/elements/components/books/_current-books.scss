@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .c-current-books {
   margin: 0;
   color: #999;
@@ -41,7 +43,7 @@
   }
 
   &--independent {
-    margin-top: -($grid-gutter / 2);
+    margin-top: -1 * math.div($grid-gutter, 2);
     color: inherit;
     font-style: normal;
     font-size: 1em;

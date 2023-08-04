@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .entry {
 //  display: flex;
 //  flex-direction: column;
@@ -98,7 +100,7 @@
 
     @include large {
       float: right;
-      width: ($grid-column + $grid-gutter / 2);
+      width: ($grid-column + math.div($grid-gutter, 2));
       margin-top: .2em;
       margin-right: -($grid-column + $grid-gutter);
     }
@@ -143,7 +145,7 @@
 
   .entry_image--drop-left,
   .entry_image--drop-right {
-    max-width: ($grid-column + $grid-gutter / 2);
+    max-width: ($grid-column + math.div($grid-gutter, 2));
     margin-top: .4em;
 
     .entry_figure {
@@ -162,7 +164,7 @@
     @include large {
       clear: left;
       float: left;
-      margin-right: ($grid-gutter / 2);
+      margin-right: math.div($grid-gutter, 2);
       margin-left: -($grid-column + $grid-gutter);
     }
   }
@@ -171,7 +173,7 @@
       clear: right;
       float: right;
       margin-right: -($grid-column + $grid-gutter);
-      margin-left: ($grid-gutter / 2);
+      margin-left: math.div($grid-gutter, 2);
     }
   }
 
@@ -184,7 +186,7 @@
     @include large {
       clear: left;
       float: left;
-      margin-right: ($grid-gutter / 2);
+      margin-right: math.div($grid-gutter, 2);
       margin-left: -($grid-column + $grid-gutter);
     }
   }
@@ -193,7 +195,7 @@
       clear: right;
       float: right;
       margin-right: -($grid-column + $grid-gutter);
-      margin-left: ($grid-gutter / 2);
+      margin-left: math.div($grid-gutter, 2);
     }
   }
 

@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .c-work-wrapper {
   margin-top: ($grid-gutter * 1.5);
 
@@ -6,14 +8,14 @@
   border-color: transparent;
   border-image: url('/images/waves-pattern-white-top.svg') 6 0 0 repeat;
 
-  padding-top: ($grid-gutter / 2);
+  padding-top: math.div($grid-gutter, 2);
   padding-bottom: $grid-column;
   background-color: #f8f8f8;
   font-size: 1.2em;
 }
 
 .c-work-story {
-  margin-top: -($grid-gutter / 2);
+  margin-top: -1 * math.div($grid-gutter, 2);
   margin-bottom: $grid-column;
   font-size: 1.1875em;
 }
