@@ -17,11 +17,11 @@ return array(
   ),
 
   /* Local environment */
-  'efedorenko.craft' => array(
+  'efedorenko.ddev.site' => array(
     'devMode' => true,
-    'siteUrl' => 'http://efedorenko.craft:8888/',
+    'siteUrl' => 'https://efedorenko.ddev.site',
     'environmentVariables' => array(
-      'baseUrl'  => 'http://efedorenko.craft:8888/',
+      'baseUrl'  => 'https://efedorenko.ddev.site',
     ),
     'testToEmailAddress' => 'hello@efedorenko.com',
   ),
