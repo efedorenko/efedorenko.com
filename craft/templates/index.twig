@@ -1,8 +1,8 @@
 <!doctype html>
 
-{% include 'elements/components/fonts-check/_fonts-cookie-check' %}
+<html lang="en">
 
-{% set metaDesc = 'Eugene Fedorenko is a product designer at Wildbit, an avid reader, and a hobbyist photographer.' %}
+{% set metaDesc = 'Eugene Fedorenko is a Principal Product Designer at Postmark and the author of Figmalion.' %}
 
 <head>
   {% include 'elements/components/head-meta/_head-meta' %}
@@ -78,7 +78,7 @@
       </div>
 
       <div class="u-grid-cell u-grid-cell--2of3-at-medium">
-
+{#
         <h2 class="u-title-section"><a href="{{ url('designing') }}" class="u-title-section_link">Designing</a></h2>
         <div class="s-text">
           <p>See <a href="{{ url('designing') }}">what exactly I am doing</a> at Wildbit, or peek at <a href="https://dribbble.com/efedorenko">Dribbble</a>.</p>
@@ -88,7 +88,7 @@
         <div class="s-text">
           <p>I contributed to <a href="https://github.com/efedorenko">a few open-source projects</a> and maintain <a href="https://github.com/wildbit/stylelint-config-wildbit">Wildbit-specific config</a> for Stylelint.</p>
         </div>
-
+#}
         <h2 class="u-title-section u-title-section--detached"><a href="{{ url('traveling') }}" class="u-title-section_link">Traveling + Photographing</a></h2>
         <div class="s-text">
           <p>I love outdoors photography and publish reports from trips:</p>
@@ -105,9 +105,9 @@
             {% set entryURL = isExternalWriting ? entry.postURL : entry.url %}
             {% set entryModifier = isExternalWriting or isLink ? 'external' : 'local'  %}
 
-            {# Show only unique months in _posts-titles #}
+            {# Show only unique years in _posts-titles #}
             {% set markerPrev = '' %}
-            {% set marker = entry.postDate.format('F') %}
+            {% set marker = entry.postDate.format('Y') %}
             {% set markerUnique = marker %}
             {% set markerPrev = marker %}
 

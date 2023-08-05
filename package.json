@@ -38,8 +38,5 @@
     "stylelint": "stylelint --syntax scss 'html/src/stylesheets/**/*.scss'",
     "stylelint-hook": "stylelint --quiet --syntax scss 'html/src/stylesheets/**/*.scss'"
   },
-  "dependencies": {
-    "fg-cookie": "^1.0.0",
-    "fontfaceobserver": "^2.0.1"
-  }
+  "dependencies": {}
 }

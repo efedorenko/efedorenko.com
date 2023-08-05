@@ -1,10 +1,42 @@
 /* Typography
 ------------------------------------------------- */
 
-$f-serif-fb:            Georgia, serif;
-$f-serif:               'Sentinel SSm A', 'Sentinel SSm B', $f-serif-fb;
-$f-sansserif:           'Helvetica Neue', Arial, Helvetica, sans-serif;
-$f-monospace:           'Bitstream Vera Sans Mono', Consolas, Monaco, 'Lucida Console', 'Courier New', Courier, monospace, serif;
+@supports (font-variation-settings: normal) {
+  @font-face {
+    font-display: swap;
+    font-family: 'Martian Grotesk';
+    font-stretch: 75% 200%;
+    font-style: normal;
+    font-weight: 100 1000;
+    src: url('../../fonts/MartianGrotesk1.0-VF.woff2') format('woff2');
+  }
+  @font-face {
+    font-display: swap;
+    font-family: 'Martian Mono';
+    font-stretch: 75% 200%;
+    font-style: normal;
+    font-weight: 100 1000;
+    src:url('../../fonts/MartianMonoVF.woff2') format('woff2');
+  }
+}
+
+$f-martian-grotesk:     'Martian Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$f-monospace:           'Martian Mono', Consolas, Monaco, 'Courier New', Courier, monospace, serif;
+
+$fw-normal: 350;
+$fw-medium: 475;
+$fw-bold:   600;
+
+$fs-xs:     10px;
+$fs-s:      12.5px;
+$fs-m:      15px;
+$fs-plus:   17.5px;
+$fs-l:      20px;
+$fs-xl:     30px;
+$fs-xxl:    35px;
+
+$lh-normal: 1.6;
+$lh-loose:  2.0;
 
 
 /* Grid

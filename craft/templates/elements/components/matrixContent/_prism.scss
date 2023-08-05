@@ -9,8 +9,8 @@ code[class*='language-'],
 pre[class*='language-'] {
   direction: ltr;
   color: #000;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  line-height: 1.5;
+  font-family: $f-monospace;
+  line-height: $lh-loose;
   text-align: left;
   text-shadow: 0 1px #FFF;
   word-spacing: normal;
@@ -112,10 +112,9 @@ pre[class*='language-'] {
 
 .token.important,
 .token.bold {
-  font-weight: bold;
+  font-weight: $fw-bold;
 }
 .token.italic {
-  font-style: italic;
 }
 
 .token.entity {

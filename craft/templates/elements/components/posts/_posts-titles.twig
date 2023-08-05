@@ -2,7 +2,7 @@
 
   {% if markerUnique|length %}
     <time datetime="{{ entry.postDate.iso8601() }}" class="o-post_time c-posts-list_time">
-      {{ markerUnique|slice(0,3) }}<span class="c-posts-list_full-month">{{ markerUnique|slice(3) }}</span>
+      {{ markerUnique }}
     </time>
   {% endif %}
 

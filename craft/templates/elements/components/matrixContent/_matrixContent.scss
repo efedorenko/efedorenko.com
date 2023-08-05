@@ -20,8 +20,8 @@
   .entry_digression {
     margin: -.4em 0 -.6em;
     padding: .2em 0 .2em 40px;
-    font-size: .85em;
-    line-height: 1.75;
+    font-size: $fs-s;
+    line-height: $lh-normal;
   }
 
   // Embed
@@ -44,9 +44,9 @@
     // border-color: mix(#FFF, $c-entry-pullquote, 25%);
     padding: 0;
     // color: $c-entry-pullquote;
-    font-weight: bold;
-    font-size: 1.5em;
-    line-height: 1.4;
+    font-size: $fs-l;
+    font-weight: $fw-bold;
+    line-height: $lh-normal;
 
     p {
       margin: 1.25em 0;
@@ -64,14 +64,15 @@
     padding: 25px !important;
     overflow: auto;
     background-color: #FAFAFA !important;
-    font: .75em/1.75 $f-monospace !important;
+    font-family: $f-monospace !important;
+    font-size: $fs-s !important;
+    line-height: $lh-loose !important;
   }
     .entry_code--overflow::before {
       content: '← Drag code horizontally →';
       display: block;
       padding: 0 0 1em 0;
       color: rgba(#FFF, .2);
-      // font: 1.1em/1 $f-sansserif;
       text-align: center;
       text-shadow: none;
 
@@ -92,7 +93,7 @@
 
   .entry_sidenote {
     // color: $c-entry-sidenote-txt;
-    font-size: .75em;
+    font-size: $fs-s;
 
     a {
       color: inherit !important;
@@ -133,7 +134,8 @@
     .entry_figcaption {
       margin: .75em 0;
       color: $c-meta;
-      font: .8125rem $f-sansserif;
+      font-size: $fs-s;
+      line-height: $lh-normal;
     }
 
   .entry_image--borderless {

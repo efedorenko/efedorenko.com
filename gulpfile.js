@@ -63,15 +63,6 @@ gulp.task('scripts:sync', function () {
   ])
     .pipe(gulp.dest(paths.scripts.dist));
 });
-gulp.task('scripts:fonts', function () {
-  return browserify(paths.elements.src + 'components/fonts-check/fonts-loader.js')
-    .bundle()
-    .pipe(source('fonts.min.js'))
-    .pipe(buffer())
-    .pipe(babel({presets: ['es2015']}))
-    .pipe(uglify())
-    .pipe(gulp.dest(paths.scripts.dist));
-});
 
 
 // Move images
@@ -131,14 +122,7 @@ gulp.task('watch', function () {
   ], [
     'cachebust:images'
   ]);
-
-  gulp.watch([
-    paths.elements.src + '**/*.js',
-    paths.scripts.src  + '**/*.js'
-  ], [
-    'scripts:fonts'
-  ]);
 });
 
-gulp.task('default', ['styles:sass', 'scripts:sync', 'scripts:fonts', 'images:sync', 'cachebust:images']);
+gulp.task('default', ['styles:sass', 'scripts:sync', 'images:sync', 'cachebust:images']);
 gulp.task('production', ['default', 'cachebust:css', 'cachebust:js']);

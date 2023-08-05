@@ -58,19 +58,20 @@
 }
 
 .c-project-desc {
-  font: .8125rem/1.4 $f-sansserif;
-  color: #808080;
+  font-size: $fs-s;
+  line-height: $lh-normal;
 
   &_title {
     margin: 0 0 .5em;
-    font: bold 1rem $f-serif;
+    font-weight: $fw-bold;
+    font-size: 1rem;
   }
 
   p {
     margin: 0;
   }
   a {
-    font-weight: bold;
+    font-weight: $fw-bold;
   }
   a:link {
     color: #222;
@@ -83,14 +84,12 @@
 
 .c-project-favs {
   margin-bottom: 0;
-  font-size: 12px;
-  font-size: .75rem;
+  font-size: $fs-s;
   color: #AAA;
 
   &_subtitle {
     font-size: 1em;
-    font-weight: normal;
-    font-style: italic;
+    font-weight: $fw-normal;
     text-align: right;
   }
   &_link {
@@ -112,4 +111,7 @@
 }
 .u-link-cv {
   color: #BD3F82 !important;
+}
+.u-link-ac {
+  color: #1b4bf5 !important;
 }

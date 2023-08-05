@@ -1,10 +1,10 @@
 .u-see-more {
   color: #3DC2D7;
   text-decoration: underline;
-  font-size: .875em;
+  font-size: $fs-s;
 }
 .u-normal-weight {
-  font-weight: normal;
+  font-weight: $fw-normal;
 }
 .u-list-bulletless {
   margin-left: 0;
@@ -16,12 +16,13 @@
   margin-left: .66em;
 }
 .u-small {
-  font-size: .8em;
+  font-size: $fs-s;
 }
 .u-page-num {
   margin-left: .25em;
   color: #CCC;
-  font: normal normal .75em $f-sansserif;
+  font-weight: $fw-normal;
+  font-size: $fs-xs;
   white-space: nowrap;
 }
 .u-hr {
