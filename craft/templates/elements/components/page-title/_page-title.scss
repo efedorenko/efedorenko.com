@@ -1,9 +1,9 @@
 .o-page-title {
   margin: $grid-gutter 0;
   color: $c-orange;
-  font-weight: 500;
   font-size: 36px;
   font-size: 2.25rem;
+  font-weight: $fw-medium;
   line-height: 1.2;
   letter-spacing: -.0075em;
 
@@ -13,8 +13,7 @@
   }
 
   &_note {
-    font-style: italic;
-    font-weight: 300;
+    font-weight: $fw-normal;
   }
 }
 

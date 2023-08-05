@@ -4,7 +4,7 @@
   font-size: .875em;
 }
 .u-normal-weight {
-  font-weight: normal;
+  font-weight: $fw-normal;
 }
 .u-list-bulletless {
   margin-left: 0;
@@ -21,7 +21,8 @@
 .u-page-num {
   margin-left: .25em;
   color: #CCC;
-  font: normal normal .75em $f-sansserif;
+  font-weight: $fw-normal;
+  font-size: .75em;
   white-space: nowrap;
 }
 .u-hr {

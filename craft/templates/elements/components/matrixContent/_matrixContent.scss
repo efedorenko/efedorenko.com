@@ -44,8 +44,8 @@
     // border-color: mix(#FFF, $c-entry-pullquote, 25%);
     padding: 0;
     // color: $c-entry-pullquote;
-    font-weight: bold;
     font-size: 1.5em;
+    font-weight: $fw-bold;
     line-height: 1.4;
 
     p {
@@ -71,7 +71,6 @@
       display: block;
       padding: 0 0 1em 0;
       color: rgba(#FFF, .2);
-      // font: 1.1em/1 $f-sansserif;
       text-align: center;
       text-shadow: none;
 
@@ -133,7 +132,7 @@
     .entry_figcaption {
       margin: .75em 0;
       color: $c-meta;
-      font: .8125rem $f-sansserif;
+      font-size: 12.5px;
     }
 
   .entry_image--borderless {

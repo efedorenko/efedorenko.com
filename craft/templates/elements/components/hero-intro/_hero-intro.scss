@@ -23,10 +23,10 @@
 
   &_text {
     margin: .66em 0;
-    font-weight: 500;
     font-size: 24px;
     font-size: 1.4375rem;
     letter-spacing: -.0075em;
+    font-weight: $fw-medium;
   }
     &_link {
       color: #3DC2D7;
@@ -35,6 +35,6 @@
 
   &_location {
     color: #808080;
-    font: .8125rem $f-sansserif
+    font-size: 12.5px;
   }
 }

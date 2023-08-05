@@ -58,19 +58,21 @@
 }
 
 .c-project-desc {
-  font: .8125rem/1.4 $f-sansserif;
   color: #808080;
+  font-size: .8125rem;
+  line-height: 1.4;
 
   &_title {
     margin: 0 0 .5em;
-    font: bold 1rem $f-serif;
+    font-weight: $fw-bold;
+    font-size: 1rem;
   }
 
   p {
     margin: 0;
   }
   a {
-    font-weight: bold;
+    font-weight: $fw-bold;
   }
   a:link {
     color: #222;
@@ -89,8 +91,7 @@
 
   &_subtitle {
     font-size: 1em;
-    font-weight: normal;
-    font-style: italic;
+    font-weight: $fw-normal;
     text-align: right;
   }
   &_link {

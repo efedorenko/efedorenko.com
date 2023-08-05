@@ -4,8 +4,9 @@
 
   &_time {
     color: #CCC;
-    font: normal normal 12px $f-sansserif;
-    font-size: .75rem;
+    font-weight: $fw-normal;
+    font-style: normal;
+    font-size: 12.5px;
   }
 
 
@@ -28,7 +29,7 @@
   &_travel-dates {
     margin: -.5em 0 1.75em;
     color: #808080;
-    font: .85em $f-sansserif;    
+    font-size: 12.5px;
 
     a:link,
     a:visited {
@@ -71,7 +72,7 @@
 
   &_author {
     color: #AAA;
-    font: .85em $f-sansserif;
+    font-size: 12.5px;
 
     a:link {
       color: $c-link;

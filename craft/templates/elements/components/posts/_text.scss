@@ -22,9 +22,9 @@
 
   h1 {
     margin: 0 0 .6em;
-    font-weight: bold;
     font-size: 1.4375em;
     line-height: 1.4;
+    font-weight: $fw-bold;
     text-align: center;
 
     .c-body--dark & {
@@ -37,7 +37,7 @@
   }
   h2 {
     margin: 2em 0 .8em;
-    font-weight: bold;
+    font-weight: $fw-bold;
     font-size: 1.294em;
 
     .c-body--dark & {
@@ -47,7 +47,8 @@
   h3 {
     margin: 2em 0 .8em;
     color: $c-orange;
-    font: bold 1.117em $f-sansserif;
+    font-weight: $fw-bold;
+    font-size: 1.117em;
 
   }
 

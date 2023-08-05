@@ -3,12 +3,9 @@
   padding: 0;
   background-color: #FFF;
   color: #222;
-  font-family: $f-serif-fb;
   line-height: 1.5;
-
-  .fonts-loaded & {
-    font-family: $f-serif;
-  }
+  font-family: $f-martian-grotesk;
+  font-weight: $fw-normal;
 }
 .c-body--works {
   background-color: #f8f8f8;
