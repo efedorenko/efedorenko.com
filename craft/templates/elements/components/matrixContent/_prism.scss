@@ -9,8 +9,8 @@ code[class*='language-'],
 pre[class*='language-'] {
   direction: ltr;
   color: #000;
-  line-height: 1.5;
   font-family: $f-monospace;
+  line-height: $lh-loose;
   text-align: left;
   text-shadow: 0 1px #FFF;
   word-spacing: normal;

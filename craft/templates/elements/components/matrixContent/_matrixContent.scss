@@ -21,7 +21,7 @@
     margin: -.4em 0 -.6em;
     padding: .2em 0 .2em 40px;
     font-size: .85em;
-    line-height: 1.75;
+    line-height: $lh-normal;
   }
 
   // Embed
@@ -46,7 +46,7 @@
     // color: $c-entry-pullquote;
     font-size: 1.5em;
     font-weight: $fw-bold;
-    line-height: 1.4;
+    line-height: $lh-normal;
 
     p {
       margin: 1.25em 0;
@@ -133,6 +133,7 @@
       margin: .75em 0;
       color: $c-meta;
       font-size: 12.5px;
+      line-height: $lh-normal;
     }
 
   .entry_image--borderless {
