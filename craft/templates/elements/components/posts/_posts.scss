@@ -6,14 +6,13 @@
     color: #CCC;
     font-weight: $fw-normal;
     font-style: normal;
-    font-size: 12.5px;
+    font-size: $fs-s;
   }
 
 
   // Title
 
   &_title {
-    font-weight: 500;
     line-height: $lh-normal;
   }
   &_link {
@@ -29,7 +28,7 @@
   &_travel-dates {
     margin: -.5em 0 1.75em;
     color: #808080;
-    font-size: 12.5px;
+    font-size: $fs-s;
 
     a:link,
     a:visited {
@@ -72,7 +71,7 @@
 
   &_author {
     color: #AAA;
-    font-size: 12.5px;
+    font-size: $fs-s;
 
     a:link {
       color: $c-link;
@@ -133,12 +132,12 @@
   &--local {
     color: #000;
 
-    .c-body--dark & {
-      color: #BBB;
+    .o-post_title {
+      font-weight: $fw-bold;
     }
 
-    @include medium {
-      font-size: 1.125em;
+    .c-body--dark & {
+      color: #BBB;
     }
   }
 }

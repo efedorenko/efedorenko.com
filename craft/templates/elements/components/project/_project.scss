@@ -58,8 +58,7 @@
 }
 
 .c-project-desc {
-  color: #808080;
-  font-size: .8125rem;
+  font-size: $fs-s;
   line-height: $lh-normal;
 
   &_title {
@@ -85,8 +84,7 @@
 
 .c-project-favs {
   margin-bottom: 0;
-  font-size: 12px;
-  font-size: .75rem;
+  font-size: $fs-s;
   color: #AAA;
 
   &_subtitle {

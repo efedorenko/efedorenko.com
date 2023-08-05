@@ -1,7 +1,7 @@
 .u-see-more {
   color: #3DC2D7;
   text-decoration: underline;
-  font-size: .875em;
+  font-size: $fs-s;
 }
 .u-normal-weight {
   font-weight: $fw-normal;
@@ -16,13 +16,13 @@
   margin-left: .66em;
 }
 .u-small {
-  font-size: .8em;
+  font-size: $fs-s;
 }
 .u-page-num {
   margin-left: .25em;
   color: #CCC;
   font-weight: $fw-normal;
-  font-size: .75em;
+  font-size: $fs-xs;
   white-space: nowrap;
 }
 .u-hr {

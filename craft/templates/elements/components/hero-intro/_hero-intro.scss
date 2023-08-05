@@ -23,11 +23,10 @@
 
   &_text {
     margin: .66em 0;
-    font-size: 24px;
-    font-size: 1.4375rem;
-    letter-spacing: -.0075em;
     font-weight: $fw-medium;
+    font-size: $fs-l;
     line-height: $lh-normal;
+    letter-spacing: -.01em;
   }
     &_link {
       color: #3DC2D7;
@@ -36,6 +35,6 @@
 
   &_location {
     color: #808080;
-    font-size: 12.5px;
+    font-size: $fs-s;
   }
 }
