@@ -1,7 +1,5 @@
 Options -Indexes
 
-ServerAlias archive.efedorenko.com
-
 ErrorDocument 404 https://efedorenko.com/404
 
 <IfModule mod_rewrite.c>
